@@ -21,11 +21,9 @@
 <a href="https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA" target="_blank">Telegram</a>
 
 #### 源码来源：
-#### 源码来源：
-#### 源码来源：
-[![garypang13](https://img.shields.io/badge/autoBuild-garypang13-red.svg?style=flat&logo=appveyor)](https://github.com/garypang13/openwrt-packages)
+[![garypang13](https://img.shields.io/badge/package-garypang13-red.svg?style=flat&logo=appveyor)](https://github.com/garypang13/openwrt-packages)
  [![Lienol](https://img.shields.io/badge/passwall-openwrt-blueviolet.svg?style=flat&logo=appveyor)](https://github.com/xiaorouji/openwrt-passwall) 
-[![immortalwrt](https://img.shields.io/badge/immortalwrt-openwrt-orange.svg?style=flat&logo=appveyor)](https://github.com/immortalwrt/immortalwrt) 
+[![immortalwrt](https://img.shields.io/badge/packages-immortalwrt-orange.svg?style=flat&logo=appveyor)](https://github.com/immortalwrt/immortalwrt) 
 [![Lean](https://img.shields.io/badge/package-Lean-blueviolet.svg?style=flat&logo=appveyor)](https://github.com/coolsnowwolf/lede) 
 
 
