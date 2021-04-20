@@ -17,12 +17,11 @@
 [![GitHub Forks](https://img.shields.io/github/forks/kenzok78/OpenWrt.svg?style=flat-square&label=Forks)](https://github.com/kenzok78/OpenWrt/fork)
 [![PRs Welcome][3]][4]
 [![Issue Welcome][5]][6]
-[![AutoBuild][12]][13]
 
 <a href="https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA" target="_blank">Telegram</a>
 
 #### 源码来源：
-[!garypang](https://img.shields.io/badge/autoBuild-garypang13-red.svg?style=flat&logo=appveyor)](https://github.com/garypang13/OpenWrt)
+[!garypang](https://img.shields.io/badge/autoBuild-garypang13-red.svg?style=flat&logo=appveyor)](https://github.com/garypang13/openwrt-packages)
 [![Lean](https://img.shields.io/badge/package-Lean-blueviolet.svg?style=flat&logo=appveyor)](https://github.com/coolsnowwolf/lede) 
 [![Lienol](https://img.shields.io/badge/passwall-openwrt-yellowviolet.svg?style=flat&logo=appveyor)](https://github.com/xiaorouji/openwrt-passwall) 
 [![immortalwrt](https://img.shields.io/badge/immortalwrt-openwrt-orange.svg?style=flat&logo=appveyor)](https://github.com/immortalwrt/immortalwrt) 
