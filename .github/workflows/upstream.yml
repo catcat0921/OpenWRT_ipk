@@ -27,7 +27,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
       with:
-        ref: master
+        ref: main
         fetch-depth: 0
         lfs: true
 
@@ -152,7 +152,7 @@ jobs:
         done ) &
 
     - name: SSH connection to Actions
-      uses: kenzok8/debugger-action@master
+      uses: kenzok78/debugger-action@main
       if: 1 == 0
 
     - name: Delete duplicated packages
