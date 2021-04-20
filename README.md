@@ -31,4 +31,5 @@
 固件地址：[![GitHub release (latest by date)](https://img.shields.io/github/v/release/kenzok78/OpenWrt?style=for-the-badge&label=Download)](https://github.com/kenzok78/OpenWrt/actions)
 
 #### 特色:
-该仓库插件只适合19.07、21.02的luci
+
++ 该仓库插件只适合19.07、21.02的luci
