@@ -10,7 +10,7 @@ name: Merge-upstream
 on:
   push:
     paths:
-      - '.github/workflows/jell.yml'
+      - '.github/workflows/upstream.yml'
       - 'diy/**'
   schedule:
     - cron: 0 */12 * * *
@@ -207,7 +207,7 @@ jobs:
     - name: Apply
       run: |
         git add .
-        git commit -m "update$(TZ='Asia/Shanghai' date +-%m%d)"
+        git commit -m "update$(TZ='Asia/Shanghai' date +-%m%d)" || true
         git push
         
     - name: Delete workflow runs
