@@ -152,7 +152,7 @@ jobs:
         done ) &
 
     - name: SSH connection to Actions
-      uses: kenzok78/debugger-action@main
+      uses: P3TERX/debugger-action@master
       if: 1 == 0
 
     - name: Delete duplicated packages
