@@ -1,36 +1,36 @@
-# luci-theme-edge
-
-[1]: https://img.shields.io/badge/license-MIT-brightgreen.svg
+# sync package Snapshot
+[1]: https://img.shields.io/badge/license-GPLV2-brightgreen.svg
 [2]: /LICENSE
 [3]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
-[4]: https://github.com/https://github.com/garypang13/luci-theme-edge/pulls
+[4]: https://github.com/kenzok78/jell/pulls
 [5]: https://img.shields.io/badge/Issues-welcome-brightgreen.svg
-[6]: https://github.com/https://github.com/garypang13/luci-theme-edge/issues/new
-[7]: https://img.shields.io/badge/release-v2.1-blue.svg?
+[6]: https://github.com/kenzok78/jell/issues/new
+[7]: https://img.shields.io/github/v/release/hyird/Action-Openwrt
+[8]: https://github.com/kenzok78/jell/releases
 [10]: https://img.shields.io/badge/Contact-telegram-blue
-[11]: https://t.me/openwrt_nginx
+[11]: https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA
+[12]: https://github.com/kenzok78/jell/workflows/AutoBuild/badge.svg
+[13]: https://github.com/kenzok78/jell/actions
+
 [![license][1]][2]
+[![GitHub Stars](https://img.shields.io/github/stars/kenzok78/OpenWrt.svg?style=flat-square&label=Stars)](https://github.com/kenzok78/OpenWrt/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/kenzok78/OpenWrt.svg?style=flat-square&label=Forks)](https://github.com/kenzok78/OpenWrt/fork)
 [![PRs Welcome][3]][4]
 [![Issue Welcome][5]][6]
-[![Contact Me][10]][11]
 
-<a href="https://t.me/opwrts" target="_blank">Telegram</a>
+<a href="https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA" target="_blank">Telegram</a>
 
-A new Luci theme for LEDE/OpenWRT  
-Edge is a clean HTML5 theme for LuCI. It is based on luci-theme-argon Template  
+#### 源码来源：
+[![garypang13](https://img.shields.io/badge/package-garypang13-red.svg?style=flat&logo=appveyor)](https://github.com/garypang13/openwrt-packages)
+ [![Lienol](https://img.shields.io/badge/passwall-xiaorouji-blueviolet.svg?style=flat&logo=appveyor)](https://github.com/xiaorouji/openwrt-passwall) 
+[![immortalwrt](https://img.shields.io/badge/packages-immortalwrt-orange.svg?style=flat&logo=appveyor)](https://github.com/immortalwrt/immortalwrt) 
+[![Lean](https://img.shields.io/badge/package-Lean-blueviolet.svg?style=flat&logo=appveyor)](https://github.com/coolsnowwolf/lede) 
 
-Master branch adapt to official mainline snapshot.
-Luci 18.06: https://github.com/garypang13/luci-theme-edge/tree/18.06
 
-## Thanks to 
-luci-theme-argon: https://github.com/jerrykuku/luci-theme-argon
+#### 固件下载
++ 固件地址：[![GitHub release (latest by date)](https://img.shields.io/github/v/release/kenzok78/OpenWrt?style=for-the-badge&label=Download)](https://github.com/kenzok78/OpenWrt/actions)
 
-![](/Screenshots/1.png)
-![](/Screenshots/2.png)
-![](/Screenshots/3.png)
-![](/Screenshots/4.png)
-![](/Screenshots/5.png)
-<br/>
-<br />
-<br />
-<img src="/Screenshots/6.png" width="550" />
+#### 特色:
+
++ 该仓库插件只适合19.07、21.02的luci
+# luci-theme-edge

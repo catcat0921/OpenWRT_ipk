@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ "$PKG_UPGRADE" != 1 ]; then
+	uci get luci.themes.Argon >/dev/null 2>&1 || \
+	uci batch <<-EOF
+		set luci.themes.Argon_Blue=/luci-static/argon_blue
+		set luci.themes.Argon_Violet=/luci-static/argon_violet
+		commit luci
+	EOF
+fi
+
+exit 0
