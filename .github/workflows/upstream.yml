@@ -118,15 +118,16 @@ jobs:
         git clone --depth 1 https://github.com/small-5/ddns-scripts-aliyun &
         git clone --depth 1 https://github.com/walkingsky/luci-wifidog luci-app-wifidog &
         git clone --depth 1 https://github.com/peter-tank/luci-app-autorepeater &
-        git clone --depth 1 https://github.com/zzsj0928/luci-app-pushbot &
+        git clone --depth 1 https://github.com/zzsj0928/luci-app-serverchand &
         git clone --depth 1 https://github.com/CCnut/feed-netkeeper && mv -n feed-netkeeper/* ./ ; rm -Rf feed-netkeeper &
         git clone --depth 1 https://github.com/brvphoenix/luci-app-wrtbwmon &
         git clone --depth 1 https://github.com/kuoruan/luci-app-frpc &
-        git clone --depth 1 https://github.com/fw876/helloworld && mv -n helloworld/* ./ ; rm -Rf helloworld &
+        git clone --depth 1 https://github.com/fw876/helloworld && mv -n helloworld/luci-app-ssr-plus ./ ; rm -Rf helloworld &
         git clone --depth 1 https://github.com/linkease/ddnsto-openwrt && mv -n ddnsto-openwrt/* ./ ; rm -Rf ddnsto-openwrt &
         git clone --depth 1 https://github.com/sensec/luci-app-udp2raw &
         git clone --depth 1 https://github.com/LGA1150/openwrt-sysuh3c && mv -n openwrt-sysuh3c/* ./ ; rm -Rf openwrt-sysuh3c &
         git clone --depth 1 https://github.com/srchack/custom-packages && mv -n custom-packages/* ./ ; rm -rf custom-packages &
+        git clone --depth 1 https://github.com/yichya/luci-app-xray &
         git_sparse_clone master https://github.com/vernesong/OpenClash OpenClash luci-app-openclash &
         git_sparse_clone master https://github.com/doushang/luci-app-shortcutmenu shortcutmenu luci-app-shortcutmenu &
         git_sparse_clone master https://github.com/sundaqiang/openwrt-packages luci-wolplus luci-app-services-wolplus &
@@ -138,14 +139,13 @@ jobs:
         svn co https://github.com/teasiu/dragino2/trunk/devices/common/diy/package/teasiu/luci-app-phtunnel &
         svn co https://github.com/teasiu/dragino2/trunk/devices/common/diy/package/teasiu/phtunnel &
         svn co https://github.com/coolsnowwolf/lede/trunk/package/network/services/shellsync &
-        svn co https://github.com/kenzok78/jeii/trunk/luci-theme-argon_19.07 &
         svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/automount &
         svn co https://github.com/coolsnowwolf/packages/trunk/net/miniupnpd &
         svn co https://github.com/coolsnowwolf/packages/trunk/net/mwan3 &
         svn co https://github.com/openwrt/luci/trunk/applications/luci-app-https-dns-proxy &
         svn co https://github.com/x-wrt/packages/trunk/net/nft-qos &
         svn co https://github.com/x-wrt/luci/trunk/applications/luci-app-nft-qos &
-        svn co https://github.com/immortalwrt/immortalwrt/trunk/package/lean/shadowsocksr-libev
+        svn co https://github.com/immortalwrt/immortalwrt/trunk/package/lean/shadowsocksr-libev &
         
         ( for ipk in $(ls applications); do
         	if [[ $(ls -l applications/$ipk/po | wc -l) -gt 3 ]]; then
@@ -171,7 +171,9 @@ jobs:
         cp -Rf mt/* ./ && rm -Rf mt
 
     - name: Apply patches
-      run: find "diy/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
+      run: |
+        sed -i "s/\r//g" open-app-filter/src/appfilter_ubus.c
+        find "diy/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
 
     - name: Modify
       run: |
@@ -180,6 +182,7 @@ jobs:
         	[ $ver ] && echo $ver || git ls-remote --tags git://github.com/$1 | cut -d/ -f3- | sort -t. -nk1,2 -k3 | awk '/^[^{]*$/{version=$1}END{print version}' | grep -o -E "[0-9].+"
         }
         # sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$(getversion XTLS/Xray-core)/g" xray-core/Makefile &
+        # sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$(getversion klzgrad/naiveproxy)/g" naiveproxy/Makefile &
         
         bash diy/create_acl_for_luci.sh -a || true &
         bash diy/convert_translation.sh -a || true &
@@ -205,18 +208,13 @@ jobs:
         find ./*/ -maxdepth 1 -name "Makefile" ! -path "*tinyfecvpn*" ! -path "*gowebdav*" | xargs -i sed -i "s/PKG_HASH:=.*/PKG_HASH:=skip/g" {} &
         # sed -i 's/\(add ucitrack \(.*\)\)/\1\n\tservice \2 enable/g' luci-app*/root/etc/uci-defaults/*
 
-
     - name: Apply
       run: |
         git add .
         git commit -m "update" || true
         git push
-        
-    - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@main
-      with:
-        retain_days: 1
-        keep_minimum_runs: 3
+
+
 
 
 
