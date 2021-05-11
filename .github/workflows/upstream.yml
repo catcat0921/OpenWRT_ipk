@@ -74,8 +74,8 @@ jobs:
         git clone --depth 1 https://github.com/garypang13/smartdns-le &
         git clone --depth 1 https://github.com/garypang13/luci-app-eqos &
         git clone --depth 1 https://github.com/garypang13/luci-app-baidupcs-web &
-        git clone --depth 1 https://github.com/kenzok78/luci-theme-edge &
-        git clone --depth 1 https://github.com/garypang13/autosamba &
+        git clone --depth 1 https://github.com/garypang13/luci-theme-edge &
+        git clone --depth 1 https://github.com/garypang13/autoshare && mv -f autoshare/* ./ ; rm -Rf autoshare &
         git clone --depth 1 https://github.com/garypang13/luci-app-homebridge &
         git clone --depth 1 https://github.com/garypang13/openwrt-openvpn && mv -f openwrt-openvpn/* ./ ; rm -Rf openwrt-openvpn &
         git clone --depth 1 https://github.com/BoringCat/luci-app-mentohust &
@@ -88,7 +88,7 @@ jobs:
         git clone --depth 1 https://github.com/BoringCat/luci-app-minieap &
         git clone --depth 1 https://github.com/rufengsuixing/luci-app-onliner &
         git clone --depth 1 https://github.com/tty228/luci-app-serverchan &
-        git clone --depth 1 https://github.com/4IceG/luci-app-sms-tool &
+        git clone --depth 1 https://github.com/4IceG/luci-app-sms-tool smstool && mv -f smstool/{luci-app-sms-tool,sms-tool} ./ ; rm -Rf smstool &
         git clone --depth 1 https://github.com/immortalwrt/openwrt-ssocks && mv -n openwrt-ssocks/* ./ ; rm -Rf openwrt-ssocks &
         git clone --depth 1 https://github.com/rufengsuixing/luci-app-usb3disable &
         git clone --depth 1 https://github.com/silime/luci-app-xunlei &
@@ -114,7 +114,7 @@ jobs:
         git clone --depth 1 https://github.com/small-5/ddns-scripts-aliyun &
         git clone --depth 1 https://github.com/walkingsky/luci-wifidog luci-app-wifidog &
         git clone --depth 1 https://github.com/peter-tank/luci-app-autorepeater &
-        git clone --depth 1 https://github.com/zzsj0928/luci-app-pushbot &
+        git clone --depth 1 https://github.com/zzsj0928/luci-app-serverchand &
         git clone --depth 1 https://github.com/CCnut/feed-netkeeper && mv -n feed-netkeeper/* ./ ; rm -Rf feed-netkeeper &
         git clone --depth 1 https://github.com/brvphoenix/luci-app-wrtbwmon &
         git clone --depth 1 https://github.com/kuoruan/luci-app-frpc &
@@ -140,6 +140,7 @@ jobs:
         svn co https://github.com/x-wrt/packages/trunk/net/nft-qos &
         svn co https://github.com/x-wrt/luci/trunk/applications/luci-app-nft-qos &
         svn co https://github.com/immortalwrt/immortalwrt/trunk/package/lean/shadowsocksr-libev &
+        svn co https://github.com/xiaoqingfengATGH/feeds-xiaoqingfeng/trunk/luci-app-homeconnect &
         
         ( for ipk in $(ls applications); do
         	if [[ $(ls -l applications/$ipk/po | wc -l) -gt 3 ]]; then
@@ -158,8 +159,8 @@ jobs:
         mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall
         mv -n lean/* ./ ; rm -Rf lean
         mv -n ledelean/* ./ ; rm -Rf ledelean
-        rm -Rf */.git */.svn qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} cups* subweb \
-        mt-drivers coremark npc luci-app-{flowoffload,sfe,appfilter,unblockneteasemusic*,adbyby-plus,advancedsetting,softethervpn,chinadns,docker,samba4} fcgiwrap \
+        rm -Rf */.git */.svn qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} cups* subweb wget autosamba \
+        mt-drivers coremark npc luci-app-{flowoffload,yggdrasil,sfe,appfilter,unblockneteasemusic*,adbyby-plus,advancedsetting,softethervpn,chinadns,docker,samba4,smstool,cifs-mount} \
         fcgiwrap ddns-scripts_{aliyun,dnspod} UnblockNeteaseMusicGo ipv6-helper adbyby ChinaDNS luci-theme-netgear csstidy
         mv mt/drivers mt/mt-drivers
         cp -Rf mt/* ./ && rm -Rf mt
