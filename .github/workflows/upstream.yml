@@ -1,3 +1,4 @@
+
 #
 # This is free software, lisence use MIT.
 # 
@@ -20,7 +21,7 @@ on:
 
 jobs:
   merge:
-    if: github.event.repository.owner.id == '39034260'
+    if: github.event.repository.owner.id == github.event.sender.id
     runs-on: Ubuntu-20.04
 
     steps:
@@ -62,10 +63,6 @@ jobs:
         
         git_sparse_clone master "https://github.com/x-wrt/com.x-wrt" "x-wrt" natflow luci-app-wizard luci-app-macvlan &
         
-        git_sparse_clone master "https://github.com/immortalwrt/immortalwrt" "immwrt" package/lean package/kernel/mt7601u-ap package/kernel/mtk-eip93 \
-        package/kernel/r8152 package/kernel/r8168 package/kernel/rtl8188eu package/kernel/rtl8812au-ac \
-        package/kernel/rtl8821cu package/kernel/rtl88x2bu
-        
         git clone --depth 1 https://github.com/kenzok78/my-packages && mv -f my-packages/* ./ ; rm -Rf my-packages &
         git clone --depth 1 https://github.com/garypang13/luci-app-bypass &
         git clone --depth 1 https://github.com/garypang13/luci-app-dnsfilter &
@@ -74,7 +71,7 @@ jobs:
         git clone --depth 1 https://github.com/garypang13/smartdns-le &
         git clone --depth 1 https://github.com/garypang13/luci-app-eqos &
         git clone --depth 1 https://github.com/garypang13/luci-app-baidupcs-web &
-        git clone --depth 1 https://github.com/garypang13/luci-theme-edge &
+        git clone --depth 1 https://github.com/kenzok78/luci-theme-edge &
         git clone --depth 1 https://github.com/garypang13/autoshare && mv -f autoshare/* ./ ; rm -Rf autoshare &
         git clone --depth 1 https://github.com/garypang13/luci-app-homebridge &
         git clone --depth 1 https://github.com/garypang13/openwrt-openvpn && mv -f openwrt-openvpn/* ./ ; rm -Rf openwrt-openvpn &
@@ -124,6 +121,7 @@ jobs:
         git clone --depth 1 https://github.com/LGA1150/openwrt-sysuh3c && mv -n openwrt-sysuh3c/* ./ ; rm -Rf openwrt-sysuh3c &
         git clone --depth 1 https://github.com/srchack/custom-packages && mv -n custom-packages/* ./ ; rm -rf custom-packages &
         git clone --depth 1 https://github.com/yichya/luci-app-xray &
+        git clone --depth 1 https://github.com/gdck/luci-app-cupsd cupsd1 && mv -n cupsd1/* ./ ; rm -rf cupsd1 &
         git_sparse_clone master https://github.com/vernesong/OpenClash OpenClash luci-app-openclash &
         git_sparse_clone master https://github.com/doushang/luci-app-shortcutmenu shortcutmenu luci-app-shortcutmenu &
         git_sparse_clone master https://github.com/sundaqiang/openwrt-packages luci-wolplus luci-app-services-wolplus &
@@ -141,7 +139,11 @@ jobs:
         svn co https://github.com/x-wrt/luci/trunk/applications/luci-app-nft-qos &
         svn co https://github.com/immortalwrt/immortalwrt/trunk/package/lean/shadowsocksr-libev &
         svn co https://github.com/xiaoqingfengATGH/feeds-xiaoqingfeng/trunk/luci-app-homeconnect &
-        
+
+        git_sparse_clone master "https://github.com/immortalwrt/immortalwrt" "immwrt" package/lean package/kernel/mt7601u-ap package/kernel/mtk-eip93 \
+        package/kernel/r8152 package/kernel/r8168 package/kernel/rtl8188eu package/kernel/rtl8812au-ac \
+        package/kernel/rtl8821cu package/kernel/rtl88x2bu
+
         ( for ipk in $(ls applications); do
         	if [[ $(ls -l applications/$ipk/po | wc -l) -gt 3 ]]; then
         		rm -rf applications/$ipk
@@ -159,7 +161,7 @@ jobs:
         mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall
         mv -n lean/* ./ ; rm -Rf lean
         mv -n ledelean/* ./ ; rm -Rf ledelean
-        rm -Rf */.git */.svn qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} cups* subweb wget autosamba \
+        rm -Rf */.git */.svn qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} subweb wget autosamba \
         mt-drivers coremark npc luci-app-{flowoffload,yggdrasil,sfe,appfilter,unblockneteasemusic*,adbyby-plus,advancedsetting,softethervpn,chinadns,docker,samba4,smstool,cifs-mount} \
         fcgiwrap ddns-scripts_{aliyun,dnspod} UnblockNeteaseMusicGo ipv6-helper adbyby ChinaDNS luci-theme-netgear csstidy
         mv mt/drivers mt/mt-drivers
@@ -209,7 +211,11 @@ jobs:
         git commit -m "update" || true
         git push
 
-
+    - name: Delete workflow runs
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+        retain_days: 1
+        keep_minimum_runs: 3
 
 
 
