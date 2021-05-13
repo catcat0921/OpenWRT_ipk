@@ -149,7 +149,7 @@ jobs:
         done ) &
 
     - name: SSH connection to Actions
-      uses: garypang13/debugger-action@master
+      uses: kenzok78/debugger-action@master
       if: 1 == 0
 
     - name: Delete duplicated packages
