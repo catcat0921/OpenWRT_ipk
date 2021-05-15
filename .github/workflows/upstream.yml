@@ -48,7 +48,6 @@ jobs:
           rm -rf $localdir
           )
 
-        svn export --force https://github.com/immortalwrt/luci/trunk/applications &
         git clone --depth 1 https://github.com/Lienol/openwrt-package &
         git clone --depth 1 https://github.com/xiaorouji/openwrt-passwall &
         svn export --force https://github.com/coolsnowwolf/lede/trunk/package/lean ledelean &
@@ -138,9 +137,11 @@ jobs:
         svn co https://github.com/immortalwrt/immortalwrt/trunk/package/lean/shadowsocksr-libev &
         svn co https://github.com/xiaoqingfengATGH/feeds-xiaoqingfeng/trunk/luci-app-homeconnect &
 
-        git_sparse_clone master "https://github.com/immortalwrt/immortalwrt" "immwrt" package/lean package/kernel/mt7601u-ap package/kernel/mtk-eip93 \
+        git_sparse_clone master "https://github.com/immortalwrt/immortalwrt" "immwrt" package/kernel/mt7601u-ap package/kernel/mtk-eip93 \
         package/kernel/r8152 package/kernel/r8168 package/kernel/rtl8188eu package/kernel/rtl8812au-ac \
-        package/kernel/rtl8821cu package/kernel/rtl88x2bu
+        package/kernel/rtl8821cu package/kernel/rtl88x2bu &
+
+        svn export --force https://github.com/immortalwrt/luci/trunk/applications
 
         ( for ipk in $(ls applications); do
         	if [[ $(ls -l applications/$ipk/po | wc -l) -gt 3 ]]; then
@@ -149,7 +150,7 @@ jobs:
         done ) &
 
     - name: SSH connection to Actions
-      uses: kenzok78/debugger-action@master
+      uses: garypang13/debugger-action@master
       if: 1 == 0
 
     - name: Delete duplicated packages
@@ -157,11 +158,10 @@ jobs:
         mv -n applications/* ./ ; rm -Rf applications
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
         mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall
-        mv -n lean/* ./ ; rm -Rf lean
         mv -n ledelean/* ./ ; rm -Rf ledelean
         rm -Rf */.git */.svn qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} subweb wget autosamba \
         mt-drivers coremark npc luci-app-{flowoffload,sfe,appfilter,unblockneteasemusic*,adbyby-plus,advancedsetting,softethervpn,chinadns,docker,samba4,smstool,cifs-mount} \
-        fcgiwrap ddns-scripts_{aliyun,dnspod} UnblockNeteaseMusicGo ipv6-helper adbyby ChinaDNS luci-theme-netgear csstidy
+        fcgiwrap ddns-scripts_{aliyun,dnspod} ipv6-helper adbyby ChinaDNS luci-theme-netgear csstidy
         mv mt/drivers mt/mt-drivers
         cp -Rf mt/* ./ && rm -Rf mt
 
@@ -183,15 +183,13 @@ jobs:
         bash diy/convert_translation.sh -a || true &
         
         sed -i \
-        	-e 's/shadowsocksr-libev-alt/shadowsocksr-libev-ssr-redir/g' \
-        	-e 's/shadowsocksr-libev-server/shadowsocksr-libev-ssr-server/g' \
         	-e 's?\.\./\.\./luci.mk?$(TOPDIR)/feeds/luci/luci.mk?g' \
         	-e 's?\.\./\.\./devel/ninja?\.\./ninja?g' \
         	-e 's/ca-certificates/ca-bundle/g' \
-        	-e 's/@GHCODELOAD/https:\/\/codeload.github.com/' \
         */Makefile &
         
         sed -i "/minisign:minisign/d" luci-app-dnscrypt-proxy2/Makefile
+        sed -i 's/PKG_NAME:=UnblockNeteaseMusicGo/PKG_NAME:=UnblockNeteaseMusic-Go/' UnblockNeteaseMusicGo/Makefile
         sed -i 's/+docker-ce/+dockerd \\\n\t+cgroupfs-mount/' luci-app-dockerman/Makefile
         sed -i 's/+amule/+amule +antileech/' luci-app-amule/Makefile
         rm -f subconverter/patches/010-missing-header.patch
@@ -213,5 +211,4 @@ jobs:
       uses: Mattraks/delete-workflow-runs@main
       with:
         retain_days: 1
-        keep_minimum_runs: 2
-
+        keep_minimum_runs: 3
