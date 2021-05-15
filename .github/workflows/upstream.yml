@@ -20,7 +20,7 @@ on:
 
 jobs:
   merge:
-    if: github.event.repository.owner.id == '39034260'
+    if: github.event.repository.owner.id == '39034242'
     runs-on: Ubuntu-20.04
 
     steps:
@@ -62,7 +62,7 @@ jobs:
         
         git_sparse_clone master "https://github.com/x-wrt/com.x-wrt" "x-wrt" natflow luci-app-wizard luci-app-macvlan &
         
-        git clone --depth 1 https://github.com/kenzok78/my-packages && mv -f my-packages/* ./ ; rm -Rf my-packages &
+        git clone --depth 1 https://github.com/kenzok8/my-packages && mv -f my-packages/* ./ ; rm -Rf my-packages &
         git clone --depth 1 https://github.com/garypang13/luci-app-bypass &
         git clone --depth 1 https://github.com/garypang13/luci-app-dnsfilter &
         git clone --depth 1 https://github.com/garypang13/openwrt-static-qb && mv -f openwrt-static-qb/* ./ ; rm -Rf openwrt-static-qb &
