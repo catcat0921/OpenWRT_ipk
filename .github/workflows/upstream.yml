@@ -204,7 +204,7 @@ jobs:
     - name: Apply
       run: |
         git add .
-        git commit -m "update$(TZ='Asia/Shanghai' date +-%m.%d)"
+        git commit -m "update" || true
         git push
 
     - name: Delete workflow runs
