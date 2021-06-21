@@ -14,7 +14,7 @@ end
 function check_update()
 		needs_update, notice,md5 = false, false, false
 		remote_version = luci.sys.exec("echo -n $(curl -s https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/version.txt)")
-		updatelogs = luci.sys.exec("curl -s https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/updatelogs.txt")
+		updatelogs = luci.sys.exec("curl -s https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/updatelogs.txt")
 		remoteformat = luci.sys.exec("date -d $(echo " ..remote_version.. " | awk '{printf $1}' | awk -F. '{printf $3\"-\"$1\"-\"$2}') +%s")
 		fnotice = luci.sys.exec("echo -n " ..remote_version.. " | awk '{printf $NF}'")
 		dateyr = luci.sys.exec("echo -n " ..remote_version.. " | awk -F. '{printf $1\".\"$2}'")
@@ -36,35 +36,34 @@ function to_check()
 	if model == "x86_64" then
 		check_update()
 		if fs.access("/sys/firmware/efi") then
-			download_url = "https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/" ..dateyr.. "-openwrt-x86-64-generic-squashfs-combined-efi.img.gz"
+			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-x86-64-generic-squashfs-combined-efi.img.gz"
 		else
-			download_url = "https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/" ..dateyr.. "-openwrt-x86-64-generic-squashfs-combined.img.gz"
+			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-x86-64-generic-squashfs-combined.img.gz"
+			md5 = ""
 		end
-    elseif model:match(".*K2P.*") then
-		model = "phicomm-k2p"
-		check_update()
-        download_url = "https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/" ..dateyr.. "-openwrt-ramips-mt7621-phicomm_k2p-squashfs-sysupgrade.bin"
-    elseif model:match(".*AC2100.*") then
-		model = "redmi-ac2100"
-		check_update()
-        download_url = "https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/" ..dateyr.. "-openwrt-ramips-mt7621-redmi-ac2100-squashfs-sysupgrade.bin"
     elseif model:match(".*R2S.*") then
 		model = "nanopi-r2s"
 		check_update()
-        download_url = "https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r2s-squashfs-sysupgrade.img.gz"
+		if fs.access("/overlay/upper") then
+			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r2s-squashfs-sysupgrade.img.gz"
+		else
+			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r2s-ext4-sysupgrade.img.gz"
+			md5 = ""
+		end
     elseif model:match(".*R4S.*") then
 		model = "nanopi-r4s"
 		check_update()
-        download_url = "https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r4s-squashfs-sysupgrade.img.gz"
-    elseif model:match(".*D2.*") then
-		model = "newifi-d2"
-		check_update()
-        download_url = "https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/" ..dateyr.. "-openwrt-ramips-mt7621-newifi-d2-squashfs-sysupgrade.bin"
+		if fs.access("/overlay/upper") then
+			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r4s-squashfs-sysupgrade.img.gz"
+		else
+			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r4s-ext4-sysupgrade.img.gz"
+			md5 = ""
+		end
     elseif model:match(".*Pi 4 Model B.*") then
 		model = "Rpi-4B"
 		check_update()
 		if remoteformat > sysverformat and currentTimeStamp > remoteformat then needs_update = true else needs_update = false end
-        download_url = "https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/" ..dateyr.. "-openwrt-bcm27xx-bcm2711-rpi-4-squashfs-sysupgrade.img.gz"
+        download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-bcm27xx-bcm2711-rpi-4-squashfs-sysupgrade.img.gz"
 	else
 		local needs_update = false
 		return {
@@ -109,7 +108,7 @@ function to_download(url,md5)
 
 	local md5local = sys.exec("echo -n $(md5sum " .. tmp_file .. " | awk '{print $1}')")
 	
-	if url:match(".*combined.img.*") == nil and md5 ~= "" and md5local ~= md5 then
+	if md5 ~= "" and md5local ~= md5 then
 		api.exec("/bin/rm", {"-f", tmp_file})
 		return {
             code = 1,

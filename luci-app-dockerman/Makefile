@@ -7,6 +7,7 @@ LUCI_DEPENDS:=@(aarch64||arm||x86_64) \
 	+luci-lib-ip \
 	+docker \
 	+dockerd \
+	+cgroupfs-mount \
 	+ttyd
 LUCI_PKGARCH:=all
 
@@ -15,6 +16,11 @@ PKG_MAINTAINER:=lisaac <lisaac.cn@gmail.com> \
 		Florian Eckert <fe@dev.tdt.de>
 
 PKG_VERSION:=v0.5.21
+
+define Package/luci-app-dockerman/conffiles
+/etc/config/dockerman
+/etc/docker/
+endef
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
