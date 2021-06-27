@@ -9,6 +9,7 @@ CHAP_SECRETS=/etc/ppp/chap-secrets
 L2TP_PATH=/var/etc/xl2tpd
 L2TP_CONFIG_FILE=${L2TP_PATH}/xl2tpd.conf
 L2TP_OPTIONS_FILE=${L2TP_PATH}/options.xl2tpd
+L2TP_LOG_FILE=${L2TP_PATH}/xl2tpd.log
 
 vt_clientip=$(uci -q get $CONFIG.@service[0].clientip)
 vt_l2tp_enabled=$(uci -q get $CONFIG.@service[0].l2tp_enable)
@@ -101,10 +102,10 @@ start() {
 		cat > $L2TP_CONFIG_FILE <<-EOF
 			[global]
 			port = 1701
-			debug avp = yes
-			debug network = yes
-			debug state = yes
-			debug tunnel = yes
+			;debug avp = yes
+			;debug network = yes
+			;debug state = yes
+			;debug tunnel = yes
 			[lns default]
 			ip range = ${vt_remoteip}
 			local ip = ${vt_l2tp_localip}
@@ -116,8 +117,21 @@ start() {
 			pppoptfile = ${L2TP_OPTIONS_FILE}
 			length bit = yes
 		EOF
+		
+		local l2tp_users=$(get_enabled_anonymous_secs "@l2tp_users")
+		[ -n "$l2tp_users" ] && {
+			for user in $l2tp_users; do
+				eval $(uci -q show "${CONFIG}.${user}" | cut -d'.' -sf 3-)
+				[ "$enabled" -eq 1 ] || return 0
+				[ -n "$username" ] || return 0
+				[ -n "$password" ] || return 0
+				[ -n "$ipaddress" ] || ipaddress="*"
+				echo "$username l2tp-server $password $ipaddress" >> $CHAP_SECRETS
+			done
+		}
+		unset user
 
-		xl2tpd -c $L2TP_CONFIG_FILE >/dev/null 2>&1 &
+		xl2tpd -c $L2TP_CONFIG_FILE -D >${L2TP_LOG_FILE} 2>&1 &
 	}
 	
 	cat > $IPSEC_CONN_FILE <<-EOF
@@ -152,26 +166,6 @@ start() {
 		  ike=aes128-sha1-modp2048,aes128-sha1-modp1024,3des-sha1-modp1024,3des-sha1-modp1536
 		  esp=aes128-sha1,3des-sha1
 
-		#######################################
-		# EAP Connections
-		#######################################
-
-		# This detects a supported EAP method
-		conn IKEv2-EAP
-		  also=Non-L2TP
-		  keyexchange=ikev2
-		  eap_identity=%any
-		  rightauth=eap-dynamic
-
-		#######################################
-		# PSK Connections
-		#######################################
-
-		conn IKEv2-PSK
-		  also=Non-L2TP
-		  keyexchange=ikev2
-		  authby=secret
-
 		# Cisco IPSec
 		conn IKEv1-PSK-XAuth
 		  also=Non-L2TP
@@ -188,18 +182,17 @@ start() {
 	: PSK "$vt_secret"
 	EOF
 	
-	local users=$(get_enabled_anonymous_secs "@users")
-	[ -n "$users" ] && {
-		for user in $users; do
+	local ipsec_users=$(get_enabled_anonymous_secs "@ipsec_users")
+	[ -n "$ipsec_users" ] && {
+		for user in $ipsec_users; do
 			eval $(uci -q show "${CONFIG}.${user}" | cut -d'.' -sf 3-)
-			[ "$enabled" -eq 0 ] && return 0
+			[ "$enabled" -eq 1 ] || return 0
 			[ -n "$username" ] || return 0
 			[ -n "$password" ] || return 0
-			echo "$username : EAP '$password'" >> $IPSEC_SECRETS_FILE
 			echo "$username : XAUTH '$password'" >> $IPSEC_SECRETS_FILE
-			[ "$vt_l2tp_enabled" = 1 ] && echo "$username l2tp-server $password *" >> $CHAP_SECRETS
 		done
 	}
+	unset user
 	
 	ipt_rule add
 	
@@ -209,7 +202,7 @@ start() {
 
 stop() {
 	sed -i '/l2tp-server/d' $CHAP_SECRETS 2>/dev/null
-	ps -w | grep "$L2TP_PATH" | grep -v "grep" | awk '{print $1}' | xargs kill -9 >/dev/null 2>&1
+	top -bn1 | grep "$L2TP_PATH" | grep -v "grep" | awk '{print $1}' | xargs kill -9 >/dev/null 2>&1
 	rm -rf $L2TP_PATH
 	ps -w | grep "/usr/lib/ipsec" | grep -v "grep" | awk '{print $1}' | xargs kill -9 >/dev/null 2>&1
 	ipt_rule del
