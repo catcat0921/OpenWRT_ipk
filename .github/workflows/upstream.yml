@@ -3,7 +3,7 @@
 # 
 # Copyright (C) 2020 KFERMercer <KFER.Mercer@gmail.com>
 # 
-# <https://github.com/garypang13/openwrt-packages>
+# <https://github.com/kenzok8/jell>
 #
 
 name: Merge-upstream
@@ -57,7 +57,7 @@ jobs:
         git clone --depth 1 https://github.com/garypang13/aria2 &
         git clone --depth 1 https://github.com/garypang13/luci-app-eqos &
         git clone --depth 1 https://github.com/garypang13/luci-app-baidupcs-web &
-        git clone --depth 1 https://github.com/garypang13/luci-theme-edge &
+        git clone --depth 1 https://github.com/kenzok78/luci-theme-edge &
         git clone --depth 1 https://github.com/garypang13/qBittorrent-Enhanced-Edition &
         git clone --depth 1 https://github.com/garypang13/autoshare && mv -n autoshare/* ./ ; rm -Rf autoshare &
         git clone --depth 1 https://github.com/garypang13/openwrt-openvpn && mv -n openwrt-openvpn/* ./ ; rm -Rf openwrt-openvpn &
