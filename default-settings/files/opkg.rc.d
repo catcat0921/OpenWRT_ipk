@@ -1,20 +1,10 @@
 #!/bin/sh
 LOCK=/var/lock/opkgupgrade.lock
+BKOPKG="/etc/backup"
 # 防止重复启动
 [ -f $LOCK ] && exit 1
 touch $LOCK
-
-if [ "$(uci get network.wan.ipv6)" == 0 ]; then
-	sysctl -w net.ipv6.conf.all.disable_ipv6=1
-	sysctl -w net.ipv6.conf.lo.disable_ipv6=1
-	sysctl -w net.ipv6.conf.default.disable_ipv6=1
-	sysctl -w net.ipv6.conf.all.disable_ipv6=1
-else
-	sysctl -w net.ipv6.conf.all.disable_ipv6=0
-	sysctl -w net.ipv6.conf.lo.disable_ipv6=0
-	sysctl -w net.ipv6.conf.default.disable_ipv6=0
-	sysctl -w net.ipv6.conf.all.disable_ipv6=0
-fi
+mkdir -p $BKOPKG
 if [ ! -f /etc/inited ]; then
 	[ "$(uci get dhcp.@dnsmasq[0].noresolv)" ] && {
 		uci del dhcp.@dnsmasq[0].noresolv
@@ -24,7 +14,7 @@ if [ ! -f /etc/inited ]; then
 # sh -c "cat '/usr/share/patch/adblock.patch'  | patch -d '/' -p1 --forward" >/dev/null 2>&1
 fi
 
-if [ ! -f "/etc/backup/installed_packages.txt" ]; then
+if [ ! -f "$BKOPKG/user_installed.opkg" ]; then
 	touch /etc/inited
 fi
 
@@ -41,19 +31,13 @@ function opkgupgrade() {
 			while :; do
 			opkg update >>/tmp/opkgupdate.log 2>&1
 				if [ "$?" == "0" ]; then
-					if [ -f /etc/inited && `uci get system.@system[0].autoupgrade_pkg 2>/dev/null || echo "1"` != '0' ]; then
-						[ ! -d /etc/backup ] && mkdir /etc/backup
-						find /usr/lib/opkg/info -name "*.control" \( \
-						\( -exec test -f /overlay/upper/{} \; -exec echo {} \; \) -o \
-						\( -exec test -f /rom/{} \; -exec find {} -name "luci-app*" -o -name "luci-theme*" -o -name "default-settings" -o -name "xray-core" -o -name "trojan*" \; \) \
-						\) | sed -e 's?/usr/lib/opkg/info/\(.*\).control$?\1?g' >/etc/backup/installed_packages.txt
+					if [[ `uci get system.@system[0].autoupgrade_pkg 2>/dev/null || echo "1"` != '0' ]]; then
+						def="$(opkg list-installed | cut -f 1 -d ' ' | xargs -i grep -E 'luci-app*|luci-theme*|default-settings|xray-core|trojan*' | grep -vE 'luci-app-opkg|luci-app-firewall')"
+						insed="$(cat $BKOPKG/user_installed.opkg)"
+						upopkg="$def $insed"
 					fi
-					if [ -f "/etc/backup/installed_packages.txt" ]; then
-						sed -i '/luci-app-opkg/d' /etc/backup/installed_packages.txt
-						sed -i '/luci-app-firewall/d' /etc/backup/installed_packages.txt
-						sed -i '/	rom$/d' /etc/backup/installed_packages.txt
-						sed -i 's/	overlay$//g' /etc/backup/installed_packages.txt
-							for ipk in $(cat /etc/backup/installed_packages.txt); do
+					if [ -f "$BKOPKG/user_installed.opkg" ]; then
+							for ipk in $upopkg; do
 							if [ -f /etc/inited ]; then
 								opkg=$(echo $(opkg list-upgradable) | grep $ipk)
 							else
@@ -66,7 +50,7 @@ function opkgupgrade() {
 											break
 										}
 										[ $c2 == 3 ] && {
-										echo $ipk >> /etc/backup/failed.txt
+										echo $ipk >> $BKOPKG/failed.txt
 										break
 										} || let c2++
 										sleep 1
@@ -77,11 +61,11 @@ function opkgupgrade() {
 							rm -f /etc/config/*-opkg
 					fi
 					touch /etc/inited
-					[ -f "/etc/backup/failed.txt" ] && {
-						for ipk in $(cat /etc/backup/failed.txt); do
+					[ -f "$BKOPKG/failed.txt" ] && {
+						for ipk in $(cat $BKOPKG/failed.txt); do
 							opkg upgrade --force-overwrite --force-checksum $ipk >>/tmp/opkgupdate.log 2>&1
 							[[ "$(echo $(opkg list-installed) | grep $ipk)" ]] && {
-								sed -i '/$ipk/d' /etc/backup/failed.txt
+								sed -i '/$ipk/d' $BKOPKG/failed.txt
 							}
 						done
 					}
@@ -93,15 +77,21 @@ function opkgupgrade() {
 			rm -f /var/lock/opkg.lock
 }
 (
+	if [[ ! -f /etc/inited ]]; then
 		opkgupgrade || true
-		rm -f /var/lock/opkg.lock
-
+	elif [[ -f /etc/inited && `uci get system.@system[0].autoupgrade_pkg 2>/dev/null || echo "1"` != '0' ]]; then
+		opkgupgrade || true
+	fi
+	rm -f /var/lock/opkg.lock
+	
 	[[ -f "/bin/coremark" && ! -f "/etc/bench.log" ]] && {
 		sleep 5
 		/bin/coremark >/tmp/coremark.log
 		cat /tmp/coremark.log | grep "CoreMark 1.0" | cut -d "/" -f 1 >/etc/bench.log
 		sed -i 's/CoreMark 1.0/(CpuMark/g' /etc/bench.log
 		echo " Scores)" >>/etc/bench.log
+		rm -f $LOCK
 	}
-rm -f $LOCK 
-) &
+
+rm -f $LOCK
+)
