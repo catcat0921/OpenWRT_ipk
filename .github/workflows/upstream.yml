@@ -3,7 +3,7 @@
 # 
 # Copyright (C) 2020 KFERMercer <KFER.Mercer@gmail.com>
 # 
-# <https://github.com/KFERMercer/OpenWrt-CI>
+# <https://github.com/garypang13/openwrt-packages>
 #
 
 name: Merge-upstream
@@ -49,20 +49,18 @@ jobs:
           )
 
         git clone --depth 1 https://github.com/Lienol/openwrt-package &
-        git clone --depth 1 https://github.com/xiaorouji/openwrt-passwall &
-        svn export --force https://github.com/coolsnowwolf/lede/trunk/package/lean ledelean &
-  
-        git clone --depth 1 https://github.com/kenzok8/my-packages && mv -f my-packages/* ./ ; rm -Rf my-packages &
-        git clone --depth 1 https://github.com/garypang13/luci-app-bypass &
+        git clone --depth 1 https://github.com/fw876/helloworld && mv -n helloworld/* ./ ; rm -Rf helloworld &
+        git clone --depth 1 https://github.com/xiaorouji/openwrt-passwall && mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall &
+        git clone --depth 1 https://github.com/kenzok8/my-packages && mv -n my-packages/* ./ ; rm -Rf my-packages &
+        git clone --depth 1 https://github.com/garypang13/openwrt-bypass && mv -n openwrt-bypass/* ./ ; rm -Rf openwrt-bypass &
         git clone --depth 1 https://github.com/garypang13/luci-app-dnsfilter &
         git clone --depth 1 https://github.com/garypang13/aria2 &
-        git clone --depth 1 https://github.com/garypang13/smartdns-le &
         git clone --depth 1 https://github.com/garypang13/luci-app-eqos &
         git clone --depth 1 https://github.com/garypang13/luci-app-baidupcs-web &
-        git clone --depth 1 https://github.com/kenzok78/luci-theme-edge &
+        git clone --depth 1 https://github.com/garypang13/luci-theme-edge &
         git clone --depth 1 https://github.com/garypang13/qBittorrent-Enhanced-Edition &
-        git clone --depth 1 https://github.com/garypang13/autoshare && mv -f autoshare/* ./ ; rm -Rf autoshare &
-        git clone --depth 1 https://github.com/garypang13/openwrt-openvpn && mv -f openwrt-openvpn/* ./ ; rm -Rf openwrt-openvpn &
+        git clone --depth 1 https://github.com/garypang13/autoshare && mv -n autoshare/* ./ ; rm -Rf autoshare &
+        git clone --depth 1 https://github.com/garypang13/openwrt-openvpn && mv -n openwrt-openvpn/* ./ ; rm -Rf openwrt-openvpn &
         git clone --depth 1 https://github.com/BoringCat/luci-app-mentohust &
         git clone --depth 1 https://github.com/garypang13/luci-app-xlnetacc &
         git clone --depth 1 https://github.com/KyleRicardo/MentoHUST-OpenWrt-ipk &
@@ -73,8 +71,7 @@ jobs:
         git clone --depth 1 https://github.com/BoringCat/luci-app-minieap &
         git clone --depth 1 https://github.com/rufengsuixing/luci-app-onliner &
         git clone --depth 1 https://github.com/tty228/luci-app-serverchan &
-        git clone --depth 1 https://github.com/4IceG/luci-app-sms-tool smstool && mv -f smstool/{luci-app-sms-tool,sms-tool} ./ ; rm -Rf smstool &
-        git clone --depth 1 https://github.com/immortalwrt/openwrt-ssocks && mv -n openwrt-ssocks/* ./ ; rm -Rf openwrt-ssocks &
+        git clone --depth 1 https://github.com/4IceG/luci-app-sms-tool smstool && mv -n smstool/* ./ ; rm -Rf smstool &
         git clone --depth 1 https://github.com/rufengsuixing/luci-app-usb3disable &
         git clone --depth 1 https://github.com/silime/luci-app-xunlei &
         git clone --depth 1 https://github.com/ysc3839/luci-proto-minieap &
@@ -85,7 +82,6 @@ jobs:
         git clone --depth 1 https://github.com/jerrykuku/luci-app-argon-config &
         git clone --depth 1 https://github.com/jerrykuku/luci-app-vssr &
         git clone --depth 1 https://github.com/jerrykuku/luci-app-ttnode &
-        git clone --depth 1 https://github.com/jerrykuku/lua-maxminddb &
         git clone --depth 1 https://github.com/jefferymvp/luci-app-koolproxyR &
         git clone --depth 1 https://github.com/peter-tank/luci-app-dnscrypt-proxy2 &
         git clone --depth 1 https://github.com/sirpdboy/luci-app-advanced &
@@ -109,19 +105,18 @@ jobs:
         git clone --depth 1 https://github.com/yichya/luci-app-xray &
         git clone --depth 1 https://github.com/gdck/luci-app-cupsd cupsd1 && mv -n cupsd1/* ./ ; rm -rf cupsd1 &
 
-        svn co https://github.com/Lienol/openwrt/trunk/package/lean/luci-app-autoreboot &
-        svn co https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns/trunk/tencentcloud_ddns luci-app-tencentddns &
-        svn co https://github.com/coolsnowwolf/lede/trunk/package/network/services/shellsync &
-        svn co https://github.com/coolsnowwolf/lede/trunk/package/lean/automount &
-        svn co https://github.com/coolsnowwolf/packages/trunk/net/miniupnpd &
-        svn co https://github.com/coolsnowwolf/packages/trunk/net/mwan3 &
-        svn co https://github.com/openwrt/luci/trunk/applications/luci-app-https-dns-proxy &
-        svn co https://github.com/x-wrt/packages/trunk/net/nft-qos &
-        svn co https://github.com/x-wrt/luci/trunk/applications/luci-app-nft-qos &
-        svn co https://github.com/immortalwrt/immortalwrt/trunk/package/lean/shadowsocksr-libev &
-        svn co https://github.com/xiaoqingfengATGH/feeds-xiaoqingfeng/trunk/luci-app-homeconnect &
+        svn export https://github.com/Lienol/openwrt/trunk/package/lean/luci-app-autoreboot &
+        svn export https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns/trunk/tencentcloud_ddns luci-app-tencentddns &
+        svn export https://github.com/coolsnowwolf/lede/trunk/package/lean ledelean &
+        svn export https://github.com/coolsnowwolf/lede/trunk/package/network/services/shellsync &
+        svn export https://github.com/coolsnowwolf/packages/trunk/net/miniupnpd &
+        svn export https://github.com/coolsnowwolf/packages/trunk/net/mwan3 &
+        svn export https://github.com/openwrt/luci/trunk/applications/luci-app-https-dns-proxy &
+        svn export https://github.com/x-wrt/packages/trunk/net/nft-qos &
+        svn export https://github.com/x-wrt/luci/trunk/applications/luci-app-nft-qos &
+        svn export https://github.com/immortalwrt/immortalwrt/trunk/package/lean/shadowsocksr-libev &
+        svn export https://github.com/xiaoqingfengATGH/feeds-xiaoqingfeng/trunk/luci-app-homeconnect &
 
-        git_sparse_clone master https://github.com/fw876/helloworld helloworld luci-app-ssr-plus &
         git_sparse_clone master https://github.com/vernesong/OpenClash OpenClash luci-app-openclash &
         git_sparse_clone master https://github.com/doushang/luci-app-shortcutmenu shortcutmenu luci-app-shortcutmenu &
         git_sparse_clone master https://github.com/sundaqiang/openwrt-packages luci-wolplus luci-app-services-wolplus &
@@ -138,17 +133,17 @@ jobs:
         libs/quickjspp utils/cpulimit utils/filebrowser multimedia/gmediarender &
         
         git_sparse_clone master "https://github.com/openwrt/packages" "oppackages" net/shadowsocks-libev net/https-dns-proxy net/openvpn \
-        utils/cgroupfs-mount devel/ninja libs/libcups &
+        utils/cgroupfs-mount libs/libcups &
         
-        git_sparse_clone master "https://github.com/x-wrt/com.x-wrt" "x-wrt" natflow luci-app-wizard luci-app-macvlan
+        git_sparse_clone master "https://github.com/x-wrt/com.x-wrt" "x-wrt" natflow luci-app-wizard luci-app-macvlan &
 
         svn export --force https://github.com/immortalwrt/luci/trunk/applications
 
-        ( for ipk in $(ls applications); do
+        for ipk in $(ls applications); do
         	if [[ $(ls -l applications/$ipk/po | wc -l) -gt 3 ]]; then
         		rm -rf applications/$ipk
         	fi
-        done ) &
+        done
 
     - name: SSH connection to Actions
       uses: kenzok78/debugger-action@master
@@ -158,9 +153,8 @@ jobs:
       run: |
         mv -n applications/* ./ ; rm -Rf applications
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
-        mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall
         mv -n ledelean/* ./ ; rm -Rf ledelean
-        rm -Rf */.git */.svn qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} subweb wget autosamba \
+        rm -Rf */.git qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} subweb wget autosamba \
         mt-drivers coremark npc luci-app-{flowoffload,sfe,appfilter,advancedsetting,softethervpn,chinadns,docker,samba4,smstool,cifs-mount,cifsd} \
         fcgiwrap ddns-scripts_{aliyun,dnspod} ipv6-helper ChinaDNS luci-theme-netgear csstidy samba4
         mv mt/drivers mt/mt-drivers
@@ -193,6 +187,7 @@ jobs:
         sed -i 's/openwrt-xray/xray-core/g' luci-app-xray/Makefile
         sed -i 's/+amule/+amule +antileech/' luci-app-amule/Makefile
         rm -f subconverter/patches/010-missing-header.patch
+        rm -rf miniupnpd/patches/106-spam-syslog-ignoring.patch
         sed -i '/\/etc\/config\/AdGuardHome/a /etc/config/AdGuardHome.yaml' luci-app-adguardhome/Makefile
         sed -i 's/+rclone\( \|$\)/+rclone +fuse-utils\1/g' luci-app-rclone/Makefile
         sed -i 's/+libcap /+libcap +libcap-bin /' luci-app-openclash/Makefile
@@ -200,7 +195,6 @@ jobs:
 
         sed -i \
         	-e 's?\.\./\.\./luci.mk?$(TOPDIR)/feeds/luci/luci.mk?g' \
-        	-e 's?\.\./\.\./devel/ninja?\.\./ninja?g' \
         	-e 's/ca-certificates/ca-bundle/g' \
         */Makefile
         
@@ -215,3 +209,4 @@ jobs:
       with:
         retain_days: 1
         keep_minimum_runs: 3
+
