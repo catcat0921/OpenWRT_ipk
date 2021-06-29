@@ -37,7 +37,7 @@ LUCI_PKGARCH:=all
 LUCI_DEPENDS:=+coreutils +coreutils-base64 +coreutils-nohup +curl \
 	+dnsmasq-full +ipset +ip-full +ipt2socks +iptables-mod-tproxy \
 	+libuci-lua +lua +luci-lib-jsonc +microsocks +tcping +resolveip \
-	+unzip +wget-ssl \
+	+unzip \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_Brook:brook \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_ChinaDNS_NG:chinadns-ng \
 	+PACKAGE_$(PKG_NAME)_INCLUDE_Dns2socks:dns2socks \
@@ -112,20 +112,20 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_ShadowsocksR_Libev_Server
 	bool "Include ShadowsocksR Libev Server"
 	default n
 
-config PACKAGE_$(PKG_NAME)_INCLUDE_Simple-obfs
-	bool "Include Simple-obfs (Shadowsocks plugin)"
+config PACKAGE_$(PKG_NAME)_INCLUDE_Simple_Obfs
+	bool "Include Simple-Obfs (Shadowsocks Plugin)"
 	default y
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_GO
-	bool "Include Trojan Go"
+	bool "Include Trojan-GO"
 	default n
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Trojan_Plus
-	bool "Include Trojan_Plus"
+	bool "Include Trojan-Plus"
 	default y
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_V2ray_Plugin
-	bool "Include V2ray-plugin (Shadowsocks plugin)"
+	bool "Include V2ray-Plugin (Shadowsocks Plugin)"
 	default y if aarch64||arm||i386||x86_64
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_Xray
@@ -144,6 +144,9 @@ define Package/luci-app-passwall/conffiles
 /usr/share/passwall/rules/proxy_ip
 /usr/share/passwall/rules/block_host
 /usr/share/passwall/rules/block_ip
+endef
+
+define Package/luci-app-passwall/postinst
 endef
 
 include $(TOPDIR)/feeds/luci/luci.mk
