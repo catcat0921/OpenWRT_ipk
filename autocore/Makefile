@@ -16,10 +16,10 @@ include $(INCLUDE_DIR)/package.mk
 define Package/autocore-arm
   TITLE:=ARM auto core script.
   MAINTAINER:=CN_SZTL
-  DEPENDS:=@(TARGET_bcm27xx||TARGET_bcm53xx||TARGET_mvebu||TARGET_ipq40xx||TARGET_ipq806x||TARGET_rockchip) \
+  DEPENDS:=@(arm||aarch64) \
+    +TARGET_bcm27xx:bcm27xx-userland \
     +TARGET_bcm53xx:nvram \
-    +TARGET_ipq40xx:lm-sensors \
-	+ethtool
+    +ethtool
   VARIANT:=arm
 endef
 
@@ -28,12 +28,6 @@ define Package/autocore-x86
   MAINTAINER:=Lean / CN_SZTL
   DEPENDS:=@TARGET_x86 +bc +lm-sensors +ethtool
   VARIANT:=x86
-endef
-
-define Package/autocore-switch
-  TITLE:=wireless auto core loadbalance script.
-  MAINTAINER:=GaryPang
-  DEPENDS:=@swconfig
 endef
 
 define Package/autocore-arm/description
@@ -68,12 +62,6 @@ define Package/autocore-x86/install
 	$(INSTALL_DATA) ./files/x86/nvme_status.htm $(1)/usr/lib/lua/luci/view/admin_status/index/
 endef
 
-define Package/autocore-switch/install
-	$(INSTALL_DIR) $(1)/www/luci-static/resources/view/status/include
-	$(INSTALL_DATA) ./files/switch/* $(1)/www/luci-static/resources/view/status/include/
-endef
-
 $(eval $(call Download,armcpuinfo))
 $(eval $(call BuildPackage,autocore-arm))
 $(eval $(call BuildPackage,autocore-x86))
-$(eval $(call BuildPackage,autocore-switch))
