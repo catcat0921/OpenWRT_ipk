@@ -276,6 +276,3 @@ msgstr "pois käytöstä"
 #: applications/luci-app-https-dns-proxy/luasrc/https-dns-proxy/providers.disabled/cn.rubyfish.dns.lua:3
 msgid "rubyfish.cn"
 msgstr ""
-
-#~ msgid "Listen port"
-#~ msgstr "Kuunteluportti"
