@@ -13,7 +13,7 @@ on:
       - '.github/workflows/upstream.yml'
       - 'diy/**'
   schedule:
-    - cron: 0 */12 * * *
+    - cron: 2 */12 * * *
   watch:
     types: started
   repository_dispatch:
@@ -34,7 +34,7 @@ jobs:
 
     - name: Syn upstream
       run: |
-        rm -rf `find -maxdepth 1 -type d -name "[!.]*" ! -path "./diy"`
+        rm -rf `find ./* -maxdepth 0 -type d ! -name "diy"`
         git rm -r --cache *
         
         function git_sparse_clone() (
@@ -57,7 +57,7 @@ jobs:
         git clone --depth 1 https://github.com/garypang13/aria2 &
         git clone --depth 1 https://github.com/garypang13/luci-app-eqos &
         git clone --depth 1 https://github.com/garypang13/luci-app-baidupcs-web &
-        git clone --depth 1 https://github.com/kenzok78/luci-theme-edge &
+        git clone --depth 1 https://github.com/garypang13/luci-theme-edge &
         git clone --depth 1 https://github.com/garypang13/qBittorrent-Enhanced-Edition &
         git clone --depth 1 https://github.com/garypang13/autoshare && mv -n autoshare/* ./ ; rm -Rf autoshare &
         git clone --depth 1 https://github.com/garypang13/openwrt-openvpn && mv -n openwrt-openvpn/* ./ ; rm -Rf openwrt-openvpn &
@@ -81,7 +81,7 @@ jobs:
         git clone --depth 1 https://github.com/jerrykuku/luci-theme-argon &
         git clone --depth 1 https://github.com/jerrykuku/luci-app-argon-config &
         git clone --depth 1 https://github.com/jerrykuku/luci-app-vssr &
-        git clone --depth 1 https://github.com/jerrykuku/luci-app-ttnode &
+        git clone --depth 1 https://github.com/jerrykuku/luci-app-ttnode ttnode && mv -n ttnode/ttnode/* ./ ; rm -Rf ttnode &
         git clone --depth 1 https://github.com/jefferymvp/luci-app-koolproxyR &
         git clone --depth 1 https://github.com/peter-tank/luci-app-dnscrypt-proxy2 &
         git clone --depth 1 https://github.com/sirpdboy/luci-app-advanced &
@@ -97,7 +97,7 @@ jobs:
         git clone --depth 1 https://github.com/peter-tank/luci-app-autorepeater &
         git clone --depth 1 https://github.com/zzsj0928/luci-app-serverchand &
         git clone --depth 1 https://github.com/CCnut/feed-netkeeper && mv -n feed-netkeeper/* ./ ; rm -Rf feed-netkeeper &
-        git clone --depth 1 https://github.com/brvphoenix/luci-app-wrtbwmon &
+        git clone --depth 1 https://github.com/brvphoenix/luci-app-wrtbwmon wrtbwmon1 && mv -n wrtbwmon1/luci-app-wrtbwmon  ./ ; rm -rf wrtbwmon1 &
         git clone --depth 1 https://github.com/kuoruan/luci-app-frpc &
         git clone --depth 1 https://github.com/linkease/ddnsto-openwrt && mv -n ddnsto-openwrt/* ./ ; rm -Rf ddnsto-openwrt &
         git clone --depth 1 https://github.com/sensec/luci-app-udp2raw &
@@ -111,36 +111,38 @@ jobs:
         svn export https://github.com/coolsnowwolf/lede/trunk/package/network/services/shellsync &
         svn export https://github.com/coolsnowwolf/packages/trunk/net/miniupnpd &
         svn export https://github.com/coolsnowwolf/packages/trunk/net/mwan3 &
-        svn export https://github.com/openwrt/luci/trunk/applications/luci-app-https-dns-proxy &
         svn export https://github.com/x-wrt/packages/trunk/net/nft-qos &
         svn export https://github.com/x-wrt/luci/trunk/applications/luci-app-nft-qos &
         svn export https://github.com/immortalwrt/immortalwrt/trunk/package/lean/shadowsocksr-libev &
-        svn export https://github.com/xiaoqingfengATGH/feeds-xiaoqingfeng/trunk/luci-app-homeconnect &
 
         git_sparse_clone master https://github.com/vernesong/OpenClash OpenClash luci-app-openclash &
         git_sparse_clone master https://github.com/doushang/luci-app-shortcutmenu shortcutmenu luci-app-shortcutmenu &
         git_sparse_clone master https://github.com/sundaqiang/openwrt-packages luci-wolplus luci-app-services-wolplus &
         git_sparse_clone master https://github.com/brvphoenix/wrtbwmon wrtbwmon1 wrtbwmon &
         git_sparse_clone master https://github.com/lisaac/luci-app-dockerman dockerman applications/luci-app-dockerman &
-
+        
+        git_sparse_clone openwrt-21.02 "https://github.com/openwrt/luci" "opluci" applications/luci-app-aria2 \
+        applications/luci-app-ddns applications/luci-app-https-dns-proxy applications/luci-app-acme \
+        applications/luci-app-ksmbd applications/luci-app-samba4 &
+        
+        git_sparse_clone master "https://github.com/openwrt/packages" "oppackages" net/shadowsocks-libev net/https-dns-proxy \
+        net/openvpn net/adguardhome utils/cgroupfs-mount &
+        
+        git_sparse_clone master "https://github.com/x-wrt/com.x-wrt" "x-wrt" natflow luci-app-wizard luci-app-macvlan &
+        
         git_sparse_clone master "https://github.com/immortalwrt/immortalwrt" "immwrt" package/kernel/mt7601u-ap package/kernel/mtk-eip93 \
         package/kernel/r8152 package/kernel/r8168 package/kernel/rtl8188eu package/kernel/rtl8812au-ac \
-        package/kernel/rtl8821cu package/kernel/rtl88x2bu &
+        package/kernel/rtl8821cu package/kernel/rtl88x2bu
         
         git_sparse_clone master "https://github.com/immortalwrt/packages" "immpkgs" net/mwol net/nps net/verysync net/sub-web \
         net/subconverter net/ngrokc net/oscam net/njitclient net/scutclient net/gost net/amule net/gowebdav \
         admin/bpytop libs/jpcre2 libs/wxbase libs/rapidjson libs/libcron \
-        libs/quickjspp utils/cpulimit utils/filebrowser multimedia/gmediarender &
-        
-        git_sparse_clone master "https://github.com/openwrt/packages" "oppackages" net/shadowsocks-libev net/https-dns-proxy net/openvpn \
-        utils/cgroupfs-mount libs/libcups &
-        
-        git_sparse_clone master "https://github.com/x-wrt/com.x-wrt" "x-wrt" natflow luci-app-wizard luci-app-macvlan &
+        libs/quickjspp utils/cpulimit utils/filebrowser multimedia/gmediarender multimedia/UnblockNeteaseMusic-Go
 
         svn export --force https://github.com/immortalwrt/luci/trunk/applications
 
         for ipk in $(ls applications); do
-        	if [[ $(ls -l applications/$ipk/po | wc -l) -gt 3 ]]; then
+        	if [[ $ipk != "luci-app-transmission" && $(ls -l applications/$ipk/po | wc -l) -gt 3 ]]; then
         		rm -rf applications/$ipk
         	fi
         done
@@ -155,8 +157,8 @@ jobs:
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
         mv -n ledelean/* ./ ; rm -Rf ledelean
         rm -Rf */.git qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} subweb wget autosamba \
-        mt-drivers coremark npc luci-app-{flowoffload,sfe,appfilter,advancedsetting,softethervpn,chinadns,docker,samba4,smstool,cifs-mount,cifsd} \
-        fcgiwrap ddns-scripts_{aliyun,dnspod} ipv6-helper ChinaDNS luci-theme-netgear csstidy samba4
+        mt-drivers coremark npc luci-app-{flowoffload,sfe,appfilter,advancedsetting,softethervpn,chinadns,docker,smstool,cifs-mount,cifsd} \
+        fcgiwrap ddns-scripts_{aliyun,dnspod} ipv6-helper ChinaDNS luci-theme-netgear csstidy samba4 UnblockNeteaseMusicGo
         mv mt/drivers mt/mt-drivers
         cp -Rf mt/* ./ && rm -Rf mt
 
@@ -174,24 +176,30 @@ jobs:
         # sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$(getversion XTLS/Xray-core)/g" xray-core/Makefile &
         # sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$(getversion klzgrad/naiveproxy)/g" naiveproxy/Makefile &
           sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$(getversion c0re100/qBittorrent-Enhanced-Edition)/g" qBittorrent-Enhanced-Edition/Makefile &
+          rm -rf luci-app-passwall/po/zh_Hans
         
         bash diy/create_acl_for_luci.sh -a || true &
         bash diy/convert_translation.sh -a || true &
         
-        sed -i 's?include \.\./\.\./\(lang\|devel\)?include $(TOPDIR)/feeds/packages/\1?g' */{Makefile,*.mk} &
+        sed -i 's?include \.\./\.\./\(lang\|devel\)?include $(TOPDIR)/feeds/packages/\1?g' */{Makefile,*.mk} || true &
         find */luasrc/view/ -maxdepth 2 -name "*.htm" | xargs -i sed -i 's?"http://" + window.location.hostname?window.location.protocol + "//" + window.location.hostname?g' {} &
         find ./*/ -maxdepth 1 -name "Makefile" ! -path "*tinyfecvpn*" ! -path "*gowebdav*" | xargs -i sed -i "s/PKG_HASH:=.*/PKG_HASH:=skip/g" {} &
+        rm -f subconverter/patches/010-missing-header.patch
+        rm -rf miniupnpd/patches/106-spam-syslog-ignoring.patch
         sed -i "/minisign:minisign/d" luci-app-dnscrypt-proxy2/Makefile
-        sed -i 's/PKG_NAME:=UnblockNeteaseMusicGo/PKG_NAME:=UnblockNeteaseMusic-Go/' UnblockNeteaseMusicGo/Makefile
         # sed -i 's/+docker-ce/+dockerd \\\n\t+docker \\\n\t+cgroupfs-mount/' luci-app-dockerman/Makefile
         sed -i 's/openwrt-xray/xray-core/g' luci-app-xray/Makefile
         sed -i 's/+amule/+amule +antileech/' luci-app-amule/Makefile
-        rm -f subconverter/patches/010-missing-header.patch
-        rm -rf miniupnpd/patches/106-spam-syslog-ignoring.patch
-        sed -i '/\/etc\/config\/AdGuardHome/a /etc/config/AdGuardHome.yaml' luci-app-adguardhome/Makefile
+        sed -i '/\/etc\/config\/AdGuardHome/a /etc/AdGuardHome.yaml' luci-app-adguardhome/Makefile
         sed -i 's/+rclone\( \|$\)/+rclone +fuse-utils\1/g' luci-app-rclone/Makefile
         sed -i 's/+libcap /+libcap +libcap-bin /' luci-app-openclash/Makefile
-        # sed -i 's/\(add ucitrack \(.*\)\)/\1\n\tservice \2 enable/g' luci-app*/root/etc/uci-defaults/*
+        sed -i 's/+ddns-scripts/+ddns-scripts +ddns-scripts-aliyun +ddns-scripts-dnspod/' luci-app-ddns/Makefile
+        sed -i 's/+aria2/+aria2 +ariang/' luci-app-aria2/Makefile
+        sed -i 's/+acme\( \|$\)/+acme +acme-dnsapi\1/g' luci-app-acme/Makefile
+        sed -i 's/\(+ksmbd-server\)/\1 +autoshare-ksmbd/' luci-app-ksmbd/Makefile
+        sed -i 's/\(+samba4-server\)/\1 +autoshare-samba/' luci-app-samba4/Makefile
+        sed -i 's/\(+luci-compat\)/\1 +luci-theme-argon/' luci-app-argon-config/Makefile
+        sed -i '/init.d/d' adguardhome/Makefile
 
         sed -i \
         	-e 's?\.\./\.\./luci.mk?$(TOPDIR)/feeds/luci/luci.mk?g' \
