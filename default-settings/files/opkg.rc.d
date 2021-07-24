@@ -43,8 +43,8 @@ function opkgupgrade() {
 							fi
 								if [[ "$opkg" ]]; then
 									while :; do
-										opkg upgrade --force-overwrite --force-checksum $ipk >>/tmp/opkgupdate.log 2>&1
-										if [[ $ipk == "luci-app-*" ]]; then
+										opkg upgrade --force-overwrite --force-checksum --force-depends $ipk >>/tmp/opkgupdate.log 2>&1
+										if [[ $ipk == luci-app-* ]]; then
 											opkg upgrade --force-overwrite --force-checksum luci-i18n-"$(echo $ipk | cut -d - -f 3-4)"-zh-cn >>/tmp/opkgupdate.log 2>&1
 										fi
 										[[ "$(echo $(opkg list-installed) | grep $ipk)" ]] && {
@@ -52,6 +52,7 @@ function opkgupgrade() {
 										}
 										[ $c2 == 3 ] && {
 										echo $ipk >> $BKOPKG/failed.txt
+										sed -i '/$ipk/d' $BKOPKG/user_installed.opkg
 										break
 										} || let c2++
 										sleep 1
@@ -64,7 +65,7 @@ function opkgupgrade() {
 					touch /etc/inited
 					[ -f $BKOPKG/failed.txt ] && {
 						for ipk in $(cat $BKOPKG/failed.txt); do
-							opkg upgrade --force-overwrite --force-checksum $ipk >>/tmp/opkgupdate.log 2>&1
+							opkg upgrade --force-overwrite --force-checksum --force-depends $ipk >>/tmp/opkgupdate.log 2>&1
 							[[ "$(echo $(opkg list-installed) | grep $ipk)" ]] && {
 								sed -i '/$ipk/d' $BKOPKG/failed.txt
 							}

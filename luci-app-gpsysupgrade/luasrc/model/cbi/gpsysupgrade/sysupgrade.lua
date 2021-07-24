@@ -13,13 +13,13 @@ end
 
 function check_update()
 		needs_update, notice,md5 = false, false, false
-		remote_version = luci.sys.exec("echo -n $(curl -s https://github.com/kenzok78/Build-OpenWrt/releases/latest/" ..model.. "/version.txt)")
-		updatelogs = luci.sys.exec("curl -s https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/updatelogs.txt")
-		remoteformat = luci.sys.exec("date -d $(echo " ..remote_version.. " | awk '{printf $1}' | awk -F. '{printf $3\"-\"$1\"-\"$2}') +%s")
-		fnotice = luci.sys.exec("echo -n " ..remote_version.. " | awk '{printf $NF}'")
-		dateyr = luci.sys.exec("echo -n " ..remote_version.. " | awk -F. '{printf $1\".\"$2}'")
-		md5 = luci.sys.exec("echo -n " ..remote_version.. " | awk '{printf $2}'")
-		remote_version = luci.sys.exec("echo -n " ..remote_version.. " | awk '{printf $1}' | awk -F. '{printf $1\".\"$2\".\"$3}'")
+		remote_version = luci.sys.exec("curl -s https://op.supes.top/firmware/" ..model.. "/version.txt")
+		updatelogs = luci.sys.exec("curl -s https://op.supes.top/firmware/" ..model.. "/updatelogs.txt")
+		remoteformat = luci.sys.exec("date -d $(echo \"" ..remote_version.. "\" | tr '\r\n' ',' | awk -F, '{printf $1}' | awk -F. '{printf $3\"-\"$1\"-\"$2}') +%s")
+		fnotice = luci.sys.exec("echo \"" ..remote_version.. "\" | tr '\r\n' ',' | awk -F, '{printf $(NF-1)}'")
+		dateyr = luci.sys.exec("echo \"" ..remote_version.. "\" | tr '\r\n' ',' | awk -F. '{printf $1\".\"$2}'")
+		md5 = luci.sys.exec("echo \"" ..remote_version.. "\" | tr '\r\n' ',' | awk -F, '{printf $2}'")
+		remote_version = luci.sys.exec("echo \"" ..remote_version.. "\" | tr '\r\n' ',' | awk -F, '{printf $1}' | awk -F. '{printf $1\".\"$2\".\"$3}'")
 		if remoteformat > sysverformat then
 			needs_update = true
 			if currentTimeStamp > remoteformat or fnotice == "1" then
@@ -30,53 +30,51 @@ end
 
 function to_check()
     if not model or model == "" then model = api.auto_get_model() end
-	system_version = get_system_version()
-	sysverformat = luci.sys.exec("date -d $(echo " ..system_version.. " | awk -F. '{printf $3\"-\"$1\"-\"$2}') +%s")
+	sysverformat = luci.sys.exec("date -d $(echo " ..get_system_version().. " | awk -F. '{printf $3\"-\"$1\"-\"$2}') +%s")
 	currentTimeStamp = luci.sys.exec("expr $(date -d \"$(date '+%Y-%m-%d %H:%M:%S')\" +%s) - 172800")
 	if model == "x86_64" then
 		check_update()
 		if fs.access("/sys/firmware/efi") then
-			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-x86-64-generic-squashfs-combined-efi.img.gz"
+			download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-x86-64-generic-squashfs-combined-efi.img.gz"
 		else
-			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-x86-64-generic-squashfs-combined.img.gz"
+			download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-x86-64-generic-squashfs-combined.img.gz"
 			md5 = ""
 		end
     elseif model:match(".*R2S.*") then
 		model = "nanopi-r2s"
 		check_update()
 		if fs.access("/overlay/upper") then
-			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r2s-squashfs-sysupgrade.img.gz"
+			download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r2s-squashfs-sysupgrade.img.gz"
 		else
-			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r2s-ext4-sysupgrade.img.gz"
+			download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r2s-ext4-sysupgrade.img.gz"
 			md5 = ""
 		end
     elseif model:match(".*R4S.*") then
 		model = "nanopi-r4s"
 		check_update()
 		if fs.access("/overlay/upper") then
-			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r4s-squashfs-sysupgrade.img.gz"
+			download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r4s-squashfs-sysupgrade.img.gz"
 		else
-			download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r4s-ext4-sysupgrade.img.gz"
+			download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r4s-ext4-sysupgrade.img.gz"
 			md5 = ""
 		end
     elseif model:match(".*Pi 4 Model B.*") then
 		model = "Rpi-4B"
 		check_update()
-		if remoteformat > sysverformat and currentTimeStamp > remoteformat then needs_update = true else needs_update = false end
-        download_url = "https://github.com/kenzok78/Build-OpenWrt/" ..model.. "/" ..dateyr.. "-openwrt-bcm27xx-bcm2711-rpi-4-squashfs-sysupgrade.img.gz"
-	else
+		download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-bcm27xx-bcm2711-rpi-4-squashfs-sysupgrade.img.gz"
+    else
 		local needs_update = false
 		return {
             code = 1,
             error = i18n.translate("Can't determine MODEL, or MODEL not supported.")
 			}
-	end
+    end
 	
 
     if needs_update and not download_url then
         return {
             code = 1,
-            now_version = system_version,
+            now_version = get_system_version(),
             version = remote_version,
             error = i18n.translate(
                 "New version found, but failed to get new version download url.")
@@ -87,7 +85,7 @@ function to_check()
         code = 0,
         update = needs_update,
 		notice = notice,
-        now_version = system_version,
+        now_version = get_system_version(),
         version = remote_version,
 		md5 = md5,
 	logs = updatelogs,
@@ -134,6 +132,9 @@ function to_flash(file,retain)
 if not retain or retain == "" then
 	local result = api.exec("/sbin/sysupgrade", {file}, nil, api.command_timeout) == 0
 else
+	if retain:match(".*-k.*") then
+		luci.sys.exec("echo -e /etc/backup/user_installed.opkg>/lib/upgrade/keep.d/luci-app-gpsysupgrade")
+	end
 	local result = api.exec("/sbin/sysupgrade", {retain, file}, nil, api.command_timeout) == 0
 end
 
