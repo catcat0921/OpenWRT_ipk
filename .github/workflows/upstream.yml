@@ -1,4 +1,5 @@
 
+
 #
 # This is free software, lisence use MIT.
 # 
@@ -17,6 +18,9 @@ on:
   watch:
     types: started
   repository_dispatch:
+  
+env:
+  TZ: Asia/Shanghai  
 
 jobs:
   merge:
@@ -209,7 +213,7 @@ jobs:
     - name: Apply
       run: |
         git add .
-        git commit -m "update" || true
+        git commit -m "update$(TZ='Asia/Shanghai' date +-%m.%d)"
         git push
 
     - name: Delete workflow runs
@@ -217,6 +221,9 @@ jobs:
       with:
         retain_days: 1
         keep_minimum_runs: 3
+
+
+
 
 
 
