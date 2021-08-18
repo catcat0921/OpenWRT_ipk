@@ -9,7 +9,7 @@ name: Merge-upstream
 on:
   push:
     paths:
-      - '.github/workflows/kenzo.yml'
+      - '.github/workflows/upstream.yml'
       - 'diy/**'
   schedule:
     - cron: 0 */12 * * *
