@@ -9,14 +9,14 @@ name: Merge-upstream
 on:
   push:
     paths:
-      - '.github/workflows/upstream.yml'
+      - '.github/workflows/kenzo.yml'
       - 'diy/**'
   schedule:
     - cron: 0 */12 * * *
   watch:
     types: started
   repository_dispatch:
-    
+
 env:
   TZ: Asia/Shanghai  
 
@@ -136,7 +136,7 @@ jobs:
         
         git_sparse_clone master "https://github.com/immortalwrt/immortalwrt" "immwrt" package/kernel/mt7601u-ap package/kernel/mtk-eip93 \
         package/kernel/r8152 package/kernel/r8168 package/kernel/rtl8188eu package/kernel/rtl8812au-ac \
-        package/kernel/rtl8821cu package/kernel/rtl88x2bu
+        package/kernel/rtl8821cu package/kernel/rtl88x2bu &
         
         git_sparse_clone master "https://github.com/immortalwrt/packages" "immpkgs" net/adguardhome net/mwol net/nps net/verysync net/sub-web \
         net/subconverter net/ngrokc net/oscam net/njitclient net/scutclient net/gost net/amule net/gowebdav \
@@ -174,9 +174,32 @@ jobs:
     - name: Modify
       run: |
         shopt -s extglob
-        
-        bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true &
-        bash diy/convert_translation.sh -a >/dev/null 2>&1 || true &
+        (
+        for pkg in $(ls !(luci-*|natflow|ngrokc|amule|blibtorrent|ps3netsrv)/Makefile); do
+            over="$(grep -E PKG_VERSION:=[0-9.]+$ $pkg | cut -f 2 -d '=')" || true
+            if [ "$over" ]; then
+              repo="$(grep PKG_SOURCE_URL $pkg | grep github | cut -f 4-5 -d '/' | sed -e 's/.git//' | grep -E '[0-9a-zA-Z_-]+$')" || true
+              if [ "$repo" ]; then
+                ver="$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/$repo/releases/latest) | grep -o -E "[0-9].+")" || true
+                [ "$ver" ] || ver="$(git ls-remote --tags git://github.com/$repo | cut -d/ -f3- | sort -t. -nk1,3 | awk '/^[^{]*$/{version=$1}END{print version}' | grep -o -E "[0-9].+")" || true
+                echo "$repo-$ver"
+                  if [ "$ver" ]; then
+                    function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
+                    if version_lt "$over" "$ver"; then
+                      sed -i 's/PKG_SOURCE_VERSION:=[0-9a-z]\{7,\}/PKG_SOURCE_VERSION:=v$(PKG_VERSION)/' $pkg || true
+                      sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$ver/g" $pkg || true
+                    fi || true
+                  fi
+              fi
+            fi
+        done
+        sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(git ls-remote --tags git://github.com/AdguardTeam/AdGuardHome | cut -d/ -f3- | sort -t. -nk2 | awk '/^[^{]*$/{version=$1}END{print version}' | grep -o -E "[0-9].+")?" adguardhome/Makefile
+        sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/Wind4/vlmcsd/releases/latest))?" vlmcsd/Makefile
+        sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/amule-project/amule/releases/latest))?" amule/Makefile
+        touch /tmp/ok
+        ) &
+        bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true
+        bash diy/convert_translation.sh -a >/dev/null 2>&1 || true
         
         cp -rf diy/.packages/* ./ || true
         
@@ -201,29 +224,11 @@ jobs:
           -e "s/\(PKG_HASH\|PKG_MD5SUM\|PKG_MIRROR_HASH\):=.*/\1:=skip/" \
           -e 's?\.\./\.\./luci.mk?$(TOPDIR)/feeds/luci/luci.mk?' \
           -e 's/ca-certificates/ca-bundle/' \
-          */Makefile &
-
-        for pkg in $(ls !(luci-*|natflow|ngrokc|amule|blibtorrent|ps3netsrv)/Makefile); do
-            over="$(grep -E PKG_VERSION:=[0-9.]+$ $pkg | cut -f 2 -d '=')" || true
-            [ "$over" ] && {
-            repo="$(grep PKG_SOURCE_URL $pkg | grep github | cut -f 4-5 -d '/' | sed -e 's/.git//' | grep -E '[0-9a-zA-Z_-]+$')" || true
-            [ "$repo" ] && {
-            ver="$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/$repo/releases/latest) | grep -o -E "[0-9].+")" || true
-            [ "$ver" ] || ver="$(git ls-remote --tags git://github.com/$repo | cut -d/ -f3- | sort -t. -nk1,3 | awk '/^[^{]*$/{version=$1}END{print version}' | grep -o -E "[0-9].+")" || true
-            echo "$repo-$ver"
-            [ "$ver" ] && {
-              function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
-              if version_lt "$over" "$ver"; then
-                sed -i 's/PKG_SOURCE_VERSION:=[0-9a-z]\{7,\}/PKG_SOURCE_VERSION:=v$(PKG_VERSION)/' $pkg || true
-                sed -i "s/PKG_VERSION:=.*/PKG_VERSION:=$ver/g" $pkg || true
-              fi || true
-            }
-            }
-            }
+          */Makefile
+          
+        while [ ! -f /tmp/ok ]; do
+          sleep 1
         done
-        sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(git ls-remote --tags git://github.com/AdguardTeam/AdGuardHome | cut -d/ -f3- | sort -t. -nk2 | awk '/^[^{]*$/{version=$1}END{print version}' | grep -o -E "[0-9].+")?" adguardhome/Makefile
-        sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/Wind4/vlmcsd/releases/latest))?" vlmcsd/Makefile
-        sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/amule-project/amule/releases/latest))?" amule/Makefile
         
     - name: Apply
       run: |
@@ -236,9 +241,3 @@ jobs:
       with:
         retain_days: 1
         keep_minimum_runs: 3
-
-
-
-
-
-
