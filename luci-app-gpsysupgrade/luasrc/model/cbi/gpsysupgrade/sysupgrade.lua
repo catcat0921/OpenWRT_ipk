@@ -12,7 +12,7 @@ function get_system_version()
 end
 
 function check_update()
-		needs_update, notice,md5 = false, false, false
+		needs_update, notice, md5 = false, false, false
 		remote_version = luci.sys.exec("curl -s https://op.supes.top/firmware/" ..model.. "/version.txt")
 		updatelogs = luci.sys.exec("curl -s https://op.supes.top/firmware/" ..model.. "/updatelogs.txt")
 		remoteformat = luci.sys.exec("date -d $(echo \"" ..remote_version.. "\" | tr '\r\n' ',' | awk -F, '{printf $1}' | awk -F. '{printf $3\"-\"$1\"-\"$2}') +%s")
@@ -43,21 +43,11 @@ function to_check()
     elseif model:match(".*R2S.*") then
 		model = "nanopi-r2s"
 		check_update()
-		if fs.access("/overlay/upper") then
 			download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r2s-squashfs-sysupgrade.img.gz"
-		else
-			download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r2s-ext4-sysupgrade.img.gz"
-			md5 = ""
-		end
     elseif model:match(".*R4S.*") then
 		model = "nanopi-r4s"
 		check_update()
-		if fs.access("/overlay/upper") then
 			download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r4s-squashfs-sysupgrade.img.gz"
-		else
-			download_url = "https://op.supes.top/firmware/" ..model.. "/" ..dateyr.. "-openwrt-rockchip-armv8-nanopi-r4s-ext4-sysupgrade.img.gz"
-			md5 = ""
-		end
     elseif model:match(".*Pi 4 Model B.*") then
 		model = "Rpi-4B"
 		check_update()
@@ -84,11 +74,11 @@ function to_check()
     return {
         code = 0,
         update = needs_update,
-		notice = notice,
+        notice = notice,
         now_version = get_system_version(),
         version = remote_version,
-		md5 = md5,
-	logs = updatelogs,
+        md5 = md5,
+        logs = updatelogs,
         url = download_url
     }
 end
@@ -105,14 +95,6 @@ function to_download(url,md5)
     local result = api.exec(api.curl, {api._unpack(api.curl_args), "-o", tmp_file, url}, nil, api.command_timeout) == 0
 
 	local md5local = sys.exec("echo -n $(md5sum " .. tmp_file .. " | awk '{print $1}')")
-	
-	if md5 ~= "" and md5local ~= md5 then
-		api.exec("/bin/rm", {"-f", tmp_file})
-		return {
-            code = 1,
-            error = i18n.translatef("Md5 check failed: %s", url)
-        }
-	end
 
     if not result then
         api.exec("/bin/rm", {"-f", tmp_file})
@@ -121,6 +103,14 @@ function to_download(url,md5)
             error = i18n.translatef("File download failed or timed out: %s", url)
         }
     end
+	
+	if md5 ~= "" and md5local ~= md5 then
+		api.exec("/bin/rm", {"-f", tmp_file})
+		return {
+            code = 1,
+            error = i18n.translatef("Md5 check failed: %s", url)
+        }
+	end
 
     return {code = 0, file = tmp_file}
 end
@@ -135,15 +125,8 @@ else
 	if retain:match(".*-k.*") then
 		luci.sys.exec("echo -e /etc/backup/user_installed.opkg>/lib/upgrade/keep.d/luci-app-gpsysupgrade")
 	end
-	local result = api.exec("/sbin/sysupgrade", {retain, file}, nil, api.command_timeout) == 0
+	sys.exec("/sbin/sysupgrade " ..retain.. " " ..file.. "")
 end
-
-    if not result or not fs.access(file) then
-        return {
-            code = 1,
-            error = i18n.translatef("System upgrade failed")
-        }
-    end
 
     return {code = 0}
 end
