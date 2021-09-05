@@ -17,9 +17,6 @@ on:
     types: started
   repository_dispatch:
 
-env:
-  TZ: Asia/Shanghai  
-
 jobs:
   merge:
     if: github.event.repository.owner.id == github.event.sender.id
@@ -28,6 +25,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main
+      with:
+        fetch-depth: 0
 
     - name: Set git identity
       run : |
@@ -37,8 +36,8 @@ jobs:
 
     - name: Syn upstream
       run: |
-        rm -rf `find ./* -maxdepth 0 -type d ! -name "diy"`
-        git rm -r --cache *
+        git rm -r --cache * >/dev/null 2>&1 &
+        rm -rf `find ./* -maxdepth 0 -type d ! -name "diy"` >/dev/null 2>&1
         
         function git_sparse_clone() (
           branch="$1" rurl="$2" localdir="$3" && shift 3
@@ -54,9 +53,6 @@ jobs:
         mv -n `find $1/* -maxdepth 0 -type d` ./
         rm -rf $1
         }
-        git clone --depth 1 https://github.com/Lienol/openwrt-package &
-        git clone --depth 1 https://github.com/fw876/helloworld && mvdir helloworld &
-        git clone --depth 1 https://github.com/xiaorouji/openwrt-passwall && mvdir openwrt-passwall &
         git clone --depth 1 https://github.com/kenzok8/my-packages && mvdir my-packages &
         git clone --depth 1 https://github.com/kiddin9/openwrt-bypass && mvdir openwrt-bypass &
         git clone --depth 1 https://github.com/kiddin9/luci-app-dnsfilter &
@@ -66,7 +62,10 @@ jobs:
         git clone --depth 1 https://github.com/kiddin9/luci-theme-edge &
         git clone --depth 1 https://github.com/kiddin9/qBittorrent-Enhanced-Edition &
         git clone --depth 1 https://github.com/kiddin9/autoshare && mvdir autoshare &
-        git clone --depth 1 https://github.com/kiddin9/openwrt-openvpn && my-packages openwrt-openvpn &
+        git clone --depth 1 https://github.com/kiddin9/openwrt-openvpn && mvdir openwrt-openvpn &
+        git clone --depth 1 https://github.com/fw876/helloworld && mvdir helloworld &
+        git clone --depth 1 https://github.com/xiaorouji/openwrt-passwall &
+        git clone --depth 1 https://github.com/Lienol/openwrt-package &
         git clone --depth 1 https://github.com/BoringCat/luci-app-mentohust &
         git clone --depth 1 https://github.com/kiddin9/luci-app-xlnetacc &
         git clone --depth 1 https://github.com/KyleRicardo/MentoHUST-OpenWrt-ipk &
@@ -87,11 +86,14 @@ jobs:
         git clone --depth 1 https://github.com/jerrykuku/luci-theme-argon &
         git clone --depth 1 https://github.com/jerrykuku/luci-app-argon-config &
         git clone --depth 1 https://github.com/jerrykuku/luci-app-vssr &
-        git clone --depth 1 https://github.com/jerrykuku/luci-app-ttnode ttnode && mv -n ttnode/ttnode/* ./ ; rm -Rf ttnode &
+        git clone --depth 1 https://github.com/jerrykuku/luci-app-ttnode &
         git clone --depth 1 https://github.com/jefferymvp/luci-app-koolproxyR &
         git clone --depth 1 https://github.com/peter-tank/luci-app-dnscrypt-proxy2 &
         git clone --depth 1 https://github.com/sirpdboy/luci-app-advanced &
         git clone --depth 1 https://github.com/sirpdboy/luci-app-netdata &
+        git clone --depth 1 https://github.com/sirpdboy/luci-app-poweroffdevice &
+        git clone --depth 1 https://github.com/sirpdboy/luci-app-autotimeset &
+        git clone --depth 1 https://github.com/wolandmaster/luci-app-rtorrent &
         git clone --depth 1 https://github.com/jerrykuku/luci-app-jd-dailybonus &
         git clone --depth 1 https://github.com/NateLol/luci-app-oled &
         git clone --depth 1 https://github.com/destan19/OpenAppFilter && mvdir OpenAppFilter &
@@ -124,6 +126,7 @@ jobs:
         svn export https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-services-wolplus &
         svn export https://github.com/Ysurac/openmptcprouter-feeds/trunk/luci-app-iperf &
         svn export https://github.com/sirpdboy/netspeedtest/trunk/luci-app-netspeedtest &
+        svn export https://github.com/messense/aliyundrive-webdav/trunk/openwrt aliyundrive && mvdir aliyundrive &
         
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/luci" "opluci" applications/luci-app-aria2 \
         applications/luci-app-ddns applications/luci-app-https-dns-proxy applications/luci-app-acme \
@@ -151,12 +154,9 @@ jobs:
         	fi
         done
 
-    - name: SSH connection to Actions
-      uses: kenzok78/debugger-action@master
-      if: 1 == 0
-
     - name: Delete duplicated packages
       run: |
+        mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall
         mv -n applications/* ./ ; rm -Rf applications
         mv -n ledelean/* ./ ; rm -Rf ledelean
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
@@ -171,11 +171,15 @@ jobs:
         sed -i "s/\r//g" open-app-filter/src/appfilter_ubus.c
         find "diy/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
 
+    - name: SSH connection to Actions
+      uses: kenzok78/debugger-action@master
+      if: 1 == 0
+
     - name: Modify
       run: |
         shopt -s extglob
         (
-        for pkg in $(ls !(luci-*|natflow|ngrokc|amule|blibtorrent|ps3netsrv)/Makefile); do
+        for pkg in $(ls !(luci-*|natflow|ngrokc|amule|rblibtorrent|ps3netsrv)/Makefile); do
             over="$(grep -E PKG_VERSION:=[0-9.]+$ $pkg | cut -f 2 -d '=')" || true
             if [ "$over" ]; then
               repo="$(grep PKG_SOURCE_URL $pkg | grep github | cut -f 4-5 -d '/' | sed -e 's/.git//' | grep -E '[0-9a-zA-Z_-]+$')" || true
@@ -198,12 +202,12 @@ jobs:
         sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/amule-project/amule/releases/latest))?" amule/Makefile
         touch /tmp/ok
         ) &
-        bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true
-        bash diy/convert_translation.sh -a >/dev/null 2>&1 || true
+        bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true &
+        bash diy/convert_translation.sh -a >/dev/null 2>&1 || true &
         
         cp -rf diy/.packages/* ./ || true
-        
-        #sed -i 's?"http://" + window.location.hostname?window.location.protocol + "//" + window.location.hostname?g' `find luci-app*/luasrc/view/ -maxdepth 2 -name "*.htm"` &
+        (
+        #sed -i 's?"http://" + window.location.hostname?window.location.protocol + "//" + window.location.hostname?g' `find luci-app*/luasrc/view/ -maxdepth 2 -name "*.htm"`
         rm -f subconverter/patches/010-missing-header.patch
         rm -f miniupnpd/patches/106-spam-syslog-ignoring.patch
         sed -i "/minisign:minisign/d" luci-app-dnscrypt-proxy2/Makefile
@@ -225,19 +229,33 @@ jobs:
           -e 's?\.\./\.\./luci.mk?$(TOPDIR)/feeds/luci/luci.mk?' \
           -e 's/ca-certificates/ca-bundle/' \
           */Makefile
-          
+        ) &
+        
+        for pkg in $(find -maxdepth 1 -type d -name "luci-*" ! -name "luci-app-dockerman" ! -name "luci-app-frpc" ! -name "luci-app-frps"); do
+          if [ "$(grep "luci.mk" $pkg/Makefile)" ]; then
+            sed -i '/\(PKG_VERSION\|PKG_RELEASE\):=/d' $pkg/Makefile
+          fi
+        done
+        
+        for pkg in $(ls -d */); do
+          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
+            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
+          fi
+        done
+        
         while [ ! -f /tmp/ok ]; do
           sleep 1
         done
-        
+      
     - name: Apply
       run: |
         git add .
         git commit -m "update$(TZ='Asia/Shanghai' date +-%m.%d)"
         git push
-
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       with:
         retain_days: 1
         keep_minimum_runs: 3
+        
+
