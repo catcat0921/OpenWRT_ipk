@@ -2,7 +2,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mtk_apcli
-PKG_RELEASE:=2
+PKG_RELEASE:=
 
 PKG_BUILD_DIR := $(BUILD_DIR)/$(PKG_NAME)
 
