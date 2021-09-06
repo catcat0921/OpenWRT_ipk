@@ -13,8 +13,8 @@
 [13]: https://github.com/kenzok8/jell/actions
 
 [![license][1]][2]
-[![GitHub Stars](https://img.shields.io/github/stars/kenzok8/OpenWrt.svg?style=flat-square&label=Stars)](https://github.com/kenzok78/OpenWrt/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/kenzok8/OpenWrt.svg?style=flat-square&label=Forks)](https://github.com/kenzok78/OpenWrt/fork)
+[![GitHub Stars](https://img.shields.io/github/stars/kenzok8/OpenWrt.svg?style=flat-square&label=Stars)](https://github.com/kenzok8/openwrt_Build/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/kenzok8/OpenWrt.svg?style=flat-square&label=Forks)](https://github.com/kenzok8/openwrt_Build/fork)
 [![PRs Welcome][3]][4]
 [![Issue Welcome][5]][6]
 
@@ -28,7 +28,7 @@
 
 
 #### 固件下载:
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/kenzok78/OpenWrt?style=for-the-badge&label=Download)](https://github.com/kenzok8/Bulid_Wrt/actions)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/kenzok8/openwrt_Build?style=for-the-badge&label=Download)](https://github.com/kenzok8/openwrt_Build/actions)
 
 #### 特色:
 
