@@ -1,16 +1,10 @@
-# sync package Snapshot
-[1]: https://img.shields.io/badge/license-GPLV2-brightgreen.svg
-[2]: /LICENSE
-[3]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
-[4]: https://github.com/kenzok8/jell/pulls
-[5]: https://img.shields.io/badge/Issues-welcome-brightgreen.svg
-[6]: https://github.com/kenzok8/jell/issues/new
-[7]: https://img.shields.io/github/v/release/hyird/Action-Openwrt
-[8]: https://github.com/kenzok8/jell/releases
-[10]: https://img.shields.io/badge/Contact-telegram-blue
-[11]: https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA
-[12]: https://github.com/kenzok8/jell/workflows/AutoBuild/badge.svg
-[13]: https://github.com/kenzok8/jell/actions
+####  jell 仓库
+<h1 align="center">四行仓库</h1>
+<img src="https://img.shields.io/github/issues/kenzok8/jell?color=green">
+<img src="https://img.shields.io/github/stars/kenzok8/jell?color=yellow">
+<img src="https://img.shields.io/github/forks/kenzok8/jell?color=orange">
+<img src="https://img.shields.io/github/license/kenzok8/jell?color=ff69b4">
+<img src="https://img.shields.io/github/languages/code-size/kenzok8/jell?color=blueviolet">
 
 [![license][1]][2]
 [![GitHub Stars](https://img.shields.io/github/stars/kenzok8/OpenWrt.svg?style=flat-square&label=Stars)](https://github.com/kenzok8/openwrt_Build/stargazers)
