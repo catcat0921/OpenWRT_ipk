@@ -5,12 +5,6 @@
 <img src="https://img.shields.io/github/license/kenzok8/jell?color=ff69b4">
 <img src="https://img.shields.io/github/languages/code-size/kenzok8/jell?color=blueviolet">
 
-[![license][1]][2]
-[![GitHub Stars](https://img.shields.io/github/stars/kenzok8/OpenWrt.svg?style=flat-square&label=Stars)](https://github.com/kenzok8/openwrt_Build/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/kenzok8/OpenWrt.svg?style=flat-square&label=Forks)](https://github.com/kenzok8/openwrt_Build/fork)
-[![PRs Welcome][3]][4]
-[![Issue Welcome][5]][6]
-
 <a href="https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA" target="_blank">Telegram</a>
 
 #### 源码来源：
