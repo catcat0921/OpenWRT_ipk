@@ -2,19 +2,19 @@
 [1]: https://img.shields.io/badge/license-GPLV2-brightgreen.svg
 [2]: /LICENSE
 [3]: https://img.shields.io/badge/PRs-welcome-brightgreen.svg
-[4]: https://github.com/kenzok78/jell/pulls
+[4]: https://github.com/kenzok8/jell/pulls
 [5]: https://img.shields.io/badge/Issues-welcome-brightgreen.svg
-[6]: https://github.com/kenzok78/jell/issues/new
+[6]: https://github.com/kenzok8/jell/issues/new
 [7]: https://img.shields.io/github/v/release/hyird/Action-Openwrt
-[8]: https://github.com/kenzok78/jell/releases
+[8]: https://github.com/kenzok8/jell/releases
 [10]: https://img.shields.io/badge/Contact-telegram-blue
 [11]: https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA
-[12]: https://github.com/kenzok78/jell/workflows/AutoBuild/badge.svg
-[13]: https://github.com/kenzok78/jell/actions
+[12]: https://github.com/kenzok8/jell/workflows/AutoBuild/badge.svg
+[13]: https://github.com/kenzok8/jell/actions
 
 [![license][1]][2]
-[![GitHub Stars](https://img.shields.io/github/stars/kenzok78/OpenWrt.svg?style=flat-square&label=Stars)](https://github.com/kenzok78/OpenWrt/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/kenzok78/OpenWrt.svg?style=flat-square&label=Forks)](https://github.com/kenzok78/OpenWrt/fork)
+[![GitHub Stars](https://img.shields.io/github/stars/kenzok8/OpenWrt.svg?style=flat-square&label=Stars)](https://github.com/kenzok78/OpenWrt/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/kenzok8/OpenWrt.svg?style=flat-square&label=Forks)](https://github.com/kenzok78/OpenWrt/fork)
 [![PRs Welcome][3]][4]
 [![Issue Welcome][5]][6]
 
@@ -28,7 +28,7 @@
 
 
 #### 固件下载:
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/kenzok78/OpenWrt?style=for-the-badge&label=Download)](https://github.com/kenzok78/OpenWrt/actions)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/kenzok78/OpenWrt?style=for-the-badge&label=Download)](https://github.com/kenzok8/Bulid_Wrt/actions)
 
 #### 特色:
 
