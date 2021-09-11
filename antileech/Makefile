@@ -26,7 +26,7 @@ define Package/antileech
   CATEGORY:=Network
   TITLE:=AntiLeech for amule
   URL:=http://www.amule.org/
-  DEPENDS:=+libc +amule +libwxbase
+  DEPENDS:=+libc +amule +antileech +libwxbase
 endef
 
 TARGET_LDFLAGS += \

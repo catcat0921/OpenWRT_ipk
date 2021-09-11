@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI Support for Rosy File Server
-LUCI_DEPENDS:=+luci-compat +luci-base +rosy-file-server
+LUCI_DEPENDS:=+luci-compat +luci-theme-argon +luci-base +rosy-file-server
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
