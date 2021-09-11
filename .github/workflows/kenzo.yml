@@ -2,7 +2,7 @@
 # This is free software, lisence use MIT.
 # 
 # 
-# <https://github.com/kiddin9/openwrt-packages>
+# <https://github.com/kenzok8/jell>
 #
 
 name: Merge-upstream
@@ -53,6 +53,7 @@ jobs:
         mv -n `find $1/* -maxdepth 0 -type d` ./
         rm -rf $1
         }
+        
         git clone --depth 1 https://github.com/kenzok8/my-packages && mvdir my-packages &
         git clone --depth 1 https://github.com/kiddin9/openwrt-bypass && mvdir openwrt-bypass &
         git clone --depth 1 https://github.com/kiddin9/luci-app-dnsfilter &
@@ -63,7 +64,6 @@ jobs:
         git clone --depth 1 https://github.com/kiddin9/qBittorrent-Enhanced-Edition &
         git clone --depth 1 https://github.com/kiddin9/autoshare && mvdir autoshare &
         git clone --depth 1 https://github.com/kiddin9/openwrt-openvpn && mvdir openwrt-openvpn &
-        git clone --depth 1 https://github.com/fw876/helloworld && mvdir helloworld &
         git clone --depth 1 https://github.com/xiaorouji/openwrt-passwall &
         git clone --depth 1 https://github.com/Lienol/openwrt-package &
         git clone --depth 1 https://github.com/BoringCat/luci-app-mentohust &
@@ -112,6 +112,7 @@ jobs:
         git clone --depth 1 https://github.com/gdck/luci-app-cupsd cupsd1 && mv -n cupsd1/luci-app-cupsd cupsd1/cups/cups ./ ; rm -rf cupsd1 &
 
         svn export https://github.com/Lienol/openwrt/trunk/package/lean/luci-app-autoreboot &
+        svn export https://github.com/fw876/helloworld/trunk/luci-app-ssr-plus &
         svn export https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns/trunk/tencentcloud_ddns luci-app-tencentddns &
         svn export https://github.com/coolsnowwolf/lede/trunk/package/lean ledelean &
         svn export https://github.com/coolsnowwolf/lede/trunk/package/network/services/shellsync &
@@ -119,7 +120,6 @@ jobs:
         svn export https://github.com/coolsnowwolf/packages/trunk/net/mwan3 &
         svn export https://github.com/x-wrt/packages/trunk/net/nft-qos &
         svn export https://github.com/x-wrt/luci/trunk/applications/luci-app-nft-qos &
-        svn export https://github.com/immortalwrt/immortalwrt/trunk/package/lean/shadowsocksr-libev &
         svn export https://github.com/vernesong/OpenClash/trunk/luci-app-openclash &
         svn export https://github.com/lisaac/luci-app-dockerman/trunk/applications/luci-app-dockerman &
         svn export https://github.com/doushang/luci-app-shortcutmenu/tunk/luci-app-shortcutmenu &
@@ -132,14 +132,14 @@ jobs:
         applications/luci-app-ddns applications/luci-app-https-dns-proxy applications/luci-app-acme \
         applications/luci-app-ksmbd applications/luci-app-samba4 &
         
-        git_sparse_clone master "https://github.com/openwrt/packages" "oppackages" net/shadowsocks-libev net/https-dns-proxy \
-        net/openvpn utils/cgroupfs-mount net/ariang &
+        git_sparse_clone master "https://github.com/openwrt/packages" "oppackages" net/https-dns-proxy \
+        net/openvpn utils/cgroupfs-mount net/ariang net/xray-core &
         
         git_sparse_clone master "https://github.com/x-wrt/com.x-wrt" "x-wrt" natflow luci-app-wizard luci-app-macvlan &
         
-        git_sparse_clone master "https://github.com/immortalwrt/immortalwrt" "immwrt" package/kernel/mt7601u-ap package/kernel/mtk-eip93 \
+        git_sparse_clone openwrt-21.02 "https://github.com/immortalwrt/immortalwrt" "immwrt" package/kernel/mt7601u-ap package/kernel/mtk-eip93 \
         package/kernel/r8152 package/kernel/r8168 package/kernel/rtl8188eu package/kernel/rtl8812au-ac \
-        package/kernel/rtl8821cu package/kernel/rtl88x2bu &
+        package/kernel/rtl8821cu package/kernel/rtl88x2bu package/kernel/shortcut-fe package/kernel/fast-classifier &
         
         git_sparse_clone master "https://github.com/immortalwrt/packages" "immpkgs" net/adguardhome net/mwol net/nps net/verysync net/sub-web \
         net/subconverter net/ngrokc net/oscam net/njitclient net/scutclient net/gost net/amule net/gowebdav \
@@ -162,7 +162,8 @@ jobs:
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
         rm -Rf */.git qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} subweb wget autosamba frp \
         mt-drivers coremark npc luci-app-{flowoffload,sfe,appfilter,advancedsetting,softethervpn,chinadns,docker,smstool,cifs-mount,cifsd} \
-        fcgiwrap ddns-scripts_{aliyun,dnspod} ipv6-helper ChinaDNS luci-theme-netgear csstidy samba4 UnblockNeteaseMusicGo
+        fcgiwrap ddns-scripts_{aliyun,dnspod} ipv6-helper ChinaDNS luci-theme-netgear csstidy samba4 UnblockNeteaseMusicGo \
+        xray-plugin
         mv mt/drivers mt/mt-drivers
         cp -Rf mt/* ./ && rm -Rf mt
 
@@ -179,13 +180,20 @@ jobs:
       run: |
         shopt -s extglob
         (
-        for pkg in $(ls !(luci-*|natflow|ngrokc|amule|rblibtorrent|ps3netsrv)/Makefile); do
+        function latesttag() {
+          (curl -gs -H 'Content-Type: application/json' \
+             -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" \
+             -X POST -d '{ "query": "query {repository(owner: \"'"$1"'\", name: \"'"$2"'\") {refs(refPrefix: \"refs/tags/\", last: 2, orderBy: {field: TAG_COMMIT_DATE, direction: ASC}) {edges {node {name}}}}}"}' https://api.github.com/graphql) | jq -r '.data.repository.refs.edges[-1].node.name'
+        }
+        for pkg in $(ls !(luci-*|natflow|ngrokc|amule|rblibtorrent|ps3netsrv|rclone|xray-core)/Makefile); do
             over="$(grep -E PKG_VERSION:=[0-9.]+$ $pkg | cut -f 2 -d '=')" || true
             if [ "$over" ]; then
               repo="$(grep PKG_SOURCE_URL $pkg | grep github | cut -f 4-5 -d '/' | sed -e 's/.git//' | grep -E '[0-9a-zA-Z_-]+$')" || true
               if [ "$repo" ]; then
-                ver="$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/$repo/releases/latest) | grep -o -E "[0-9].+")" || true
-                [ "$ver" ] || ver="$(git ls-remote --tags git://github.com/$repo | cut -d/ -f3- | sort -t. -nk1,3 | awk '/^[^{]*$/{version=$1}END{print version}' | grep -o -E "[0-9].+")" || true
+                owner="$(echo $repo | cut -f 1 -d '/')"
+                name="$(echo $repo | cut -f 2 -d '/')"
+                ver="$(latesttag $owner $name | grep -o -E "[0-9].+")" || true
+                # [ "$ver" ] || ver="$(git ls-remote --tags git://github.com/$repo | cut -d/ -f3- | sort -t. -nk1,3 | awk '/^[^{]*$/{version=$1}END{print version}' | grep -o -E "[0-9].+")" || true
                 echo "$repo-$ver"
                   if [ "$ver" ]; then
                     function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
@@ -197,9 +205,8 @@ jobs:
               fi
             fi
         done
-        sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(git ls-remote --tags git://github.com/AdguardTeam/AdGuardHome | cut -d/ -f3- | sort -t. -nk2 | awk '/^[^{]*$/{version=$1}END{print version}' | grep -o -E "[0-9].+")?" adguardhome/Makefile
+        sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(curl -s https://api.github.com/repos/AdguardTeam/AdGuardHome/tags | jq -r '.[0].name' | grep -o -E "[0-9].+")?" adguardhome/Makefile
         sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/Wind4/vlmcsd/releases/latest))?" vlmcsd/Makefile
-        sed -i "s?PKG_VERSION:=.*?PKG_VERSION:=$(basename $(curl -Ls -o /dev/null -w %{url_effective} https://github.com/amule-project/amule/releases/latest))?" amule/Makefile
         touch /tmp/ok
         ) &
         bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true &
@@ -208,7 +215,6 @@ jobs:
         cp -rf diy/.packages/* ./ || true
         (
         #sed -i 's?"http://" + window.location.hostname?window.location.protocol + "//" + window.location.hostname?g' `find luci-app*/luasrc/view/ -maxdepth 2 -name "*.htm"`
-        rm -f subconverter/patches/010-missing-header.patch
         rm -f miniupnpd/patches/106-spam-syslog-ignoring.patch
         sed -i "/minisign:minisign/d" luci-app-dnscrypt-proxy2/Makefile
         # sed -i 's/+docker-ce/+dockerd \\\n\t+docker \\\n\t+cgroupfs-mount/' luci-app-dockerman/Makefile
@@ -222,6 +228,7 @@ jobs:
         sed -i 's/\(+ksmbd-server\)/\1 +autoshare-ksmbd/' luci-app-ksmbd/Makefile
         sed -i 's/\(+samba4-server\)/\1 +autoshare-samba/' luci-app-samba4/Makefile
         sed -i 's/\(+luci-compat\)/\1 +luci-theme-argon/' luci-app-argon-config/Makefile
+        sed -i 's/+vsftpd$/+vsftpd-alt/' luci-app-vsftpd/Makefile
         
         sed -i \
           -e 's?include \.\./\.\./\(lang\|devel\)?include $(TOPDIR)/feeds/packages/\1?' \
@@ -250,12 +257,23 @@ jobs:
     - name: Apply
       run: |
         git add .
-        git commit -m "update$(TZ='Asia/Shanghai' date +-%m.%d)"
+        git commit -m " $(date +%Y-%m-%d")" || true
+        for pkg in $(git diff-tree --no-commit-id --name-only HEAD); do
+          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
+            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
+          fi
+        done
+        git reset --soft HEAD^
+        git add .
+        git commit -m "$(date +%Y-%m-%d")" || true
         git push
+
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
+      continue-on-error: true
       with:
         retain_days: 1
-        keep_minimum_runs: 3
-        
+        keep_minimum_runs: 1
+
+
 
