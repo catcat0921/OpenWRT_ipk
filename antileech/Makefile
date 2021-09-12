@@ -1,7 +1,7 @@
 #
-# Copyright (C) 2007-2009 OpenWrt.org
+# Copyright (C) 2007-2021 OpenWrt.org
 #
-# This is free software, licensed under the GNU General Public License v2.
+# This is free software, licensed under the GNU General Public License v3.
 # See /LICENSE for more information.
 #
 
@@ -26,7 +26,7 @@ define Package/antileech
   CATEGORY:=Network
   TITLE:=AntiLeech for amule
   URL:=http://www.amule.org/
-  DEPENDS:=+libc +amule +antileech +libwxbase
+  DEPENDS:=+libc +libwxbase
 endef
 
 TARGET_LDFLAGS += \

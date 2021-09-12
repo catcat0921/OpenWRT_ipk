@@ -17,7 +17,7 @@ define Package/$(PKG_NAME)
 	SUBMENU:=IP Addresses and Names
 	TITLE:=DDNS extension for AliYun.com
 	PKGARCH:=all
-	DEPENDS:=+ddns-scripts +ddns-scripts-aliyun +ddns-scripts-dnspod +curl +jsonfilter +openssl-util
+	DEPENDS:=+ddns-scripts +curl +jsonfilter +openssl-util
 endef
 
 define Package/$(PKG_NAME)/description

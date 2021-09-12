@@ -19,7 +19,7 @@ define Package/ariang/default
   SECTION:=net
   CATEGORY:=Network
   SUBMENU:=Download Manager
-  DEPENDS:=+aria2 +ariang
+  DEPENDS:=+aria2
   TITLE:=AriaNg webui
   URL:=https://ariang.mayswind.net
   PKGARCH:=all
