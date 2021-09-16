@@ -14,9 +14,8 @@
 [![Lean](https://img.shields.io/badge/package-Lean-blueviolet.svg?style=flat&logo=appveyor)](https://github.com/coolsnowwolf/lede) 
 
 
-#### 插件下载:
-[![GitHub release (latest by date)]
-(https://img.shields.io/github/v/release/kenzok8/openwrt_Build?style=for-the-badge&label=Download)](https://img.shields.io/github/v/release/kenzok78/compile-packages?style=for-the-badge&label=Download)](https://github.com/kenzok78/compile-packages/releases/latest)
+##### 插件下载:
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/kenzok78/compile-packages?style=for-the-badge&label=插件下载)](https://github.com/kenzok78/compile-packages/releases/latest)
 
 #### 特色:
 
