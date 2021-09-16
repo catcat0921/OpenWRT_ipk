@@ -7,13 +7,13 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=rtl8188eu
+PKG_NAME:=rtl8192eu
 PKG_RELEASE:=
 
-PKG_SOURCE_URL:=https://github.com/aircrack-ng/rtl8188eus.git
+PKG_SOURCE_URL:=https://github.com/Mange/rtl8192eu-linux-driver.git
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_DATE:=2021-02-06
-PKG_SOURCE_VERSION:=6146193406b62e942d13d4d43580ed94ac70c218
+PKG_SOURCE_DATE:=2021-05-12
+PKG_SOURCE_VERSION:=546419675335bb80d4548e22ccef915573a5a1e2
 PKG_MIRROR_HASH:=skip
 
 PKG_BUILD_PARALLEL:=1
@@ -23,12 +23,12 @@ STAMP_CONFIGURED_DEPENDS := $(STAGING_DIR)/usr/include/mac80211-backport/backpor
 include $(INCLUDE_DIR)/kernel.mk
 include $(INCLUDE_DIR)/package.mk
 
-define KernelPackage/rtl8188eu
+define KernelPackage/rtl8192eu
   SUBMENU:=Wireless Drivers
-  TITLE:=Realtek 8188EU(S)/8188ETV support
+  TITLE:=Realtek RTL8192EU support
   DEPENDS:=+kmod-cfg80211 +kmod-usb-core +@DRIVER_11N_SUPPORT
-  FILES:=$(PKG_BUILD_DIR)/rtl8188eu.ko
-  AUTOLOAD:=$(call AutoProbe,rtl8188eu)
+  FILES:=$(PKG_BUILD_DIR)/rtl8192eu.ko
+  AUTOLOAD:=$(call AutoProbe,rtl8192eu)
 endef
 
 NOSTDINC_FLAGS = \
@@ -55,8 +55,8 @@ EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN
 endif
 
 EXTRA_KCONFIG:= \
-	CONFIG_RTL8188EU=m \
-	USER_MODULE_NAME=rtl8188eu
+	CONFIG_RTL8192EU=m \
+	USER_MODULE_NAME=rtl8192eu
 
 MAKE_OPTS:= \
 	$(KERNEL_MAKE_FLAGS) \
@@ -71,4 +71,4 @@ define Build/Compile
 		modules
 endef
 
-$(eval $(call KernelPackage,rtl8188eu))
+$(eval $(call KernelPackage,rtl8192eu))
