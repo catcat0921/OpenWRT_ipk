@@ -7,6 +7,8 @@
 
 <a href="https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA" target="_blank">Telegram</a>
 
+#### luci 18.06 19.07 通用
+
 #### 源码来源：
 [![garypang13](https://img.shields.io/badge/package-garypang13-red.svg?style=flat&logo=appveyor)](https://github.com/garypang13/openwrt-packages)
  [![Lienol](https://img.shields.io/badge/passwall-xiaorouji-blueviolet.svg?style=flat&logo=appveyor)](https://github.com/xiaorouji/openwrt-passwall) 
