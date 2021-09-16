@@ -15,7 +15,8 @@
 
 
 #### 插件下载:
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/kenzok8/openwrt_Build?style=for-the-badge&label=Download)](https://img.shields.io/github/v/release/kenzok78/compile-packages?style=for-the-badge&label=Download)](https://github.com/kenzok78/compile-packages/releases/latest)
+[![GitHub release (latest by date)]
+(https://img.shields.io/github/v/release/kenzok8/openwrt_Build?style=for-the-badge&label=Download)](https://img.shields.io/github/v/release/kenzok78/compile-packages?style=for-the-badge&label=Download)](https://github.com/kenzok78/compile-packages/releases/latest)
 
 #### 特色:
 
