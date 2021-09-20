@@ -7,7 +7,7 @@ PKG_RELEASE:=
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/dosgo/ngrok-c.git
 PKG_SOURCE_DATE:=2019-11-02
-PKG_SOURCE_VERSION:=6388b9d8e4d5fef018ee64dfd55795f10cc6aaad
+PKG_SOURCE_VERSION:=08dc67cf14f64af96b7b042175f08db127902869
 PKG_MIRROR_HASH:=skip
 
 PKG_LICENSE:=MIT
@@ -23,7 +23,7 @@ define Package/ngrokc
   SUBMENU:=Web Servers/Proxies
   TITLE:=Secure tunnels to localhost (C++ port)
   URL:=https://github.com/dosgo/ngrok-c
-  DEPENDS:=+libc +libpthread +libopenssl +libstdcpp
+  DEPENDS:=+libc +libpthread +libopenssl +libstdcpp +zlib
 endef
 
 define Build/Prepare
