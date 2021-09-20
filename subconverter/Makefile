@@ -5,12 +5,12 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=subconverter
-PKG_BASE_VERSION:=0.6.4
+PKG_BASE_VERSION:=0.7.0
 PKG_RELEASE:=
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/tindy2013/subconverter.git
-PKG_SOURCE_DATE:=2021-07-29
+PKG_SOURCE_DATE:=2021-09-20
 PKG_SOURCE_VERSION:=fc641444aad07ebb620ac7c0c9501ffeddfa60d3
 PKG_MIRROR_HASH:=skip
 
