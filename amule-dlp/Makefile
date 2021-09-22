@@ -52,7 +52,7 @@ endef
 
 define Build/Prepare
 	$(call Build/Prepare/Default)
-	unzip $(DL_DIR)/AmuleWebUI.zip -d $(DL_DIR)
+	unzip $(DL_DIR)/AmuleWebUI.zip -d $(PKG_BUILD_DIR)
 	
 endef
 
@@ -110,7 +110,7 @@ define Package/amule-dlp/install
 
 	$(INSTALL_DIR) $(1)/usr/share
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/amule-dlp $(1)/usr/share/
-	$(CP) $(DL_DIR)/AmuleWebUI-Reloaded-master $(1)/usr/share/amule-dlp/webserver/AmuleWebUI-Reloaded
+	$(CP) $(PKG_BUILD_DIR)/AmuleWebUI-Reloaded-master $(1)/usr/share/amule-dlp/webserver/AmuleWebUI-Reloaded
 endef
 
 $(eval $(call Download,AmuleWebUI))
