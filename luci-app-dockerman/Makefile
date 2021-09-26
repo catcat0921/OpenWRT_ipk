@@ -8,6 +8,7 @@ LUCI_DEPENDS:=@(aarch64||arm||x86_64) \
 	+docker \
 	+dockerd \
 	+cgroupfs-mount \
+	+cgroupfs-mount \
 	+ttyd
 LUCI_PKGARCH:=all
 
