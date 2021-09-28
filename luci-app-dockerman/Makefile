@@ -8,7 +8,6 @@ LUCI_DEPENDS:=@(aarch64||arm||x86_64) \
 	+docker \
 	+dockerd \
 	+cgroupfs-mount \
-	+cgroupfs-mount \
 	+ttyd
 LUCI_PKGARCH:=all
 
@@ -16,7 +15,7 @@ PKG_LICENSE:=AGPL-3.0
 PKG_MAINTAINER:=lisaac <lisaac.cn@gmail.com> \
 		Florian Eckert <fe@dev.tdt.de>
 
-PKG_VERSION:=v0.5.23-2
+PKG_VERSION:=v0.5.23-3
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
