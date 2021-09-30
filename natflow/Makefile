@@ -44,6 +44,8 @@ include $(INCLUDE_DIR)/kernel-defaults.mk
 define Build/Compile/natflow
 	+$(MAKE) $(PKG_JOBS) -C "$(LINUX_DIR)" \
 		$(KERNEL_MAKE_FLAGS) \
+		ARCH="$(LINUX_KARCH)" \
+		CROSS_COMPILE="$(KERNEL_CROSS)" \
 		M="$(PKG_BUILD_DIR)" \
 		modules
 endef
