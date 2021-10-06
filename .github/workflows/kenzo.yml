@@ -12,7 +12,7 @@ on:
       - '.github/workflows/kenzo.yml'
       - 'diy/**'
   schedule:
-    - cron: 0 */12 * * *
+    - cron: 0 */11 * * *
   watch:
     types: started
   repository_dispatch:
@@ -68,8 +68,8 @@ jobs:
         git_clone https://github.com/kiddin9/openwrt-openvpn && mvdir openwrt-openvpn
         git_clone https://github.com/kiddin9/luci-app-xlnetacc
         git_clone https://github.com/kiddin9/openwrt-amule-dlp && mvdir openwrt-amule-dlp
-		git clone https://github.com/kenzok78/luci-app-netspeedtest
-		git clone https://github.com/kenzok78/udp2raw
+        git clone https://github.com/kenzok78/luci-app-netspeedtest
+        git clone https://github.com/kenzok78/udp2raw
         ) &
         (
         git_clone https://github.com/xiaorouji/openwrt-passwall
