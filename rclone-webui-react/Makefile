@@ -21,21 +21,20 @@ include $(INCLUDE_DIR)/package.mk
 UNZIP_CMD:=unzip -q -d $(PKG_BUILD_DIR) $(DL_DIR)/$(PKG_SOURCE)
 
 define Package/rclone-webui-react
-	SECTION:=net
-	CATEGORY:=Network
-	SUBMENU:=Cloud Manager
-	TITLE:=A reactjs based web UI for rclone
-	URL:=https://github.com/rclone/rclone-webui-react
-	DEPENDS:=+rclone
-	PKGARCH:=all
+  SECTION:=net
+  CATEGORY:=Network
+  SUBMENU:=Cloud Manager
+  TITLE:=A reactjs based web UI for rclone
+  URL:=https://github.com/rclone/rclone-webui-react
+  DEPENDS:=+rclone
+  PKGARCH:=all
 endef
 
 define Package/rclone-webui-react/description
-	A full fledged UI for the rclone cloud sync tool.
+  A full fledged UI for the rclone cloud sync tool.
 endef
 
 define Build/Compile
-	true
 endef
 
 define Package/rclone-webui-react/install
