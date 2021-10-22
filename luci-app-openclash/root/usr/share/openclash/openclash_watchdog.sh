@@ -12,8 +12,9 @@ disable_masq_cache=$(uci -q get openclash.config.disable_masq_cache)
 cfg_update_interval=$(uci -q get openclash.config.config_update_interval || echo 60)
 log_size=$(uci -q get openclash.config.log_size || echo 1024)
 core_type=$(uci -q get openclash.config.core_type)
-netflix_domains_prefetch_interval=$(uci -q get openclash.config.netflix_domains_prefetch_interval || echo 60)
+netflix_domains_prefetch_interval=$(uci -q get openclash.config.netflix_domains_prefetch_interval || echo 1440)
 NETFLIX_DOMAINS_LIST="/usr/share/openclash/res/Netflix_Domains.list"
+NETFLIX_DOMAINS_CUSTOM_LIST="/etc/openclash/custom/openclash_custom_netflix_domains.list"
 _koolshare=$(cat /usr/lib/os-release 2>/dev/null |grep OPENWRT_RELEASE 2>/dev/null |grep -i koolshare 2>/dev/null)
 CRASH_NUM=0
 CFG_UPDATE_INT=1
@@ -26,7 +27,7 @@ do
    cfg_update_mode=$(uci -q get openclash.config.config_auto_update_mode)
    cfg_update_interval_now=$(uci -q get openclash.config.config_update_interval || echo 60)
    netflix_domains_prefetch=$(uci -q get openclash.config.netflix_domains_prefetch || echo 0)
-   netflix_domains_prefetch_interval_now=$(uci -q get openclash.config.netflix_domains_prefetch_interval || echo 60)
+   netflix_domains_prefetch_interval_now=$(uci -q get openclash.config.netflix_domains_prefetch_interval || echo 1440)
    enable=$(uci -q get openclash.config.enable)
 
 if [ "$enable" -eq 1 ]; then
@@ -127,14 +128,18 @@ fi
    
 ##NETFLIX_DNS_PREFETCH
    if [ "$netflix_domains_prefetch" -eq 1 ]; then
-      [ "$netflix_domains_prefetch_interval" -ne "$netflix_domains_prefetch_interval_now" ] && NETFLIX_DOMAINS_PREFETCH=0 && netflix_domains_prefetch_interval="$netflix_domains_prefetch_interval_now"
+      [ "$netflix_domains_prefetch_interval" -ne "$netflix_domains_prefetch_interval_now" ] && NETFLIX_DOMAINS_PREFETCH=1 && netflix_domains_prefetch_interval="$netflix_domains_prefetch_interval_now"
       if [ "$NETFLIX_DOMAINS_PREFETCH" -ne 0 ]; then
-         if [ "$(expr "$NETFLIX_DOMAINS_PREFETCH" % "$netflix_domains_prefetch_interval_now")" -eq 0 ]; then
+         if [ "$(expr "$NETFLIX_DOMAINS_PREFETCH" % "$netflix_domains_prefetch_interval_now")" -eq 0 ] || [ "$NETFLIX_DOMAINS_PREFETCH" -eq 1 ]; then
             LOG_OUT "Tip: Start Prefetch Netflix Domains..."
             cat "$NETFLIX_DOMAINS_LIST" |while read -r line
             do
-               [ -n "$line" ] && nslookup $line >/dev/null 2>&1
-            done
+               [ -n "$line" ] && nslookup $line
+            done >/dev/null 2>&1
+            cat "$NETFLIX_DOMAINS_CUSTOM_LIST" |while read -r line
+            do
+               [ -n "$line" ] && nslookup $line
+            done >/dev/null 2>&1
             LOG_OUT "Tip: Netflix Domains Prefetch Finished..."
          fi
       fi
