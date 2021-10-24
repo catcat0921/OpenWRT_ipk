@@ -60,7 +60,6 @@ jobs:
         git_clone https://github.com/kiddin9/openwrt-bypass && mvdir openwrt-bypass
         git_clone https://github.com/kiddin9/luci-app-dnsfilter
         git_clone https://github.com/kiddin9/aria2
-        git_clone https://github.com/kiddin9/luci-app-eqos
         git_clone https://github.com/kiddin9/luci-app-baidupcs-web
         git_clone https://github.com/kiddin9/luci-theme-edge
         git_clone https://github.com/kiddin9/qBittorrent-Enhanced-Edition
@@ -68,8 +67,6 @@ jobs:
         git_clone https://github.com/kiddin9/openwrt-openvpn && mvdir openwrt-openvpn
         git_clone https://github.com/kiddin9/luci-app-xlnetacc
         git_clone https://github.com/kiddin9/openwrt-amule-dlp && mvdir openwrt-amule-dlp
-        git clone https://github.com/kenzok78/luci-app-netspeedtest
-        git clone https://github.com/kenzok78/udp2raw
         ) &
         (
         git_clone https://github.com/xiaorouji/openwrt-passwall
@@ -136,16 +133,17 @@ jobs:
         svn export https://github.com/doushang/luci-app-shortcutmenu/trunk/luci-app-shortcutmenu
         svn export https://github.com/sundaqiang/openwrt-packages/trunk/luci-app-services-wolplus
         svn export https://github.com/Ysurac/openmptcprouter-feeds/trunk/luci-app-iperf
+        svn export https://github.com/sirpdboy/netspeedtest/trunk/luci-app-netspeedtest
         svn export https://github.com/messense/aliyundrive-webdav/trunk/openwrt aliyundrive && mvdir aliyundrive
         svn export https://github.com/linkease/istore/trunk/luci/luci-app-store
         svn export https://github.com/linkease/istore-ui/trunk/app-store-ui
         ) &
         (
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/luci" "opluci" applications/luci-app-aria2 \
-        applications/luci-app-ddns applications/luci-app-https-dns-proxy applications/luci-app-acme \
+        applications/luci-app-ddns applications/luci-app-acme \
         applications/luci-app-ksmbd applications/luci-app-samba4
         
-        git_sparse_clone master "https://github.com/openwrt/packages" "oppackages" net/https-dns-proxy \
+        git_sparse_clone master "https://github.com/openwrt/packages" "oppackages" \
         net/openvpn utils/cgroupfs-mount net/ariang net/xray-core
         ) &
         (
@@ -159,7 +157,7 @@ jobs:
         git_sparse_clone master "https://github.com/immortalwrt/packages" "immpkgs" net/adguardhome net/mwol net/nps net/verysync net/sub-web \
         net/subconverter net/ngrokc net/oscam net/njitclient net/scutclient net/gost net/gowebdav \
         admin/bpytop libs/jpcre2 libs/wxbase libs/rapidjson libs/libcron libs/quickjspp libs/toml11 \
-        utils/cpulimit utils/filebrowser utils/phicomm-k3screenctrl multimedia/gmediarender multimedia/UnblockNeteaseMusic-Go
+        utils/cpulimit utils/filebrowser multimedia/gmediarender multimedia/UnblockNeteaseMusic-Go
 
         svn export --force https://github.com/immortalwrt/luci/trunk/applications
 
@@ -177,15 +175,15 @@ jobs:
         mv -n ledelean/* ./ ; rm -Rf ledelean
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
         cp -rf diy/.packages/* ./ || true
-        rm -Rf */.git qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} subweb wget autosamba frp amule \
-        mt-drivers coremark npc luci-app-{flowoffload,sfe,appfilter,advancedsetting,softethervpn,chinadns,smstool,cifs-mount,cifsd} \
-        fcgiwrap ddns-scripts_{aliyun,dnspod} ipv6-helper ChinaDNS luci-theme-netgear csstidy samba4 UnblockNeteaseMusicGo
+        rm -Rf */.git qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} subweb wget autosamba frp amule mt-drivers \
+        coremark npc luci-app-{flowoffload,sfe,appfilter,advancedsetting,softethervpn,chinadns,smstool,cifs-mount,cifsd,k3*} \
+        fcgiwrap ddns-scripts_{aliyun,dnspod} ipv6-helper ChinaDNS luci-theme-netgear csstidy samba4 UnblockNeteaseMusicGo \
+        k3* default-settings autocore
         mv mt/drivers mt/mt-drivers
         cp -Rf mt/* ./ && rm -Rf mt
 
     - name: Apply patches
       run: |
-        sed -i "s/\r//g" open-app-filter/src/appfilter_ubus.c
         find "diy/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
 
     - name: SSH connection to Actions
@@ -231,7 +229,6 @@ jobs:
         
         #sed -i 's?"http://" + window.location.hostname?window.location.protocol + "//" + window.location.hostname?g' `find luci-app*/luasrc/view/ -maxdepth 2 -name "*.htm"`
         rm -f miniupnpd/patches/106-spam-syslog-ignoring.patch
-        rm -f rclone/patches/010-change-default-config-path.patch
         sed -i "/minisign:minisign/d" luci-app-dnscrypt-proxy2/Makefile
         sed -i 's/+libstdcpp/+libstdcpp +zlib/' ngrokc/Makefile
         sed -i 's/+dockerd/+dockerd \\\n\t+cgroupfs-mount/' luci-app-dockerman/Makefile
@@ -239,7 +236,7 @@ jobs:
         sed -i '/\/etc\/config\/AdGuardHome/a /etc/AdGuardHome.yaml' luci-app-adguardhome/Makefile
         sed -i 's/+rclone\( \|$\)/+rclone +fuse-utils\1/g' luci-app-rclone/Makefile
         sed -i 's/+libcap /+libcap +libcap-bin /' luci-app-openclash/Makefile
-        sed -i 's/+ddns-scripts/+ddns-scripts +ddns-scripts-aliyun +ddns-scripts-dnspod/' luci-app-ddns/Makefile
+        sed -i 's/+ddns-scripts/+ddns-scripts +ddns-scripts-aliyun +ddns-scripts-dnspod +ddns-scripts-cloudflare/' luci-app-ddns/Makefile
         sed -i 's/+aria2/+aria2 +ariang/' luci-app-aria2/Makefile
         sed -i 's/+acme\( \|$\)/+acme +acme-dnsapi\1/' luci-app-acme/Makefile
         sed -i 's/\(+ksmbd-server\)/\1 +autoshare-ksmbd/' luci-app-ksmbd/Makefile
@@ -292,6 +289,7 @@ jobs:
       with:
         retain_days: 1
         keep_minimum_runs: 3
+
 
 
 
