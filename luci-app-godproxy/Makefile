@@ -28,8 +28,6 @@ define Package/luci-app-godproxy/install
 	cp -pR ./luasrc/* $(1)/usr/lib/lua/luci
 	$(INSTALL_DIR) $(1)/
 	cp -pR ./root/* $(1)/
-	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/i18n
-	po2lmo ./po/zh-cn/koolproxy.po $(1)/usr/lib/lua/luci/i18n/koolproxy.zh-cn.lmo
 
 ifeq ($(ARCH),aarch64)
 	$(INSTALL_BIN) ./bin/aarch64 $(1)/usr/share/koolproxy/koolproxy
