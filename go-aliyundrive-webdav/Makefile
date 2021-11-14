@@ -5,7 +5,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=go-aliyundrive-webdav
-PKG_VERSION:=1.0.16
+PKG_VERSION:=1.0.17
 PKG_RELEASE:=
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
