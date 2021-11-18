@@ -139,28 +139,24 @@ jobs:
         svn export https://github.com/linkease/istore-ui/trunk/app-store-ui
         ) &
         (
-        git_sparse_clone openwrt-21.02 "https://github.com/openwrt/luci" "opluci" applications/luci-app-aria2 \
-        applications/luci-app-ddns applications/luci-app-acme \
-        applications/luci-app-ksmbd applications/luci-app-samba4
-        
         git_sparse_clone master "https://github.com/openwrt/packages" "oppackages" \
-        net/openvpn utils/cgroupfs-mount net/ariang net/xray-core
+        net/openvpn utils/cgroupfs-mount net/xray-core
+        git_sparse_clone master "https://github.com/x-wrt/com.x-wrt" "x-wrt" natflow lua-ipops luci-app-wizard luci-app-macvlan
         ) &
         (
-        git_sparse_clone master "https://github.com/x-wrt/com.x-wrt" "x-wrt" natflow luci-app-wizard luci-app-macvlan
-        
         git_sparse_clone openwrt-21.02 "https://github.com/immortalwrt/immortalwrt" "immwrt" package/kernel/mt7601u-ap package/kernel/mtk-eip93 \
         package/kernel/r8152 package/kernel/r8168 package/kernel/rtl8188eu package/kernel/rtl8812au-ac package/kernel/rtl8192eu \
         package/kernel/rtl8821cu package/kernel/rtl88x2bu
         ) &
         
-        git_sparse_clone master "https://github.com/immortalwrt/packages" "immpkgs" net/adguardhome net/mwol net/nps net/verysync net/sub-web \
+        git_sparse_clone master "https://github.com/immortalwrt/packages" "immpkgs" net/adguardhome net/mwol net/nps net/verysync \
+        net/sub-web net/smartdns \
         net/subconverter net/ngrokc net/oscam net/njitclient net/scutclient net/gost net/gowebdav \
         admin/bpytop libs/jpcre2 libs/wxbase libs/rapidjson libs/libcron libs/quickjspp libs/toml11 \
         utils/cpulimit utils/filebrowser multimedia/gmediarender multimedia/UnblockNeteaseMusic-Go
-
+        
         svn export --force https://github.com/immortalwrt/luci/trunk/applications
-
+        
         for ipk in $(ls applications); do
         	if [[ $ipk != "luci-app-transmission" && $(ls -l applications/$ipk/po | wc -l) -gt 3 ]]; then
         		rm -rf applications/$ipk
@@ -171,16 +167,12 @@ jobs:
       run: |
         shopt -s extglob
         mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall
-        mv -n applications/!(luci-app-turboacc) ./ ; rm -Rf applications
+        mv -n applications/!(luci-app-turboacc|luci-app-vlmcsd) ./ ; rm -Rf applications
         mv -n ledelean/* ./ ; rm -Rf ledelean
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
         cp -rf diy/.packages/* ./ || true
-        rm -Rf */.git qt5 openwrt-{chinadns*,simple-obfs,v2ray-plugin,dnsforwarder} subweb wget autosamba frp amule mt-drivers \
-        coremark npc luci-app-{flowoffload,sfe,appfilter,advancedsetting,softethervpn,chinadns,smstool,cifs-mount,cifsd,k3*} \
-        fcgiwrap ddns-scripts_{aliyun,dnspod} ipv6-helper ChinaDNS luci-theme-netgear csstidy samba4 UnblockNeteaseMusicGo \
-        k3* default-settings autocore
-        mv mt/drivers mt/mt-drivers
-        cp -Rf mt/* ./ && rm -Rf mt
+        rm -Rf */.git
+        mv -f mt/drivers mt-drivers && cp -rf mt/* ./ && rm -Rf mt
 
     - name: Apply patches
       run: |
@@ -228,7 +220,7 @@ jobs:
         bash diy/convert_translation.sh -a >/dev/null 2>&1 || true
         
         #sed -i 's?"http://" + window.location.hostname?window.location.protocol + "//" + window.location.hostname?g' `find luci-app*/luasrc/view/ -maxdepth 2 -name "*.htm"`
-        rm -f miniupnpd/patches/106-spam-syslog-ignoring.patch
+        rm -f miniupnpd/patches/106-spam-syslog* go-aliyundrive-webdav/patches/100-fix-read*
         sed -i "/minisign:minisign/d" luci-app-dnscrypt-proxy2/Makefile
         sed -i 's/+libstdcpp/+libstdcpp +zlib/' ngrokc/Makefile
         sed -i 's/+dockerd/+dockerd \\\n\t+cgroupfs-mount/' luci-app-dockerman/Makefile
@@ -236,11 +228,6 @@ jobs:
         sed -i '/\/etc\/config\/AdGuardHome/a /etc/AdGuardHome.yaml' luci-app-adguardhome/Makefile
         sed -i 's/+rclone\( \|$\)/+rclone +fuse-utils\1/g' luci-app-rclone/Makefile
         sed -i 's/+libcap /+libcap +libcap-bin /' luci-app-openclash/Makefile
-        sed -i 's/+ddns-scripts/+ddns-scripts +ddns-scripts-aliyun +ddns-scripts-dnspod +ddns-scripts-cloudflare/' luci-app-ddns/Makefile
-        sed -i 's/+aria2/+aria2 +ariang/' luci-app-aria2/Makefile
-        sed -i 's/+acme\( \|$\)/+acme +acme-dnsapi\1/' luci-app-acme/Makefile
-        sed -i 's/\(+ksmbd-server\)/\1 +autoshare-ksmbd/' luci-app-ksmbd/Makefile
-        sed -i 's/\(+samba4-server\)/\1 +autoshare-samba/' luci-app-samba4/Makefile
         sed -i 's/\(+luci-compat\)/\1 +luci-theme-argon/' luci-app-argon-config/Makefile
         sed -i 's/+vsftpd$/+vsftpd-alt/' luci-app-vsftpd/Makefile
         
