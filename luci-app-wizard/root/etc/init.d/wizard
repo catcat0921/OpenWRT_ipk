@@ -55,7 +55,6 @@ add_wizard() {
 				uci set network.wan.keepalive='5 5'
 				uci set network.wan.mtu='1492'
 			}
-		}
 		;;
 	esac
 
