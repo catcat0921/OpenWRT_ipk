@@ -51,6 +51,7 @@ return view.extend({
 		o.value('255.255.255.0');
 		o.value('255.255.0.0');
 		o.value('255.0.0.0');
+		o.default = '255.255.255.0';
 
 		o = s.taboption('wansetup', form.Value, 'wan_gateway', _('IPv4 gateway'));
 		o.depends('wan_proto', 'static');
@@ -69,6 +70,7 @@ return view.extend({
 		o.value('255.255.255.0');
 		o.value('255.255.0.0');
 		o.value('255.0.0.0');
+		o.default = '255.255.255.0';
 
 		o = s.taboption('lansetup', form.DynamicList, 'lan_dns', _('Use custom DNS servers'), _('留空则使用运营商DNS, 推荐: 223.5.5.5'));
 		o.datatype = 'ip4addr';
