@@ -10,7 +10,7 @@ PKG_RELEASE:=
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/ftk/quickjspp.git
 PKG_SOURCE_DATE:=2021-09-13
-PKG_SOURCE_VERSION:=ac15c0d6b3cbd9a0e32d3f13eba8e79c9aca05a7
+PKG_SOURCE_VERSION:=66d0119e30a3bb07b16b88fd8373ad37e81b5696
 PKG_MIRROR_HASH:=skip
 
 PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
