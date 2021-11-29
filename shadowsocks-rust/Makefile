@@ -69,7 +69,7 @@ define Package/shadowsocks-rust/Default
   endef
 endef
 
-SHADOWSOCKS_COMPONENTS:=sslocal ssmanager ssserver ssurl
+SHADOWSOCKS_COMPONENTS:=sslocal ssmanager ssserver ssurl ssservice
 define shadowsocks-rust/templates
   $(foreach component,$(SHADOWSOCKS_COMPONENTS),
     $(call Package/shadowsocks-rust/Default,$(component))
