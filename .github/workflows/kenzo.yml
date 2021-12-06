@@ -114,7 +114,6 @@ jobs:
         git_clone https://github.com/CCnut/feed-netkeeper && mvdir feed-netkeeper
         git_clone https://github.com/brvphoenix/luci-app-wrtbwmon wrtbwmon1 && mvdir wrtbwmon1
         git_clone https://github.com/brvphoenix/wrtbwmon wrtbwmon2 && mvdir wrtbwmon2
-        git_clone https://github.com/linkease/ddnsto-openwrt && mvdir ddnsto-openwrt
         git_clone https://github.com/sensec/luci-app-udp2raw
         git_clone https://github.com/LGA1150/openwrt-sysuh3c && mvdir openwrt-sysuh3c
         git_clone https://github.com/gdck/luci-app-cupsd cupsd1 && mv -n cupsd1/luci-app-cupsd cupsd1/cups/cups ./ ; rm -rf cupsd1
