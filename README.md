@@ -1,9 +1,11 @@
+<div align="center">
 <h1 align="center">openwrt主流软件包合集</h1>
 <img src="https://img.shields.io/github/issues/kenzok8/jell?color=green">
 <img src="https://img.shields.io/github/stars/kenzok8/jell?color=yellow">
 <img src="https://img.shields.io/github/forks/kenzok8/jell?color=orange">
 <img src="https://img.shields.io/github/license/kenzok8/jell?color=ff69b4">
 <img src="https://img.shields.io/github/languages/code-size/kenzok8/jell?color=blueviolet">
+</div>
 
 <a href="https://t.me/joinchat/JjxmyRZZXJWb74I-sCrryA" target="_blank">Telegram</a>
 
@@ -15,7 +17,7 @@
 
 
 ##### 插件下载:
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/kenzok78/compile-packages?style=for-the-badge&label=插件下载)](https://github.com/kenzok78/compile-packages/releases/latest)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/kenzok78/compile-small?style=for-the-badge&label=插件下载)](https://github.com/kenzok78/compile-small/releases/latest)
 
 #### 特色:
 
