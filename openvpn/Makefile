@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=openvpn
 
-PKG_VERSION:=2.5.4
+PKG_VERSION:=2.5.5
 PKG_RELEASE:=
 
 PKG_SOURCE_URL:=\
