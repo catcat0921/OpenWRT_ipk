@@ -10,6 +10,6 @@ LUCI_TITLE:=n2n_v2 VPN Configuration module
 LUCI_DEPENDS:=+n2n-edge +n2n-supernode
 LUCI_PKGARCH:=all
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -10,6 +10,6 @@ LUCI_DEPENDS:=+libsodium +luci-lib-jsonc +python3
 LUCI_PKGARCH:=all
 PKG_DATE:=20200619
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

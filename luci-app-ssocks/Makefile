@@ -14,6 +14,6 @@ PKG_NAME:=luci-app-ssocks
 
 PKG_MAINTAINER:=ImmortalWrt
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

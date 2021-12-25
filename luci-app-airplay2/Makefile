@@ -10,7 +10,7 @@ LUCI_TITLE:=Luci for Apple Airplay2 Receiver
 LUCI_DEPENDS:=+alsa-utils +shairport-sync-openssl
 LUCI_PKGARCH:=all
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
 

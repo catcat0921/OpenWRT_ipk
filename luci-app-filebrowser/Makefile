@@ -15,6 +15,6 @@ PKG_NAME:=luci-app-filebrowser
 
 PKG_LICENSE:=GPLv3
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

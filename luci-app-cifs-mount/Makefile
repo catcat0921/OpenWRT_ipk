@@ -11,6 +11,6 @@ LUCI_DEPENDS:=+kmod-fs-cifs +kmod-nls-utf8
 LUCI_PKGARCH:=all
 PKG_NAME:=luci-app-cifs-mount
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
