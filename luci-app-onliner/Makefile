@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI support arp online
-LUCI_DEPENDS:= 
+LUCI_DEPENDS:=+luci-app-wrtbwmon
 LUCI_PKGARCH:=all
 PKG_NAME:=luci-app-onliner
 
@@ -24,7 +24,7 @@ define Package/luci-app-onliner/postinst
 	chmod -R 755 /usr/share/onliner/*
 exit 0
 endef
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
 
