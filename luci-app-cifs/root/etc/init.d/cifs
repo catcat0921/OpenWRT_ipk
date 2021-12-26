@@ -91,7 +91,7 @@ mount_natshare() {
 	natpath="//${server}/$name"
 
 	append _mount_path "$MOUNTAREA/$name"
-	append _agm "-o ${USERS}${GUEST},dom=$WORKGROUPD,iocharset=$IOCHARSET,$SEC,$AGM"
+	append _agm "-o ${USERS}${GUEST},dom=$WORKGROUPD,iocharset=$IOCHARSET,$SEC,$AGM,vers=1.0"
 	
 	sleep 1
 	mkdir -p $_mount_path
