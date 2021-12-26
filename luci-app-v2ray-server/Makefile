@@ -9,6 +9,6 @@ LUCI_TITLE:=LuCI support for V2ray Server
 LUCI_DEPENDS:=+xray-core
 LUCI_PKGARCH:=all
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

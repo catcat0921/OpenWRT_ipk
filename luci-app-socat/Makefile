@@ -10,6 +10,6 @@ LUCI_DEPENDS:=+socat
 LUCI_PKGARCH:=all
 PKG_DATE:=20200824
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

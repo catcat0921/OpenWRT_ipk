@@ -10,7 +10,7 @@ LUCI_TITLE:=ARP Binding
 LUCI_DEPENDS:=+ip
 LUCI_PKGARCH:=all
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
 

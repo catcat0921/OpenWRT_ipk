@@ -9,6 +9,6 @@ LUCI_DEPENDS:=@(arm||aarch64)
 
 PKG_NAME:=luci-app-cpufreq
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -9,6 +9,6 @@ LUCI_TITLE:=LuCI support for SSR Libev Server
 LUCI_DEPENDS:=+libsodium +shadowsocksr-libev-ssr-server
 LUCI_PKGARCH:=all
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

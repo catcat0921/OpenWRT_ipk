@@ -11,6 +11,6 @@ LUCI_DEPENDS:=
 LUCI_PKGARCH:=all
 PKG_NAME:=luci-app-accesscontrol
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

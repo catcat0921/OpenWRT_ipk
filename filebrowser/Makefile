@@ -13,7 +13,7 @@ PKG_RELEASE:=
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=8d87e0d5f9d25314dcc82ff3a7c59650e5c179e8
 PKG_SOURCE_URL:=https://github.com/filebrowser/filebrowser
-PKG_MIRROR_HASH:=skip
+PKG_MIRROR_HASH:=c94dd5c3f50e7fc043bbf0b1b4dbbcb2778be4d76a1e1db02910f02f4b4978f3
 
 PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE
@@ -34,7 +34,7 @@ GO_PKG_LDFLAGS_X:= \
 	$(GO_PKG)/v2/version.Version=v$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
-include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk
+include ../../lang/golang/golang-package.mk
 
 define Package/filebrowser
   SECTION:=utils

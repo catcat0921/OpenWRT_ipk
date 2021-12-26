@@ -10,6 +10,6 @@ LUCI_TITLE:=luci-app-guest-wifi
 LUCI_DEPENDS:=
 LUCI_PKGARCH:=all
 
-include $(TOPDIR)/feeds/luci/luci.mk
+include ../../luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
