@@ -56,7 +56,7 @@ jobs:
         rm -rf $1
         }
         (
-        git_clone https://github.com/kenzok78/my-packages && mvdir my-packages
+        git_clone https://github.com/kiddin9/my-packages && mvdir my-packages
         git_clone https://github.com/kiddin9/openwrt-bypass && mvdir openwrt-bypass
         git_clone https://github.com/kiddin9/luci-app-dnsfilter
         git_clone https://github.com/kiddin9/aria2
@@ -153,10 +153,12 @@ jobs:
         git_sparse_clone openwrt-21.02 "https://github.com/immortalwrt/immortalwrt" "immwrt" package/kernel/mt7601u-ap \
         package/kernel/rtl8188eu package/kernel/rtl8812au-ac package/kernel/rtl8192eu \
         package/kernel/rtl8821cu package/kernel/rtl88x2bu
+        git_sparse_clone develop "https://github.com/Ysurac/openmptcprouter-feeds" "openmptcp" luci-app-snmpd \
+        luci-app-packet-capture luci-app-mail msmtp
         ) &
         
         git_sparse_clone master "https://github.com/immortalwrt/packages" "immpkgs" net/adguardhome net/mwol net/nps net/verysync \
-        net/sub-web net/smartdns \
+        net/sub-web net/smartdns net/dnsproxy \
         net/subconverter net/ngrokc net/oscam net/njitclient net/scutclient net/gost net/gowebdav net/uugamebooster \
         admin/bpytop libs/jpcre2 libs/wxbase libs/rapidjson libs/libcron libs/quickjspp libs/toml11 \
         utils/cpulimit utils/filebrowser multimedia/gmediarender multimedia/UnblockNeteaseMusic-Go
@@ -186,7 +188,11 @@ jobs:
 
     - name: SSH connection to Actions
       uses: kenzok78/debugger-action@master
-      if: 1 == 0
+      if: github.event.inputs.ssh == 'true'
+
+    - name: Apply patches
+      run: |
+        find "diy/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
 
     - name: Modify
       run: |
@@ -197,7 +203,7 @@ jobs:
              -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" \
              -X POST -d '{ "query": "query {repository(owner: \"'"$1"'\", name: \"'"$2"'\"){refs(refPrefix:\"refs/tags/\",last:1,orderBy:{field:TAG_COMMIT_DATE,direction:ASC}){edges{node{name target{commitUrl}}}}defaultBranchRef{target{...on Commit {oid}}}}}"}' https://api.github.com/graphql)
         }
-        for pkg in $(ls !(luci-*|natflow|ps3netsrv|rblibtorrent|shadowsocksr-libev|n2n_v2|rtl8821cu|quickjspp)/Makefile); do
+        for pkg in $(ls !(luci-*|natflow|ps3netsrv|rblibtorrent|shadowsocksr-libev|n2n_v2|rtl8821cu|rtl8188eu|rtl8812au-ac|quickjspp)/Makefile); do
           repo="$(grep PKG_SOURCE_URL $pkg | grep github | cut -f 4-5 -d '/' | sed -e 's/.git//' | grep -E '[0-9a-zA-Z_-]+$')" || true
           if [ "$repo" ]; then
             owner="$(echo $repo | cut -f 1 -d '/')"
@@ -237,6 +243,8 @@ jobs:
         sed -i 's/\(+luci-compat\)/\1 +luci-theme-argon/' luci-app-argon-config/Makefile
         sed -i 's/+vsftpd$/+vsftpd-alt/' luci-app-vsftpd/Makefile
         sed -i 's/ +luci-ssl-openssl$//' luci-app-nginx-manager/Makefile
+        sed -i 's/@TARGET_x86 //' r8152/Makefile
+        sed -i 's/ +uhttpd-mod-ubus//' luci-app-packet-capture/Makefile
         
         sed -i \
           -e 's?include \.\./\.\./\(lang\|devel\)?include $(TOPDIR)/feeds/packages/\1?' \
@@ -283,7 +291,6 @@ jobs:
       with:
         retain_days: 1
         keep_minimum_runs: 3
-
 
 
 
