@@ -10,7 +10,7 @@ LUCI_TITLE:=LuCI for SSR Server Python
 LUCI_DEPENDS:=+python3
 LUCI_PKGARCH:=all
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
 

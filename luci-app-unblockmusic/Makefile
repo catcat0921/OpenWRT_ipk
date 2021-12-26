@@ -26,7 +26,7 @@ LUCI_PKGARCH:=all
 
 PKG_MAINTAINER:=lean
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
 

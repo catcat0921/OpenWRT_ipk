@@ -10,6 +10,6 @@ LUCI_DEPENDS:=+nginx-ssl +unzip +zoneinfo-asia +php8 +php8-fpm +php8-mod-curl +p
 LUCI_PKGARCH:=all
 PKG_DATE:=20210505
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -9,7 +9,7 @@ LUCI_TITLE:=LuCI support for MWAN3 Helper
 LUCI_DEPENDS:=+luci-app-mwan3 +pdnsd-alt +dnsmasq-full +ipset
 LUCI_PKGARCH:=all
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
 

@@ -10,6 +10,6 @@ include $(TOPDIR)/rules.mk
 LUCI_TITLE:= LuCI Support for ledtrigger switch
 LUCI_PKGARCH:=all
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

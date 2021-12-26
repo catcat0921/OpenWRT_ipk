@@ -10,6 +10,6 @@ LUCI_DEPENDS:=+appfilter
 
 PKG_NAME:=luci-app-appfilter
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
