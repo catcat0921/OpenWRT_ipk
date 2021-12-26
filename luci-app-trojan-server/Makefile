@@ -10,6 +10,6 @@ LUCI_TITLE:=LuCI support for Trojan Server
 LUCI_DEPENDS:=+luci-lib-jsonc +trojan 
 LUCI_PKGARCH:=all
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

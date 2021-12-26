@@ -8,6 +8,6 @@ PKG_NAME:=luci-app-unblockneteasemusic-go
 
 PKG_MAINTAINER:=https://github.com/cnsilvan/luci-app-unblockneteasemusic
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

@@ -10,6 +10,6 @@ LUCI_TITLE:=Luci for Docker-CE
 LUCI_DEPENDS:=+docker +dockerd +cgroupfs-mount +e2fsprogs +fdisk
 LUCI_PKGARCH:=all
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

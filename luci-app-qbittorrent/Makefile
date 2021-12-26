@@ -15,6 +15,6 @@ define Package/luci-app-qbittorrent/conffiles
 /etc/qBittorrent/
 endef
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

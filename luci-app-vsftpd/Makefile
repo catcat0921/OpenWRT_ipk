@@ -9,7 +9,7 @@ LUCI_TITLE:=LuCI support for VSFTPD
 LUCI_DEPENDS:=+vsftpd-alt
 LUCI_PKGARCH:=all
 
-include ../../luci.mk
+include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature
 

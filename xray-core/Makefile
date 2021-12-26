@@ -6,7 +6,7 @@ PKG_RELEASE:=
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/XTLS/Xray-core/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=b687a8fd1325bee0f6352c8dc3bfb70a7ee07cd74aacaece4e36c93cf7cda417
+PKG_HASH:=skip
 
 PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 PKG_LICENSE:=MPL-2.0
@@ -24,7 +24,7 @@ GO_PKG_LDFLAGS_X:= \
 	$(GO_PKG)/core.version=$(PKG_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
-include ../../lang/golang/golang-package.mk
+include $(TOPDIR)/feeds/packages/lang/golang/golang-package.mk
 
 define Package/xray/template
   TITLE:=A platform for building proxies to bypass network restrictions
