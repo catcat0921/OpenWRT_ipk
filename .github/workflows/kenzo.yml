@@ -190,10 +190,6 @@ jobs:
       uses: kenzok78/debugger-action@master
       if: github.event.inputs.ssh == 'true'
 
-    - name: Apply patches
-      run: |
-        find "diy/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
-
     - name: Modify
       run: |
         shopt -s extglob
@@ -291,6 +287,18 @@ jobs:
       with:
         retain_days: 1
         keep_minimum_runs: 3
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
