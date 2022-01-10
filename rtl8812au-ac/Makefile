@@ -1,13 +1,9 @@
+# SPDX-License-Identifier: GPL-3.0-only
 #
 # Copyright (C) 2020 stepheny
 # <https://github.com/aircrack-ng/rtl8812au/pull/619>
 #
-# Copyright (C) 2021 ImmortalWrt
-# <https://immortalwrt.org>
-#
-# This is free software, licensed under the GNU General Public License v3.
-# See /LICENSE for more information.
-#
+# Copyright (C) 2021 ImmortalWrt.org
 
 include $(TOPDIR)/rules.mk
 
@@ -16,8 +12,8 @@ PKG_RELEASE:=
 
 PKG_SOURCE_URL:=https://github.com/aircrack-ng/rtl8812au.git
 PKG_SOURCE_PROTO:=git
-PKG_SOURCE_DATE:=2021-05-22
-PKG_SOURCE_VERSION:=3a6402e9e79802891f1531b435be54f4d8b71f0b
+PKG_SOURCE_DATE:=2021-06-27
+PKG_SOURCE_VERSION:=b8167e66b4ac046b3b76c2c40008d84528e91594
 PKG_MIRROR_HASH:=skip
 
 PKG_LICENSE:=GPL-2.0
