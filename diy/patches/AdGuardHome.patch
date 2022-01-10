@@ -20,14 +20,24 @@
  }
  
  use_port53()
-@@ -499,6 +501,11 @@ start_service() {
+@@ -229,6 +231,9 @@ _do_redirect()
+ 	fi
+ 	config_get configpath $CONFIGURATION configpath "/etc/AdGuardHome.yaml"
+ 	AdGuardHome_PORT=$(config_editor "dns.port" "" "$configpath" "1")
++	if [ ! -s "$configpath" ]; then
++		cp -f /usr/share/AdGuardHome/AdGuardHome_template.yaml $configpath
++	fi
+ 	if [ -z "$AdGuardHome_PORT" ]; then
+ 		AdGuardHome_PORT="0"
+ 	fi
+@@ -499,6 +504,11 @@ start_service() {
  	echo "AdGuardHome service enabled"
  	echo "luci enable switch=$enabled"
  	(sleep 10 && [ -z "$(pgrep $binpath)" ] && logger "AdGuardHome" "no process in 10s cancel redirect" && _do_redirect 0 )&
 +	if [[ "`uci get bypass.@global[0].global_server 2>/dev/null`" && "`uci get bypass.@global[0].adguardhome 2>/dev/null`" == 1 && "$(uci get dhcp.@dnsmasq[0].port)" == "53" ]]; then
 +	 uci -q set AdGuardHome.AdGuardHome.redirect='exchange'
 +	 uci commit AdGuardHome
-+	 _do_redirect 1
++	 do_redirect 1
 +	fi
  }
  
@@ -64,3 +74,21 @@
  https://static.adguard.com/adguardhome/release/AdGuardHome_linux_${Arch}.tar.gz
 -#https://static.adguard.com/adguardhome/beta/AdGuardHome_linux_${Arch}.tar.gz
 \ No newline at end of file
+
+--- a/luci-app-adguardhome/luasrc/view/AdGuardHome/log.htm
++++ b/luci-app-adguardhome/luasrc/view/AdGuardHome/log.htm
+@@ -83,12 +83,13 @@
+ 		if (x.responseText && lv) {
+ 			if (isutc2local)
+ 			{
+-				var lines=line_tolocal(x.responseText);
++				var lines=line_toUTC(x.responseText);
+ 				if (islogreverse){
+ 					lv.innerHTML = lines.reverse().join('\n')+lv.innerHTML;
+ 				}else{
+ 					lv.innerHTML += lines.join('\n');
+ 				}
++			lv.innerHTML=line_tolocal(lv.innerHTML).join('\n');
+ 			}else{
+ 				if (islogreverse){
+ 					lv.innerHTML = x.responseText.split('\n').reverse().join('\n')+lv.innerHTML;
