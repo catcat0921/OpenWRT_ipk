@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=shadowsocks-rust
-PKG_VERSION:=1.13.0
+PKG_VERSION:=1.13.1
 PKG_RELEASE:=
 
 PKG_SOURCE_HEADER:=shadowsocks-v$(PKG_VERSION)
