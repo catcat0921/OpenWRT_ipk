@@ -3,6 +3,7 @@
 module("luci.controller.cifsd", package.seeall)
 
 function index()
+	entry({"admin", "nas"}, firstchild(), _("NAS") , 45).dependent = false
 	if not nixio.fs.access("/etc/config/ksmbd") then
 		return
 	end
