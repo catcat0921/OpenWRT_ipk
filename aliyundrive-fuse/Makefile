@@ -29,15 +29,15 @@ PKG_HASH:=skip
 include $(INCLUDE_DIR)/package.mk
 
 define Package/$(PKG_NAME)
-	SECTION:=multimedia
-	CATEGORY:=Multimedia
-	DEPENDS:=+fuse-utils
-	TITLE:=FUSE for AliyunDrive
-	URL:=https://github.com/messense/aliyundrive-fuse
+  SECTION:=multimedia
+  CATEGORY:=Multimedia
+  DEPENDS:=+fuse-utils
+  TITLE:=FUSE for AliyunDrive
+  URL:=https://github.com/messense/aliyundrive-fuse
 endef
 
 define Package/$(PKG_NAME)/description
-FUSE for AliyunDrive.
+  FUSE for AliyunDrive.
 endef
 
 define Package/$(PKG_NAME)/conffiles
@@ -45,10 +45,10 @@ define Package/$(PKG_NAME)/conffiles
 endef
 
 define Download/sha256sum
-	FILE:=$(PKG_SOURCE).sha256
-	URL_FILE:=$(FILE)
-	URL:=$(PKG_SOURCE_URL)
-	HASH:=skip
+  FILE:=$(PKG_SOURCE).sha256
+  URL_FILE:=$(FILE)
+  URL:=$(PKG_SOURCE_URL)
+  HASH:=skip
 endef
 $(eval $(call Download,sha256sum))
 
