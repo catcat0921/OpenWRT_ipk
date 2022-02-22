@@ -9,6 +9,8 @@ LUCI_TITLE:=LuCI support for ttyd
 LUCI_DEPENDS:=+ttyd
 LUCI_PKGARCH:=all
 
+PKG_NAME:=luci-app-ttyd
+
 include $(TOPDIR)/feeds/luci/luci.mk
 
 # call BuildPackage - OpenWrt buildroot signature

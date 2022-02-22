@@ -45,7 +45,7 @@ define Package/baidupcs-web
 endef
 
 define Package/baidupcs-web/description
-BaiduPCS-Web is a web controller for BaiduPCS-Go
+  BaiduPCS-Web is a web controller for BaiduPCS-Go
 endef
 
 define Package/baidupcs-web/config
