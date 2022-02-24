@@ -26,7 +26,7 @@ define KernelPackage/usb-net-rtl8152-vendor
   TITLE:=Kernel module for USB-to-Ethernet Realtek convertors
   SUBMENU:=USB Support
   VERSION:=$(LINUX_VERSION)+$(PKG_VERSION)-$(BOARD)-$(PKG_RELEASE)
-  DEPENDS:=+kmod-usb-net
+  DEPENDS:=@TARGET_x86 +kmod-usb-net
   CONFLICTS:=kmod-usb-net-rtl8152
   FILES:= $(PKG_BUILD_DIR)/r8152.ko
   AUTOLOAD:=$(call AutoProbe,r8152)

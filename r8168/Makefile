@@ -28,7 +28,7 @@ define KernelPackage/r8168
   VERSION:=$(LINUX_VERSION)+$(PKG_VERSION)-$(BOARD)-$(PKG_RELEASE)
   FILES:= $(PKG_BUILD_DIR)/src/r8168.ko
   AUTOLOAD:=$(call AutoProbe,r8168)
-  
+  CONFLICTS:=kmod-r8169
 endef
 
 define Package/r8168/description
