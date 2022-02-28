@@ -11,6 +11,7 @@ on:
     paths:
       - '.github/workflows/kenzo.yml'
       - '.gitignore'
+      - 'diy/**'      
   schedule:
     - cron: 0 */11 * * *
   workflow_dispatch:
@@ -44,7 +45,6 @@ jobs:
       run: |
         shopt -s extglob
         git rm -r --cache * >/dev/null 2>&1 &
-        rm -rf `find ./* -maxdepth 0 -type d ! -name "diy"` >/dev/null 2>&1
         function git_clone() (
           git clone --depth 1 $1 $2 || true
         )
