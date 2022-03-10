@@ -21,7 +21,8 @@ PKG_SOURCE_URL:=https://github.com/linkease/istore-ui/archive/refs/tags
 
 PKG_MAINTAINER:=jjm2473 <jjm2473@gmail.com>
 
-TARGET_CONFIGURE_OPTS = FRONTEND_DIST="$(BUILD_DIR)/istore-ui-$(ISTORE_UI_VERSION)-$(ISTORE_UI_RELEASE)/app-store-ui/src/dist" APP_STORE_VERSION="$(PKG_VERSION)-$(PKG_RELEASE)"
+TARGET_CONFIGURE_OPTS= FRONTEND_DIST="$(BUILD_DIR)/istore-ui-$(ISTORE_UI_VERSION)-$(ISTORE_UI_RELEASE)/app-store-ui/src/dist" APP_STORE_VERSION="$(PKG_VERSION)-$(PKG_RELEASE)"
+TARGET_CONFIGURE_OPTS+= SED="$(SED)"
 
 define Package/luci-app-store/conffiles
 /etc/.app_store.id
