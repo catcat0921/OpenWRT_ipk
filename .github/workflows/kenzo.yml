@@ -292,7 +292,7 @@ jobs:
           -e 's/ca-certificates/ca-bundle/' \
           */Makefile
         
-        while [[ ! -f /tmp/ok ||  ! -f /tmp/ok2 ]]; do
+        while [[ ! -f /tmp/ok ]]; do
             echo "wait"
           sleep 1
         done
