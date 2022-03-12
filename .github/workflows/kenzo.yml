@@ -245,10 +245,6 @@ jobs:
                   sed -i -e "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=$(echo $latest | jq -r '.data.repository.refs.edges[-1].node.target.commitUrl' | cut -f 7 -d /)/" \
                          -e "s/PKG_VERSION:=.*/PKG_VERSION:=$ver/" $pkg || true
                 fi || true
-              fi
-            fi
-          fi
-        done
         touch /tmp/ok
         done
 
