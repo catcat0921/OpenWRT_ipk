@@ -11,6 +11,8 @@ LUCI_DEPENDS:=+python3
 LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-ssrserver-python
+PKG_VERSION:=3.2.0
+PKG_RELEASE:=
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

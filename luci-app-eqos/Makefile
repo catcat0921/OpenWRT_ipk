@@ -13,6 +13,8 @@ LUCI_DEPENDS:=+tc +kmod-sched-core +kmod-ifb
 LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-eqos
+PKG_VERSION:=1.0.0
+PKG_RELEASE:=
 
 PKG_MAINTAINER:=Jianhui Zhao <jianhuizhao329@gmail.com>
 

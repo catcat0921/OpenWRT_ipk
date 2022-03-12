@@ -6,6 +6,8 @@ LUCI_DEPENDS:=+mentohust
 LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-mentohust
+PKG_VERSION:=1.1.1
+PKG_RELEASE:=
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

@@ -10,6 +10,8 @@ LUCI_DEPENDS:=+unzip
 LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-v2ray-server
+PKG_VERSION:=13
+PKG_RELEASE:=
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
