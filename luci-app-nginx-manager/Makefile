@@ -9,7 +9,7 @@ LUCI_TITLE:=LuCI support for NginxManager From sundaqiang
 LUCI_DEPENDS:=+luci-ssl-nginx
 LUCI_PKGARCH:=all
 PKG_VERSION:=1.0
-PKG_RELEASE:=
+PKG_RELEASE:=20211030
 PKG_MAINTAINER:=sundaqiang
 
 include $(TOPDIR)/feeds/luci/luci.mk

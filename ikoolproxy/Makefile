@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ikoolproxy
 PKG_VERSION:=3.8.5
-PKG_RELEASE:=
+PKG_RELEASE:=$(AUTORELEASE)
 
 include $(INCLUDE_DIR)/package.mk
 

@@ -12,7 +12,7 @@ LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-accesscontrol
 PKG_VERSION:=1
-PKG_RELEASE:=
+PKG_RELEASE:=11
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

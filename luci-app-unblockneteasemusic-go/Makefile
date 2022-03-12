@@ -6,7 +6,7 @@ LUCI_DEPENDS:=+bash +busybox +unzip +coreutils +coreutils-nohup +curl +dnsmasq-f
 LUCI_PKGARCH:=all
 PKG_NAME:=luci-app-unblockneteasemusic-go
 PKG_VERSION:=1.14
-PKG_RELEASE:=
+PKG_RELEASE:=1
 
 PKG_MAINTAINER:=https://github.com/cnsilvan/luci-app-unblockneteasemusic
 

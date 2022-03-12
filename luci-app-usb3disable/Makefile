@@ -10,7 +10,7 @@ LUCI_DEPENDS:=
 LUCI_PKGARCH:=all
 PKG_NAME:=luci-app-usb3disable
 PKG_VERSION:=1.0
-PKG_RELEASE:=
+PKG_RELEASE:=1
 
 define Package/luci-app-usb3disable/install
     $(INSTALL_DIR) $(1)/usr/lib/lua/luci
