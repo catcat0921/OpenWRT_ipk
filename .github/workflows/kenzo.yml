@@ -245,8 +245,12 @@ jobs:
                   sed -i -e "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=$(echo $latest | jq -r '.data.repository.refs.edges[-1].node.target.commitUrl' | cut -f 7 -d /)/" \
                          -e "s/PKG_VERSION:=.*/PKG_VERSION:=$ver/" $pkg || true
                 fi || true
-        touch /tmp/ok
+              fi
+            fi
+          fi
         done
+        touch /tmp/ok
+        ) &
 
         bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true
         bash diy/convert_translation.sh -a >/dev/null 2>&1 || true
