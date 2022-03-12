@@ -5,7 +5,7 @@
 # <https://github.com/kiddin9/openwrt-packages>
 #
 
-name: Merge-kenzo
+name: Merge-upstream
 on:
   push:
     paths:
@@ -157,7 +157,7 @@ jobs:
         svn export https://github.com/sbilly/netmaker-openwrt/trunk/netmaker
         svn export https://github.com/messense/aliyundrive-fuse/trunk/openwrt && mvdir openwrt
         svn export https://github.com/messense/openwrt-wiretrustee/trunk/wiretrustee
-	      svn export https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2
+        svn export https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2
         ) &
         (
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/packages" "oppackages" \
@@ -334,8 +334,3 @@ jobs:
       with:
         retain_days: 1
         keep_minimum_runs: 3
-
-
-
-
-
