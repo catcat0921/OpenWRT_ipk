@@ -40,6 +40,7 @@ jobs:
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
         git config --global user.name "github-actions[bot]"
         sudo timedatectl set-timezone "Asia/Shanghai"
+
     - name: Syn kenzo
       run: |
         shopt -s extglob
@@ -63,7 +64,7 @@ jobs:
         rm -rf $1
         }
         (
-        git_clone https://github.com/kiddin9/my-packages && mvdir my-packages
+        git_clone https://github.com/kenzok78/my-packages && mvdir my-packages
         git_clone https://github.com/kiddin9/openwrt-bypass && mvdir openwrt-bypass
         git_clone https://github.com/kiddin9/luci-app-dnsfilter
         git_clone https://github.com/kiddin9/aria2
@@ -131,6 +132,7 @@ jobs:
         git clone https://github.com/kenzok78/luci-theme-argonne
         git clone https://github.com/kenzok78/openwrt-minisign
         git clone https://github.com/kenzok78/luci-app-argonne-config
+        git_clone -b luci https://github.com/xiaorouji/openwrt-passwall passwall1 && mv -n passwall1/luci-app-passwall  ./; rm -rf passwall1
         ) &
         (
         svn export https://github.com/Lienol/openwrt-package/branches/other/lean/luci-app-autoreboot
@@ -155,6 +157,7 @@ jobs:
         svn export https://github.com/sbilly/netmaker-openwrt/trunk/netmaker
         svn export https://github.com/messense/aliyundrive-fuse/trunk/openwrt && mvdir openwrt
         svn export https://github.com/messense/openwrt-wiretrustee/trunk/wiretrustee
+	      svn export https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2
         ) &
         (
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/packages" "oppackages" \
@@ -185,15 +188,19 @@ jobs:
         net/qBittorrent-static net/qBittorrent libs/qtbase libs/qttools libs/rblibtorrent \
         net/uugamebooster net/verysync net/vlmcsd net/dnsforwarder net/nps net/tcpping net/redsocks2
         ) &
+
         svn export --force https://github.com/coolsnowwolf/luci/trunk/applications
         rm -rf applications/luci-app-qbittorrent applications/luci-app-macvlan applications/luci-app-syncdial
         svn co https://github.com/immortalwrt/luci/trunk/applications
+
         for ipk in $(ls -d applications/!(luci-app-rclone)/); do
         	if [[ $(ls $ipk/po | wc -l) -gt 3 ]]; then
             rm -rf $ipk
         	fi
         done
+
         git_sparse_clone master "https://github.com/coolsnowwolf/lede" "leanlede" package/lean package/kernel/rtl8821cu package/network/services/shellsync package/network/utils/dpdk
+
     - name: Delete duplicated packages
       run: |
         shopt -s extglob
@@ -203,6 +210,7 @@ jobs:
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
         cp -rf diy/.packages/* ./ || true
         rm -Rf */.git
+
     - name: SSH connection to Actions
       uses: kenzok78/debugger-action@master
       if: github.event.inputs.ssh == 'true'
@@ -210,6 +218,7 @@ jobs:
     - name: Apply patches
       run: |
         find "diy/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
+
     - name: Modify
       run: |
         shopt -s extglob
@@ -219,7 +228,7 @@ jobs:
              -H "Authorization: Bearer ${{ secrets.REPO_TOKEN }}" \
              -X POST -d '{ "query": "query {repository(owner: \"'"$1"'\", name: \"'"$2"'\"){refs(refPrefix:\"refs/tags/\",last:1,orderBy:{field:TAG_COMMIT_DATE,direction:ASC}){edges{node{name target{commitUrl}}}}defaultBranchRef{target{...on Commit {oid}}}}}"}' https://api.github.com/graphql)
         }
-        for pkg in $(ls !(luci-*|natflow|ps3netsrv|rblibtorrent|shadowsocksr-libev|v2ray-core|n2n_v2|mosdns|coremark|mbedtls|rtl8821cu|rtl8188eu|rtl8812au-ac|quickjspp|libcups)/Makefile); do
+        for pkg in $(ls !(luci-*|natflow|ps3netsrv|rblibtorrent|shadowsocksr-libev|v2ray-core|n2n_v2|mosdns|coremark|mbedtls|rtl8821cu|rtl8188eu|rtl8812au-ac|quickjspp|libcups|netdata)/Makefile); do
           repo="$(grep PKG_SOURCE_URL $pkg | grep github | cut -f 4-5 -d '/' | sed -e 's/.git//' | grep -E '[0-9a-zA-Z_-]+$')" || true
           if [ "$repo" ]; then
             owner="$(echo $repo | cut -f 1 -d '/')"
@@ -259,6 +268,7 @@ jobs:
         done
         touch /tmp/ok2
         ) &
+
         bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true
         bash diy/convert_translation.sh -a >/dev/null 2>&1 || true
         
@@ -290,6 +300,7 @@ jobs:
         sed -i '/limit-as/c\limit-as = 5000' uwsgi/files-luci-support/luci-webui.ini
         sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/' uwsgi/files/uwsgi.init
         cp -rf base-files/files/sbin/sysupgrade my-default-settings/files/sbin/
+        sed -i "s/CONFLICTS:=kmod-r8169//" r8168/Makefile
         
         sed -i \
           -e 's?include \.\./\.\./\(lang\|devel\)?include $(TOPDIR)/feeds/packages/\1?' \
@@ -302,6 +313,7 @@ jobs:
             echo "wait"
           sleep 1
         done
+
     - name: Apply
       run: |
         git add .
@@ -315,12 +327,14 @@ jobs:
         git add .
         git commit -m "update$(TZ='Asia/Shanghai' date +-%m.%d)"
         git push -f
+
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
       continue-on-error: true
       with:
         retain_days: 1
         keep_minimum_runs: 3
+
 
 
 
