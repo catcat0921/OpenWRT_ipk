@@ -16,7 +16,7 @@ if [ "$(uci -q get dhcp.@dnsmasq[0].port)" != "53" ]; then
 fi
 
 uci -q batch <<EOF
-set attendedsysupgrade.server.url='https://op.supes.top'
+set attendedsysupgrade.server.url='https://op.dllkids.xyz'
 commit attendedsysupgrade
 EOF
 

@@ -4,7 +4,7 @@ include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI for sysupgrade
 LUCI_DEPENDS:=+luci-base
-PKG_MAINTAINER:=Kiddin'
+PKG_MAINTAINER:=kenzo'
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

@@ -1,1 +1,1 @@
-# Only for my <a href="https://github.com/garypang13/OpenWrt/">Openwrt firmware</a>
+# Only for my <a href="https://github.com/kenzok78/Bulid_Wrt/">Openwrt firmware</a>

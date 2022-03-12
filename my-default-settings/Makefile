@@ -18,7 +18,7 @@ define Package/$(PKG_NAME)
   SECTION:=luci
   CATEGORY:=LuCI
   TITLE:=Default Settings
-  MAINTAINER:=Kiddin'
+  MAINTAINER:=kenzo'
   PKGARCH:=all
   DEPENDS:=+luci-base +bash
 endef
