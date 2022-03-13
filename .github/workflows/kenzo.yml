@@ -296,6 +296,9 @@ jobs:
             echo "wait"
           sleep 1
         done
+        
+        rm -rf create_acl_for_luci.warn && rm -rf create_acl_for_luci.ok
+        rm -rf create_acl_for_luci.err
 
     - name: Apply
       run: |
