@@ -303,10 +303,10 @@ jobs:
     - name: Apply
       run: |
         git add .
-        git commit -m "update $(TZ='Asia/Shanghai' date +-%m.%d)"
+        git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
         git reset --soft HEAD^
         git add .
-        git commit -m "update $(TZ='Asia/Shanghai' date +-%m.%d)"
+        git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
         git push -f
 
     - name: Delete workflow runs
