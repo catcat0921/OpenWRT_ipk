@@ -10,7 +10,7 @@ include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=my-default-settings
 PKG_VERSION:=1
-PKG_RELEASE:=2
+PKG_RELEASE:=40
 
 include $(INCLUDE_DIR)/package.mk
 
@@ -18,7 +18,7 @@ define Package/$(PKG_NAME)
   SECTION:=luci
   CATEGORY:=LuCI
   TITLE:=Default Settings
-  MAINTAINER:=kenzo'
+  MAINTAINER:=Kiddin'
   PKGARCH:=all
   DEPENDS:=+luci-base +bash
 endef
