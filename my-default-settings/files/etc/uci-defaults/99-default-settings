@@ -213,12 +213,7 @@ echo kernel.msgmax = 65536 >>$SYSCTL_LOCAL
 echo kernel.msgmnb = 65536 >>$SYSCTL_LOCAL
 echo vm.swappiness=0 >>$SYSCTL_LOCAL
 
-date=`date +%m.%d`
-date1=`date +%h`
-sed -i '/DISTRIB_RELEASE/d' /etc/openwrt_release
-echo "DISTRIB_RELEASE='v$date1'" >> /etc/openwrt_release
-sed -i '/luciversion/d' /usr/lib/lua/luci/version.lua
-echo 'luciversion = "v$date1"' >> /usr/lib/lua/luci/version.lua
+sed -i 's#openwrt/luci#kenzo/openwrt-luci#g' /usr/lib/lua/luci/view/themes/*/footer.htm
 
 cp -pR /www/cgi-bin/* /www/
 rm -rf /tmp/luci-*
