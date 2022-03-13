@@ -270,7 +270,7 @@ jobs:
         sed -i 's/+vsftpd$/+vsftpd-alt/' luci-app-vsftpd/Makefile
         sed -i 's/ +uhttpd-mod-ubus//' luci-app-packet-capture/Makefile
         sed -i '/boot()/,+2d' ddns-scripts/files/etc/init.d/ddns
-        sed -i "/DISTRIB_DESCRIPTION/c\DISTRIB_DESCRIPTION=\"%D %C by Kiddin'\"" base-files/files/etc/openwrt_release
+        sed -i "/DISTRIB_DESCRIPTION/c\DISTRIB_DESCRIPTION=\"%D %C by kenzo'\"" base-files/files/etc/openwrt_release
         sed -i 's?admin/status/channel_analysis??' luci-mod-status/root/usr/share/luci/menu.d/luci-mod-status.json
         sed -i "/--disable-https/d" netdata/Makefile
         sed -i -e '$a /etc/bench.log' \
