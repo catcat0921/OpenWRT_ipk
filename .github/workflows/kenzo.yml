@@ -131,6 +131,7 @@ jobs:
         git clone https://github.com/kenzok78/luci-theme-argonne
         git clone https://github.com/kenzok78/openwrt-minisign
         git clone https://github.com/kenzok78/luci-app-argonne-config
+        git clone -b lede https://github.com/pymumu/luci-app-smartdns
         git_clone -b luci https://github.com/xiaorouji/openwrt-passwall passwall1 && mv -n passwall1/luci-app-passwall  ./; rm -rf passwall1
         ) &
         (
