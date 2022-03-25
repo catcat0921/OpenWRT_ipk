@@ -29,7 +29,7 @@ define KernelPackage/r8168
   DEPENDS:=
   FILES:= $(PKG_BUILD_DIR)/src/r8168.ko
   AUTOLOAD:=$(call AutoProbe,r8168)
-  
+  CONFLICTS:=kmod-r8169
 endef
 
 define Package/r8168/description
