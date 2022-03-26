@@ -5,7 +5,6 @@ local http = require "luci.http"
 local api = require "luci.model.cbi.kodexplorer.api"
 
 function index()
-	entry({"admin", "nas"}, firstchild(), _("NAS") , 45).dependent = false
     if not nixio.fs.access("/etc/config/kodexplorer") then return end
 
     entry({"admin", "nas"}, firstchild(), "NAS", 44).dependent = false
@@ -26,7 +25,7 @@ end
 
 function act_status()
     local e = {}
-    e.nginx_status = luci.sys.call("ps -w | grep nginx | grep kodexplorer | grep -v grep > /dev/null") == 0
+    e.nginx_status = luci.sys.call("ps -w | grep nginx | grep -v grep > /dev/null") == 0
     e.php_status = luci.sys.call("ps -w | grep php | grep kodexplorer | grep -v grep > /dev/null") == 0
     http_write_json(e)
 end

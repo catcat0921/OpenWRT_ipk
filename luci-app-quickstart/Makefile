@@ -9,7 +9,9 @@ LUCI_TITLE:=LuCI support for quickstart
 LUCI_DEPENDS:=+quickstart +shadow-utils +shadow-useradd +luci-app-store
 LUCI_PKGARCH:=all
 
+PKG_VERSION:=0.3.1-3
 # PKG_RELEASE MUST be empty for luci.mk
+PKG_RELEASE:=
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

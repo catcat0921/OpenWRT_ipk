@@ -10,6 +10,8 @@ LUCI_DEPENDS:=+coreutils +coreutils-nohup +libreadline +libcurl +libopenssl +bas
 LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-familycloud
+PKG_VERSION:=1
+PKG_RELEASE:=6
 
 include $(TOPDIR)/feeds/luci/luci.mk
 
