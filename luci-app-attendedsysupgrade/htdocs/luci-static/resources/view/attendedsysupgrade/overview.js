@@ -283,12 +283,15 @@ return view.extend({
 			});
 	},
 
-	handleCheck: function (force) {
+	handleCheck: function () {
 		var { url, revision } = this.data
 		var { version, target } = this.firmware
 		var candidates = [];
 		var response;
-		var request_url = `${url}/api/v1/revision/${version}/${target}`;
+		var request_url = `${url}/api/overview`;
+		if (version.endsWith('SNAPSHOT')) {
+			request_url = `${url}/api/v1/revision/${version}/${target}`;
+		}
 
 		ui.showModal(_('Searching...'), [
 			E('p', { 'class': 'spinning' },
@@ -307,10 +310,35 @@ return view.extend({
 					]);
 					return;
 				}
+				if (version.endsWith('SNAPSHOT')) {
 					const remote_revision = response.json().revision;
-					if (revision < remote_revision || force == 1) {
+					if (get_revision_count(revision) < get_revision_count(remote_revision)) {
 						candidates.push([version, remote_revision]);
 					}
+				} else {
+					const latest = response.json().latest;
+
+					for (let remote_version of latest) {
+						var remote_branch = get_branch(remote_version);
+
+						// already latest version installed
+						if (version == remote_version) {
+							break;
+						}
+
+						// skip branch upgrades outside the advanced mode
+						if (this.data.branch != remote_branch && this.data.advanced_mode == 0) {
+							continue;
+						}
+
+						candidates.unshift([remote_version, null]);
+
+						// don't offer branches older than the current
+						if (this.data.branch == remote_branch) {
+							break;
+						}
+					}
+				}
 
 				if (candidates.length) {
 					var m, s, o;
@@ -320,7 +348,6 @@ return view.extend({
 							profile: this.firmware.profile,
 							version: candidates[0][0],
 							packages: Object.keys(this.firmware.packages).sort(),
-							partsize: this.firmware.partsize
 						},
 					};
 
@@ -363,9 +390,6 @@ return view.extend({
 						E('p', _('The device runs the latest firmware version %s - %s').format(version, revision)),
 						E('div', { class: 'right' }, [
 							E('div', { class: 'btn', click: ui.hideModal }, _('Close')),
-							E('div', { class: 'btn cbi-button cbi-button-positive', click: ui.createHandlerFn(this, function () {
-											this.handleCheck(1)
-										}) }, _('Force Sysupgrade')),
 						]),
 					]);
 				}
@@ -390,7 +414,6 @@ return view.extend({
 		this.firmware.profile = res[1].board_name;
 		this.firmware.target = res[1].release.target;
 		this.firmware.version = res[1].release.version;
-		this.firmware.partsize = res[1].release.distribution;
 		this.data.branch = get_branch(res[1].release.version);
 		this.data.revision = res[1].release.revision;
 		this.data.efi = res[2];
