@@ -174,7 +174,6 @@ jobs:
         (
         git_sparse_clone develop "https://github.com/Ysurac/openmptcprouter-feeds" "openmptcp" luci-app-snmpd \
         luci-app-packet-capture luci-app-mail msmtp
-        git_sparse_clone master "https://github.com/x-wrt/com.x-wrt" "x-wrt" natflow lua-ipops luci-app-macvlan
         ) &
         (
         git_sparse_clone master "https://github.com/immortalwrt/packages" "immpkgs" net/adguardhome net/mwol \
@@ -192,7 +191,7 @@ jobs:
         ) &
 
         svn export --force https://github.com/coolsnowwolf/luci/trunk/applications
-        rm -rf applications/luci-app-qbittorrent applications/luci-app-macvlan applications/luci-app-syncdial
+        rm -rf applications/luci-app-qbittorrent
         svn co https://github.com/immortalwrt/luci/trunk/applications
 
         for ipk in $(ls -d applications/!(luci-app-rclone)/); do
