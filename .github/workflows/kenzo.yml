@@ -261,12 +261,6 @@ jobs:
           grep -q '"nas",' $pkg/luasrc/controller/*.lua && ! grep -q '_("NAS")' $pkg/luasrc/controller/*.lua &&
             sed -i 's/index()/index()\n\tentry({"admin", "nas"}, firstchild(), _("NAS") , 45).dependent = false/' $pkg/luasrc/controller/*.lua
         done
-        (
-        for pkg in $(ls -d */); do
-          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
-            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
-          fi
-        done
         touch /tmp/ok2
         ) &        
         
