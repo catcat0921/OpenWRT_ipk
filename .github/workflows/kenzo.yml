@@ -261,6 +261,7 @@ jobs:
           grep -q '"nas",' $pkg/luasrc/controller/*.lua && ! grep -q '_("NAS")' $pkg/luasrc/controller/*.lua &&
             sed -i 's/index()/index()\n\tentry({"admin", "nas"}, firstchild(), _("NAS") , 45).dependent = false/' $pkg/luasrc/controller/*.lua
         done
+        (
         touch /tmp/ok2
         ) &        
         
@@ -315,12 +316,7 @@ jobs:
     - name: Apply
       run: |
         git add .
-        git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
-        for pkg in $(git diff-tree --no-commit-id --name-only HEAD); do
-          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
-            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
-          fi
-        done        
+        git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"      
         git reset --soft HEAD^
         git add .
         git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
