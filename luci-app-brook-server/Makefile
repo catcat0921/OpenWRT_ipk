@@ -9,6 +9,8 @@ PKG_NAME:=luci-app-brook-server
 LUCI_TITLE:=LuCI support for Brook Server
 LUCI_DEPENDS:=+brook 
 LUCI_PKGARCH:=all
+PKG_VERSION:=1
+PKG_RELEASE:=
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

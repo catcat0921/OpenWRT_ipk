@@ -8,6 +8,8 @@ include $(TOPDIR)/rules.mk
 LUCI_TITLE:=LuCI support for SSR Libev Server
 LUCI_DEPENDS:=+libsodium +shadowsocksr-libev-ssr-server
 LUCI_PKGARCH:=all
+PKG_VERSION:=1
+PKG_RELEASE:=
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

@@ -8,6 +8,8 @@ include $(TOPDIR)/rules.mk
 
 LUCI_TITLE:=LuCI Support for Xware downloading app.
 LUCI_DEPENDS:=@arm +wget
+PKG_VERSION:=1.0
+PKG_RELEASE:=
 
 include $(TOPDIR)/feeds/luci/luci.mk
 

@@ -8,6 +8,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-naiveproxy
+PKG_VERSION:=1.0
+PKG_RELEASE:=
 LUCI_TITLE:=LuCI support for NaiveProxy
 LUCI_DEPENDS:=+naiveproxy
 LUCI_PKGARCH:=all
