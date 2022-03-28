@@ -13,7 +13,7 @@ LUCI_PKGARCH:=all
 
 PKG_NAME:=luci-app-filebrowser
 PKG_VERSION:=snapshot
-PKG_RELEASE:=
+PKG_RELEASE:=118071b
 
 PKG_LICENSE:=GPLv3
 

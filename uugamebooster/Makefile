@@ -13,7 +13,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=uugamebooster
 PKG_VERSION:=v2.19.10
-PKG_RELEASE:=
+PKG_RELEASE:=1
 
 include $(INCLUDE_DIR)/package.mk
 
