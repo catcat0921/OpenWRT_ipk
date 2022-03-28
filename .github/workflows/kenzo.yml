@@ -256,6 +256,23 @@ jobs:
         done
         touch /tmp/ok
         ) &
+        
+        for pkg in $(find -maxdepth 1 -type d -name "luci-*" ! -name "luci-app-dockerman" ! -name "luci-app-frpc" ! -name "luci-app-frps"); do
+          if [ "$(grep "luci.mk" $pkg/Makefile)" ]; then
+            sed -i '/\(PKG_VERSION\|PKG_RELEASE\):=/d' $pkg/Makefile
+          fi
+          grep -q '"nas",' $pkg/luasrc/controller/*.lua && ! grep -q '_("NAS")' $pkg/luasrc/controller/*.lua &&
+            sed -i 's/index()/index()\n\tentry({"admin", "nas"}, firstchild(), _("NAS") , 45).dependent = false/' $pkg/luasrc/controller/*.lua
+        done
+        (
+        for pkg in $(ls -d */); do
+          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
+            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
+          fi
+        done
+        touch /tmp/ok2
+        ) &        
+        
         sed -i 's/luci-lib-ipkg/luci-base/g' luci-app-store/Makefile
         sed -i 's/adguardhome.yaml/AdGuardHome.yaml/g' adguardhome/files/adguardhome.init
         bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true
@@ -308,6 +325,11 @@ jobs:
       run: |
         git add .
         git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
+        for pkg in $(git diff-tree --no-commit-id --name-only HEAD); do
+          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
+            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
+          fi
+        done        
         git reset --soft HEAD^
         git add .
         git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
