@@ -210,9 +210,8 @@ jobs:
         mv -n applications/!(luci-app-noddos|luci-app-cshark|luci-app-dnscrypt-proxy|luci-app-https-dns-proxy) ./ ; rm -Rf applications
         mv -n lean/* ./ ; rm -Rf lean
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
-        cp -rf daye/.packages/* ./ || true
+        cp -rf diy/.packages/* ./ || true
         rm -Rf */.git
-        rm -Rf */.svn
 
     - name: SSH connection to Actions
       uses: kenzok78/debugger-action@master
@@ -220,7 +219,7 @@ jobs:
 
     - name: Apply patches
       run: |
-        find "daye/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
+        find "diy/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
 
     - name: Modify
       run: |
