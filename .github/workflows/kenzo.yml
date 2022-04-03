@@ -212,6 +212,7 @@ jobs:
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
         cp -rf daye/.packages/* ./ || true
         rm -Rf */.git
+        rm -Rf */.svn
 
     - name: SSH connection to Actions
       uses: kenzok78/debugger-action@master
