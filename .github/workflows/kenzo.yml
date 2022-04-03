@@ -160,6 +160,7 @@ jobs:
         svn export https://github.com/messense/openwrt-wiretrustee/trunk/wiretrustee
         svn export https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2
         svn export https://github.com/Carseason/openwrt-themedog/trunk/luci/luci-theme-dog
+        svn co https://github.com/kiddin9/openwrt-packages/trunk/diy && mvdir daye
         ) &
         (
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/packages" "oppackages" \
@@ -209,7 +210,7 @@ jobs:
         mv -n applications/!(luci-app-noddos|luci-app-cshark|luci-app-dnscrypt-proxy|luci-app-https-dns-proxy) ./ ; rm -Rf applications
         mv -n lean/* ./ ; rm -Rf lean
         mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
-        cp -rf diy/.packages/* ./ || true
+        cp -rf daye/.packages/* ./ || true
         rm -Rf */.git
 
     - name: SSH connection to Actions
@@ -218,7 +219,7 @@ jobs:
 
     - name: Apply patches
       run: |
-        find "diy/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
+        find "daye/patches" -type f -name '*.patch' -print0 | sort -z | xargs -I % -t -0 -n 1 sh -c "cat '%'  | patch -d './' -p1 -E --forward --no-backup-if-mismatch"
 
     - name: Modify
       run: |
