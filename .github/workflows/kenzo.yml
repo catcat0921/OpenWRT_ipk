@@ -158,6 +158,7 @@ jobs:
         svn export https://github.com/sbilly/netmaker-openwrt/trunk/netmaker
         svn export https://github.com/messense/aliyundrive-fuse/trunk/openwrt && mvdir openwrt
         svn export https://github.com/messense/openwrt-wiretrustee/trunk/wiretrustee
+        svn export https://github.com/immortalwrt/immortalwrt/trunk/package/kernel/rtl88x2bu
         svn export https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2
         svn export https://github.com/Carseason/openwrt-themedog/trunk/luci/luci-theme-dog
         svn co https://github.com/kiddin9/openwrt-packages/trunk/diy && mvdir daye
