@@ -128,7 +128,7 @@ jobs:
         git_clone https://github.com/esirplayground/luci-app-LingTiGameAcc
         git_clone https://github.com/zxlhhyccc/luci-app-v2raya
         git_clone https://github.com/jerrykuku/luci-app-go-aliyundrive-webdav
-        git clone https://github.com/kenzok78/luci-theme-argonne
+        git clone -b 21.02 https://github.com/kenzok78/luci-theme-argonne
         git clone https://github.com/kenzok78/openwrt-minisign
         git clone https://github.com/kenzok78/luci-app-argonne-config
         git_clone https://github.com/thinktip/luci-theme-neobird
