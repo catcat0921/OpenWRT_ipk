@@ -8,7 +8,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_SOURCE_URL:=https://github.com/OpenVPN/easy-rsa.git
-PKG_SOURCE_VERSION:=223237ab7f154bc38dd6aeef866ec797215fe250
+PKG_SOURCE_VERSION:=15386d4ee3b6d2334942a6ebe651ff7e0e55e0d6
 
 PKG_NAME:=openvpn-easy-rsa
 PKG_VERSION:=3.0.8
