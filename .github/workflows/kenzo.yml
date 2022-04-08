@@ -1,7 +1,6 @@
 #
 # This is free software, lisence use MIT.
 # 
-# 
 #
 
 name: Merge-kenzo
@@ -12,7 +11,7 @@ on:
       - '.gitignore'
       - 'diy/**'
   schedule:
-    - cron: 0 */11 * * *
+    - cron: 0 */12 * * *
   workflow_dispatch:
     inputs:
       ssh:
@@ -78,19 +77,23 @@ jobs:
         ) &
         (
         git_clone https://github.com/xiaorouji/openwrt-passwall
+        git_clone https://github.com/xiaorouji/openwrt-passwall2 passwall2 && mv -n passwall2/luci-app-passwall2 ./;rm -rf passwall2
+        git_clone -b luci https://github.com/xiaorouji/openwrt-passwall passwall1 && mv -n passwall1/luci-app-passwall  ./; rm -rf passwall1		
         git_clone https://github.com/Lienol/openwrt-package
         git_clone https://github.com/ysc3839/openwrt-minieap
+        git_clone https://github.com/ysc3839/luci-proto-minieap
         git_clone https://github.com/rufengsuixing/luci-app-autoipsetadder
+        git_clone https://github.com/rufengsuixing/luci-app-onliner
+        git_clone https://github.com/rufengsuixing/luci-app-usb3disable			
         git_clone https://github.com/NateLol/luci-app-beardropper
+        git_clone https://github.com/NateLol/luci-app-oled		
         git_clone https://github.com/riverscn/openwrt-iptvhelper && mvdir openwrt-iptvhelper
         git_clone https://github.com/iwrt/luci-app-ikoolproxy  && mv -f luci-app-ikoolproxy/ikoolproxy ikoolproxy
-        git_clone https://github.com/BoringCat/luci-app-minieap
-        git_clone https://github.com/rufengsuixing/luci-app-onliner
+        git_clone https://github.com/BoringCat/luci-app-minieap	
         git_clone https://github.com/tty228/luci-app-serverchan
         git_clone https://github.com/4IceG/luci-app-sms-tool smstool && mvdir smstool
-        git_clone https://github.com/rufengsuixing/luci-app-usb3disable
         git_clone https://github.com/silime/luci-app-xunlei
-        git_clone https://github.com/ysc3839/luci-proto-minieap
+        
         ) &
         (
         git_clone https://github.com/zzsj0928/luci-app-pushbot
@@ -99,18 +102,21 @@ jobs:
         git_clone https://github.com/jerrykuku/luci-app-argon-config
         git_clone https://github.com/jerrykuku/luci-app-vssr
         git_clone https://github.com/jerrykuku/luci-app-ttnode
+        git_clone https://github.com/jerrykuku/luci-app-jd-dailybonus
+        git_clone https://github.com/jerrykuku/luci-app-go-aliyundrive-webdav		
         git_clone https://github.com/peter-tank/luci-app-dnscrypt-proxy2
         git_clone https://github.com/sirpdboy/luci-app-advanced
         git_clone https://github.com/sirpdboy/luci-app-netdata
         git_clone https://github.com/sirpdboy/luci-app-autotimeset
+        git_clone https://github.com/sirpdboy/netspeedtest && mv -n netspeedtest/luci-app-netspeedtest ./ ; rm -rf netspeedtest		
         git_clone https://github.com/wolandmaster/luci-app-rtorrent
-        git_clone https://github.com/jerrykuku/luci-app-jd-dailybonus
-        git_clone https://github.com/NateLol/luci-app-oled
         git_clone https://github.com/lloyd18/luci-app-npc
         ) &
         (
         git_clone https://github.com/destan19/OpenAppFilter && mvdir OpenAppFilter
         git_clone https://github.com/esirplayground/luci-app-poweroff
+        git_clone https://github.com/esirplayground/LingTiGameAcc
+        git_clone https://github.com/esirplayground/luci-app-LingTiGameAcc		
         git_clone https://github.com/lvqier/luci-app-dnsmasq-ipset
         git_clone https://github.com/walkingsky/luci-wifidog luci-app-wifidog
         git_clone https://github.com/peter-tank/luci-app-autorepeater
@@ -124,44 +130,35 @@ jobs:
         git_clone https://github.com/sundaqiang/openwrt-packages && mv -n openwrt-packages/luci-* ./; rm -rf openwrt-packages
         ) &
         (
-        git_clone https://github.com/esirplayground/LingTiGameAcc
-        git_clone https://github.com/esirplayground/luci-app-LingTiGameAcc
         git_clone https://github.com/zxlhhyccc/luci-app-v2raya
-        git_clone https://github.com/jerrykuku/luci-app-go-aliyundrive-webdav
         git clone -b 21.02 https://github.com/kenzok78/luci-theme-argonne
-        git clone https://github.com/kenzok78/openwrt-minisign
         git clone https://github.com/kenzok78/luci-app-argonne-config
-        git clone https://github.com/kenzok78/luci-app-fileassistant
         git_clone https://github.com/thinktip/luci-theme-neobird
-        git clone -b lede https://github.com/pymumu/luci-app-smartdns
-        git_clone -b luci https://github.com/xiaorouji/openwrt-passwall passwall1 && mv -n passwall1/luci-app-passwall  ./; rm -rf passwall1
+        git_clone https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns && mv -n tencentcloud-openwrt-plugin-ddns/tencentcloud_ddns ./luci-app-tencentddns; rm -rf tencentcloud-openwrt-plugin-ddns
+        git_clone https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-cos && mv -n tencentcloud-openwrt-plugin-cos/tencentcloud_cos ./luci-app-tencentcloud-cos; rm -rf tencentcloud-openwrt-plugin-cos
+        git_clone https://github.com/doushang/luci-app-shortcutmenu luci-shortcutmenu && mv -n luci-shortcutmenu/luci-app-shortcutmenu ./ ; rm -rf luci-shortcutmenu
+        git_clone https://github.com/sbilly/netmaker-openwrt && mv -n netmaker-openwrt/netmaker ./; rm -rf netmaker-openwrt
+        git_clone https://github.com/lisaac/luci-app-dockerman dockerman && mv -n dockerman/applications/* ./; rm -rf dockerman
         ) &
         (
-        svn export https://github.com/Lienol/openwrt-package/branches/other/lean/luci-app-autoreboot
-        svn export https://github.com/fw876/helloworld/trunk/luci-app-ssr-plus
-        svn export https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns/trunk/tencentcloud_ddns luci-app-tencentddns
-        svn export https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-cos/trunk/tencentcloud_cos luci-app-tencentcloud-cos
+        git_clone https://github.com/messense/aliyundrive-webdav aliyundrive && mv -n aliyundrive/openwrt/* ./ ; rm -rf aliyundrive
+        git_clone https://github.com/messense/aliyundrive-fuse aliyundrive && mv -n aliyundrive/openwrt/* ./;rm -rf aliyundrive	
+        git_clone https://github.com/messense/openwrt-wiretrustee && mv -n openwrt-wiretrustee/wiretrustee ./;rm -rf openwrt-wiretrustee
+        git_clone https://github.com/ophub/luci-app-amlogic amlogic && mv -n amlogic/luci-app-amlogic amlogic/depends/* ./;rm -rf amlogic
+        git_clone https://github.com/mingxiaoyu/luci-app-cloudflarespeedtest cloudflarespeedtest && mv -n cloudflarespeedtest/applications/* ./;rm -rf cloudflarespeedtest
+        git_clone https://github.com/linkease/nas-packages && mv -n nas-packages/network/services/* ./; rm -rf nas-packages
+        git_clone https://github.com/linkease/nas-packages-luci && mv -n nas-packages-luci/luci/* ./; rm -rf nas-packages-luci
+        git_clone https://github.com/linkease/luci-app-linkease
+        git clone -b lede https://github.com/pymumu/luci-app-smartdns		
+        ) &
+        (
         svn export https://github.com/x-wrt/packages/trunk/net/nft-qos
         svn export https://github.com/x-wrt/luci/trunk/applications/luci-app-nft-qos
-        svn export https://github.com/vernesong/OpenClash/trunk/luci-app-openclash
-        svn export https://github.com/lisaac/luci-app-dockerman/trunk/applications/luci-app-dockerman
-        svn export https://github.com/mingxiaoyu/luci-app-cloudflarespeedtest/trunk/applications/luci-app-cloudflarespeedtest
-        ) &
-        (
-        svn export https://github.com/doushang/luci-app-shortcutmenu/trunk/luci-app-shortcutmenu
+        svn export https://github.com/x-wrt/com.x-wrt/trunk/luci-app-macvlan
         svn export https://github.com/Ysurac/openmptcprouter-feeds/trunk/luci-app-iperf
-        svn export https://github.com/sirpdboy/netspeedtest/trunk/luci-app-netspeedtest
-        svn export https://github.com/messense/aliyundrive-webdav/trunk/openwrt aliyundrive && mvdir aliyundrive
-        svn export https://github.com/linkease/istore/trunk/luci/luci-app-store
-        svn export https://github.com/linkease/istore-ui/trunk/app-store-ui
-        svn export https://github.com/linkease/nas-packages/trunk/network/services && mvdir services
-        svn export https://github.com/linkease/nas-packages-luci/trunk/luci && mvdir luci
-        svn export https://github.com/sbilly/netmaker-openwrt/trunk/netmaker
-        svn export https://github.com/messense/aliyundrive-fuse/trunk/openwrt && mvdir openwrt
-        svn export https://github.com/messense/openwrt-wiretrustee/trunk/wiretrustee
-        svn export https://github.com/immortalwrt/immortalwrt/trunk/package/kernel/rtl88x2bu
-        svn export https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2
-        svn export https://github.com/Carseason/openwrt-themedog/trunk/luci/luci-theme-dog
+        svn export https://github.com/fw876/helloworld/trunk/luci-app-ssr-plus
+        svn export https://github.com/vernesong/OpenClash/trunk/luci-app-openclash
+        svn export https://github.com/Carseason/openwrt-themedog/trunk/luci/luci-themedog
         ) &
         (
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/packages" "oppackages" \
@@ -172,10 +169,6 @@ jobs:
         applications/luci-app-ddns applications/luci-app-acme applications/luci-app-transmission applications/luci-app-opkg applications/luci-app-firewall \
         applications/luci-app-ksmbd applications/luci-app-samba4 modules/luci-base modules/luci-mod-network \
         modules/luci-mod-status modules/luci-mod-system
-        ) &
-        (
-        git_sparse_clone develop "https://github.com/Ysurac/openmptcprouter-feeds" "openmptcp" luci-app-snmpd \
-        luci-app-packet-capture luci-app-mail msmtp
         ) &
         (
         git_sparse_clone master "https://github.com/immortalwrt/packages" "immpkgs" net/adguardhome net/mwol \
@@ -190,6 +183,8 @@ jobs:
         multimedia/UnblockNeteaseMusic net/amule net/baidupcs-web net/frp multimedia/gmediarender net/go-aliyundrive-webdav \
         net/qBittorrent-static net/qBittorrent libs/qtbase libs/qttools libs/rblibtorrent \
         net/uugamebooster net/verysync net/vlmcsd net/dnsforwarder net/nps net/tcpping net/redsocks2
+        git_sparse_clone develop "https://github.com/Ysurac/openmptcprouter-feeds" "openmptcp" luci-app-snmpd \
+        luci-app-packet-capture luci-app-mail msmtp
         ) &
 
         svn export --force https://github.com/coolsnowwolf/luci/trunk/applications
@@ -260,13 +255,21 @@ jobs:
         ) &
         
         for pkg in $(find -maxdepth 1 -type d -name "luci-*" ! -name "luci-app-dockerman" ! -name "luci-app-frpc" ! -name "luci-app-frps"); do
+          if [ "$(grep "luci.mk" $pkg/Makefile)" ]; then
+            sed -i '/\(PKG_VERSION\|PKG_RELEASE\):=/d' $pkg/Makefile
+          fi
           grep -q '"nas",' $pkg/luasrc/controller/*.lua && ! grep -q '_("NAS")' $pkg/luasrc/controller/*.lua &&
             sed -i 's/index()/index()\n\tentry({"admin", "nas"}, firstchild(), _("NAS") , 45).dependent = false/' $pkg/luasrc/controller/*.lua
         done
         (
+        for pkg in $(ls -d */); do
+          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
+            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
+          fi
+        done
         touch /tmp/ok2
-        ) &        
-        
+        ) &
+
         sed -i 's/luci-lib-ipkg/luci-base/g' luci-app-store/Makefile
         bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true
         bash diy/convert_translation.sh -a >/dev/null 2>&1 || true
@@ -277,6 +280,7 @@ jobs:
         sed -i 's/+libstdcpp/+libstdcpp +zlib/' ngrokc/Makefile
         sed -i 's/+dockerd/+dockerd +cgroupfs-mount/' luci-app-docker*/Makefile
         sed -i '$i /etc/init.d/dockerd restart &' luci-app-docker*/root/etc/uci-defaults/*
+        sed -i '/\/etc\/config\/AdGuardHome/a /etc/AdGuardHome.yaml' luci-app-adguardhome/Makefile
         sed -i 's/+rclone\( \|$\)/+rclone +fuse-utils\1/g' luci-app-rclone/Makefile
         sed -i 's/+libcap /+libcap +libcap-bin /' luci-app-openclash/Makefile
         sed -i 's/\(+luci-compat\)/\1 +luci-theme-argon/' luci-app-argon-config/Makefile
@@ -297,6 +301,7 @@ jobs:
         sed -i '$a cgi-timeout = 60' uwsgi/files-luci-support/luci-cgi_io.ini
         sed -i '/limit-as/c\limit-as = 5000' uwsgi/files-luci-support/luci-webui.ini
         sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/' uwsgi/files/uwsgi.init
+        sed -i 's/	ip.neighbors/	luci.ip.neighbors/' luci-app-wifidog/luasrc/model/cbi/wifidog/wifidog_cfg.lua
         cp -rf base-files/files/sbin/sysupgrade my-default-settings/files/sbin/
         
         sed -i \
@@ -306,25 +311,29 @@ jobs:
           -e 's/ca-certificates/ca-bundle/' \
           */Makefile
         
-        while [[ ! -f /tmp/ok ]]; do
+        while [[ ! -f /tmp/ok ||  ! -f /tmp/ok2 ]]; do
             echo "wait"
           sleep 1
         done
-        
-        rm -rf create_acl_for_luci.warn && rm -rf create_acl_for_luci.ok
-        rm -rf create_acl_for_luci.err
 
     - name: Apply
       run: |
         git add .
-        git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"      
+        git commit -m "update $(date +%m-%d" "%H:%M:%S)"
+        for pkg in $(git diff-tree --no-commit-id --name-only HEAD); do
+          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
+            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
+          fi
+        done
         git reset --soft HEAD^
         git add .
-        git commit -m "update $(TZ='Asia/Shanghai' date +%m-%d" "%H:%M)"
+        git commit -m "update $(date +%m-%d" "%H:%M:%S)"
         git push -f
 
     - name: Delete workflow runs
-      uses: GitRML/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@main
+      continue-on-error: true
       with:
         retain_days: 1
-        keep_minimum_runs: 0
+        keep_minimum_runs: 1
+
