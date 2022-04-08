@@ -1,6 +1,7 @@
 #
 # This is free software, lisence use MIT.
 # 
+# 
 #
 
 name: Merge-kenzo
@@ -11,7 +12,7 @@ on:
       - '.gitignore'
       - 'diy/**'
   schedule:
-    - cron: 0 */12 * * *
+    - cron: 0 */11 * * *
   workflow_dispatch:
     inputs:
       ssh:
@@ -81,7 +82,7 @@ jobs:
         git_clone -b luci https://github.com/xiaorouji/openwrt-passwall passwall1 && mv -n passwall1/luci-app-passwall  ./; rm -rf passwall1		
         git_clone https://github.com/Lienol/openwrt-package
         git_clone https://github.com/ysc3839/openwrt-minieap
-        git_clone https://github.com/ysc3839/luci-proto-minieap
+	git_clone https://github.com/ysc3839/luci-proto-minieap
         git_clone https://github.com/rufengsuixing/luci-app-autoipsetadder
         git_clone https://github.com/rufengsuixing/luci-app-onliner
         git_clone https://github.com/rufengsuixing/luci-app-usb3disable			
@@ -131,9 +132,9 @@ jobs:
         ) &
         (
         git_clone https://github.com/zxlhhyccc/luci-app-v2raya
-        git clone -b 21.02 https://github.com/kenzok78/luci-theme-argonne
-        git clone https://github.com/kenzok78/luci-app-argonne-config
-        git_clone https://github.com/thinktip/luci-theme-neobird
+	git clone -b 21.02 https://github.com/kenzok78/luci-theme-argonne
+	git clone https://github.com/kenzok78/luci-app-argonne-config
+	git_clone https://github.com/thinktip/luci-theme-neobird
         git_clone https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-ddns && mv -n tencentcloud-openwrt-plugin-ddns/tencentcloud_ddns ./luci-app-tencentddns; rm -rf tencentcloud-openwrt-plugin-ddns
         git_clone https://github.com/Tencent-Cloud-Plugins/tencentcloud-openwrt-plugin-cos && mv -n tencentcloud-openwrt-plugin-cos/tencentcloud_cos ./luci-app-tencentcloud-cos; rm -rf tencentcloud-openwrt-plugin-cos
         git_clone https://github.com/doushang/luci-app-shortcutmenu luci-shortcutmenu && mv -n luci-shortcutmenu/luci-app-shortcutmenu ./ ; rm -rf luci-shortcutmenu
@@ -158,7 +159,7 @@ jobs:
         svn export https://github.com/Ysurac/openmptcprouter-feeds/trunk/luci-app-iperf
         svn export https://github.com/fw876/helloworld/trunk/luci-app-ssr-plus
         svn export https://github.com/vernesong/OpenClash/trunk/luci-app-openclash
-        svn export https://github.com/Carseason/openwrt-themedog/trunk/luci/luci-themedog
+	svn export https://github.com/Carseason/openwrt-themedog/trunk/luci/luci-themedog
         ) &
         (
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/packages" "oppackages" \
@@ -255,18 +256,10 @@ jobs:
         ) &
         
         for pkg in $(find -maxdepth 1 -type d -name "luci-*" ! -name "luci-app-dockerman" ! -name "luci-app-frpc" ! -name "luci-app-frps"); do
-          if [ "$(grep "luci.mk" $pkg/Makefile)" ]; then
-            sed -i '/\(PKG_VERSION\|PKG_RELEASE\):=/d' $pkg/Makefile
-          fi
           grep -q '"nas",' $pkg/luasrc/controller/*.lua && ! grep -q '_("NAS")' $pkg/luasrc/controller/*.lua &&
             sed -i 's/index()/index()\n\tentry({"admin", "nas"}, firstchild(), _("NAS") , 45).dependent = false/' $pkg/luasrc/controller/*.lua
         done
         (
-        for pkg in $(ls -d */); do
-          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
-            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
-          fi
-        done
         touch /tmp/ok2
         ) &
 
@@ -280,7 +273,6 @@ jobs:
         sed -i 's/+libstdcpp/+libstdcpp +zlib/' ngrokc/Makefile
         sed -i 's/+dockerd/+dockerd +cgroupfs-mount/' luci-app-docker*/Makefile
         sed -i '$i /etc/init.d/dockerd restart &' luci-app-docker*/root/etc/uci-defaults/*
-        sed -i '/\/etc\/config\/AdGuardHome/a /etc/AdGuardHome.yaml' luci-app-adguardhome/Makefile
         sed -i 's/+rclone\( \|$\)/+rclone +fuse-utils\1/g' luci-app-rclone/Makefile
         sed -i 's/+libcap /+libcap +libcap-bin /' luci-app-openclash/Makefile
         sed -i 's/\(+luci-compat\)/\1 +luci-theme-argon/' luci-app-argon-config/Makefile
@@ -301,7 +293,6 @@ jobs:
         sed -i '$a cgi-timeout = 60' uwsgi/files-luci-support/luci-cgi_io.ini
         sed -i '/limit-as/c\limit-as = 5000' uwsgi/files-luci-support/luci-webui.ini
         sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/' uwsgi/files/uwsgi.init
-        sed -i 's/	ip.neighbors/	luci.ip.neighbors/' luci-app-wifidog/luasrc/model/cbi/wifidog/wifidog_cfg.lua
         cp -rf base-files/files/sbin/sysupgrade my-default-settings/files/sbin/
         
         sed -i \
@@ -311,20 +302,18 @@ jobs:
           -e 's/ca-certificates/ca-bundle/' \
           */Makefile
         
-        while [[ ! -f /tmp/ok ||  ! -f /tmp/ok2 ]]; do
+        while [[ ! -f /tmp/ok ]]; do
             echo "wait"
           sleep 1
         done
+        
+        rm -rf create_acl_for_luci.warn && rm -rf create_acl_for_luci.ok
+        rm -rf create_acl_for_luci.err
 
     - name: Apply
       run: |
         git add .
         git commit -m "update $(date +%m-%d" "%H:%M:%S)"
-        for pkg in $(git diff-tree --no-commit-id --name-only HEAD); do
-          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
-            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
-          fi
-        done
         git reset --soft HEAD^
         git add .
         git commit -m "update $(date +%m-%d" "%H:%M:%S)"
@@ -336,4 +325,5 @@ jobs:
       with:
         retain_days: 1
         keep_minimum_runs: 1
+
 
