@@ -131,6 +131,7 @@ jobs:
         git clone -b 21.02 https://github.com/kenzok78/luci-theme-argonne
         git clone https://github.com/kenzok78/openwrt-minisign
         git clone https://github.com/kenzok78/luci-app-argonne-config
+        git clone https://github.com/kenzok78/luci-app-fileassistant
         git_clone https://github.com/thinktip/luci-theme-neobird
         git clone -b lede https://github.com/pymumu/luci-app-smartdns
         git_clone -b luci https://github.com/xiaorouji/openwrt-passwall passwall1 && mv -n passwall1/luci-app-passwall  ./; rm -rf passwall1
@@ -161,7 +162,6 @@ jobs:
         svn export https://github.com/immortalwrt/immortalwrt/trunk/package/kernel/rtl88x2bu
         svn export https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2
         svn export https://github.com/Carseason/openwrt-themedog/trunk/luci/luci-theme-dog
-        svn export https://github.com/kiddin9/openwrt-packages/trunk/luci-app-fileassistant
         ) &
         (
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/packages" "oppackages" \
