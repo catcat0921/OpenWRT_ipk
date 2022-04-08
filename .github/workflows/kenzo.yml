@@ -2,6 +2,7 @@
 # This is free software, lisence use MIT.
 # 
 # 
+# <https://github.com/kiddin9/openwrt-packages>
 #
 
 name: Merge-kenzo
@@ -12,7 +13,7 @@ on:
       - '.gitignore'
       - 'diy/**'
   schedule:
-    - cron: 0 */11 * * *
+    - cron: 0 */12 * * *
   workflow_dispatch:
     inputs:
       ssh:
@@ -206,6 +207,7 @@ jobs:
         mv -n openwrt-passwall/* ./ ; rm -Rf openwrt-passwall
         mv -n applications/!(luci-app-noddos|luci-app-cshark|luci-app-dnscrypt-proxy|luci-app-https-dns-proxy) ./ ; rm -Rf applications
         mv -n lean/* ./ ; rm -Rf lean
+        mv -n openwrt-package/* ./ ; rm -Rf openwrt-package
         cp -rf diy/.packages/* ./ || true
         rm -Rf */.git
 
@@ -255,10 +257,18 @@ jobs:
         ) &
         
         for pkg in $(find -maxdepth 1 -type d -name "luci-*" ! -name "luci-app-dockerman" ! -name "luci-app-frpc" ! -name "luci-app-frps"); do
+          if [ "$(grep "luci.mk" $pkg/Makefile)" ]; then
+            sed -i '/\(PKG_VERSION\|PKG_RELEASE\):=/d' $pkg/Makefile
+          fi
           grep -q '"nas",' $pkg/luasrc/controller/*.lua && ! grep -q '_("NAS")' $pkg/luasrc/controller/*.lua &&
             sed -i 's/index()/index()\n\tentry({"admin", "nas"}, firstchild(), _("NAS") , 45).dependent = false/' $pkg/luasrc/controller/*.lua
         done
         (
+        for pkg in $(ls -d */); do
+          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
+            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
+          fi
+        done
         touch /tmp/ok2
         ) &
         sed -i 's/luci-lib-ipkg/luci-base/g' luci-app-store/Makefile
@@ -271,6 +281,7 @@ jobs:
         sed -i 's/+libstdcpp/+libstdcpp +zlib/' ngrokc/Makefile
         sed -i 's/+dockerd/+dockerd +cgroupfs-mount/' luci-app-docker*/Makefile
         sed -i '$i /etc/init.d/dockerd restart &' luci-app-docker*/root/etc/uci-defaults/*
+        sed -i '/\/etc\/config\/AdGuardHome/a /etc/AdGuardHome.yaml' luci-app-adguardhome/Makefile
         sed -i 's/+rclone\( \|$\)/+rclone +fuse-utils\1/g' luci-app-rclone/Makefile
         sed -i 's/+libcap /+libcap +libcap-bin /' luci-app-openclash/Makefile
         sed -i 's/\(+luci-compat\)/\1 +luci-theme-argon/' luci-app-argon-config/Makefile
@@ -291,6 +302,7 @@ jobs:
         sed -i '$a cgi-timeout = 60' uwsgi/files-luci-support/luci-cgi_io.ini
         sed -i '/limit-as/c\limit-as = 5000' uwsgi/files-luci-support/luci-webui.ini
         sed -i 's/procd_set_param stderr 1/procd_set_param stderr 0/' uwsgi/files/uwsgi.init
+        sed -i 's/	ip.neighbors/	luci.ip.neighbors/' luci-app-wifidog/luasrc/model/cbi/wifidog/wifidog_cfg.lua
         cp -rf base-files/files/sbin/sysupgrade my-default-settings/files/sbin/
         
         sed -i \
@@ -300,21 +312,23 @@ jobs:
           -e 's/ca-certificates/ca-bundle/' \
           */Makefile
         
-        while [[ ! -f /tmp/ok ]]; do
+        while [[ ! -f /tmp/ok ||  ! -f /tmp/ok2 ]]; do
             echo "wait"
           sleep 1
         done
-        
-        rm -rf create_acl_for_luci.warn && rm -rf create_acl_for_luci.ok
-        rm -rf create_acl_for_luci.err
 
     - name: Apply
       run: |
         git add .
-        git commit -m "update $(date +%m-%d" "%H:%M:%S)"
+        git commit -m "update $(date +%Y-%m-%d" "%H:%M:%S)"
+        for pkg in $(git diff-tree --no-commit-id --name-only HEAD); do
+          if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
+            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
+          fi
+        done
         git reset --soft HEAD^
         git add .
-        git commit -m "update $(date +%m-%d" "%H:%M:%S)"
+        git commit -m "update $(date +%Y-%m-%d" "%H:%M:%S)"
         git push -f
 
     - name: Delete workflow runs
