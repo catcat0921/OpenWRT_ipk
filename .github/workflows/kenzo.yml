@@ -161,6 +161,7 @@ jobs:
         svn export https://github.com/immortalwrt/immortalwrt/trunk/package/kernel/rtl88x2bu
         svn export https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2
         svn export https://github.com/Carseason/openwrt-themedog/trunk/luci/luci-theme-dog
+        svn export https://github.com/kiddin9/openwrt-packages/trunk/luci-app-fileassistant
         ) &
         (
         git_sparse_clone openwrt-21.02 "https://github.com/openwrt/packages" "oppackages" \
