@@ -82,8 +82,8 @@ jobs:
         git_clone -b luci https://github.com/xiaorouji/openwrt-passwall passwall1 && mv -n passwall1/luci-app-passwall  ./; rm -rf passwall1		
         git_clone https://github.com/Lienol/openwrt-package
         git_clone https://github.com/ysc3839/openwrt-minieap
-	git_clone https://github.com/ysc3839/luci-proto-minieap
-	git_clone https://github.com/rufengsuixing/luci-app-autoipsetadder
+        git_clone https://github.com/ysc3839/luci-proto-minieap
+        git_clone https://github.com/rufengsuixing/luci-app-autoipsetadder
         git_clone https://github.com/rufengsuixing/luci-app-onliner
         git_clone https://github.com/rufengsuixing/luci-app-usb3disable			
         git_clone https://github.com/NateLol/luci-app-beardropper
