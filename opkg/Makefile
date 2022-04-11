@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=opkg
-PKG_RELEASE:=
+PKG_RELEASE:=16
 PKG_FLAGS:=essential
 
 PKG_SOURCE_PROTO:=git

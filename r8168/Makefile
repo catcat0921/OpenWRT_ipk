@@ -8,7 +8,7 @@ include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=r8168
 PKG_VERSION:=8.049.02
-PKG_RELEASE:=
+PKG_RELEASE:=33
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/BROBIRD/openwrt-r8168.git

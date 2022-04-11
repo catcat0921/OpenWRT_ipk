@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=mtk-eip93
-PKG_RELEASE:=
+PKG_RELEASE:=28
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_DATE:=2020-12-10
