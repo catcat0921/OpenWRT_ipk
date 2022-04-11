@@ -6,8 +6,6 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=luci-app-passwall
-PKG_VERSION:=4.52
-PKG_RELEASE:=3
 
 PKG_CONFIG_DEPENDS:= \
 	CONFIG_PACKAGE_$(PKG_NAME)_Transparent_Proxy \
@@ -98,7 +96,7 @@ config PACKAGE_$(PKG_NAME)_INCLUDE_IPv6_Nat
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_NaiveProxy
 	bool "Include NaiveProxy"
-	depends on !(arc||armeb||mips||mips64||powerpc||TARGET_gemini)
+	depends on !(arc||(arm&&TARGET_gemini)||armeb||mips||mips64||powerpc)
 	default n
 
 config PACKAGE_$(PKG_NAME)_INCLUDE_PDNSD

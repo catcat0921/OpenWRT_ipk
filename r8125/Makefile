@@ -8,7 +8,7 @@ include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=r8125
 PKG_VERSION:=9.008.00
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_RELEASE:=
 
 include $(INCLUDE_DIR)/package.mk
 

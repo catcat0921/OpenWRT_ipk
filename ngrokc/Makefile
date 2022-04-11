@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=ngrokc
 PKG_VERSION:=1.55
-PKG_RELEASE:=$(AUTORELEASE)
+PKG_RELEASE:=
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/dosgo/ngrok-c.git
