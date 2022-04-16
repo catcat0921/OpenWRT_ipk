@@ -336,7 +336,7 @@ jobs:
         done
         git reset --soft HEAD^
         git add .
-        git commit -m "update $(date +%Y-%m-%d" "%H:%M:%S)"
+        git diff --exit-code || git commit -am "update $(date +%Y-%m-%d" "%H:%M:%S)"
         git push -f
 
     - name: Delete workflow runs
