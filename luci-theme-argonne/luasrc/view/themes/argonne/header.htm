@@ -1,8 +1,8 @@
 <%#
-	Argon is a clean HTML5 theme for LuCI. It is based on luci-theme-material Argon Template
+	Argonne is a clean HTML5 theme for LuCI. It is based on luci-theme-material Argonne Template
 
 	luci-theme-argonne
-	Copyright 2020 Jerrykuku <kenzok78@qq.com>
+	Copyright 2020 Jerrykuku <jerrykuku@qq.com>
 
 	Have a bug? Please create an issue here on GitHub!
 	https://github.com/kenzok78/luci-theme-argonne/issues
@@ -10,8 +10,8 @@
 	luci-theme-material:
 	Copyright 2015 Lutty Yang <lutty@wcan.in>
 
-	Argon Theme
-	https://demos.creative-tim.com/argonne-dashboard/index.html
+	Argonne Theme
+	https://demos.creative-tim.com/argon-dashboard/index.html
 
 	Licensed to the public under the Apache License 2.0
 -%>
@@ -21,6 +21,7 @@
 	local util = require "luci.util"
 	local http = require "luci.http"
 	local disp = require "luci.dispatcher"
+    local ver = require "luci.version"
 
 	local boardinfo = util.ubus("system", "board")
 
@@ -85,7 +86,7 @@
     <meta name="msapplication-TileColor" content="<%=bar_color%>">
     <meta name="msapplication-TileImage" content="<%=media%>/icon/ms-icon-144x144.png">
     <meta name="theme-color" content="<%=bar_color%>">
-    <link rel="stylesheet" href="<%=media%>/css/cascade.css?v=<%=math.random(1,100000)%>">
+    <link rel="stylesheet" href="<%=media%>/css/cascade.css<%# ?v=PKG_VERSION %>">
     <style title="text/css">
         <% if mode == 'normal' then %>
             @media (prefers-color-scheme: dark) {
@@ -115,10 +116,10 @@
 	</style>
 	<% end -%>
 	<script src="<%=media%>/js/polyfill.min.js"></script>
-	<script src="<%=url('admin/translations', luci.i18n.context.lang)%>?v=2.2.4"></script>
-	<script src="<%=resource%>/cbi.js?v=2.2.4"></script>
-	<script src="<%=resource%>/luci.js?v=2.2.4"></script>
-	<script src="<%=media%>/js/jquery.min.js?v=2.2.4"></script>
+	<script src="<%=url('admin/translations', luci.i18n.context.lang)%>?v=<%=ver.luciversion%>"></script>
+	<script src="<%=resource%>/cbi.js?v=<%=ver.luciversion%>"></script>
+	<script src="<%=resource%>/luci.js?v=<%=ver.luciversion%>"></script>
+	<script src="<%=media%>/js/jquery.min.js?v=3.5.1"></script>
 </head>
 
 <body
