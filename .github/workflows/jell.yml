@@ -340,8 +340,9 @@ jobs:
         git push -f
 
     - name: Delete workflow runs
-      uses: Mattraks/delete-workflow-runs@main
-      continue-on-error: true
+      uses: Mattraks/delete-workflow-runs@v2.0.1
       with:
+        token: ${{ secrets.ACTION_SECRET }}
+        repository: ${{ github.repository }}
         retain_days: 1
         keep_minimum_runs: 1
