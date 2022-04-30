@@ -275,8 +275,6 @@ jobs:
 
         bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true
         bash diy/convert_translation.sh -a >/dev/null 2>&1 || true
-        rm -rf create_acl_for_luci.err & rm -rf create_acl_for_luci.ok
-        rm -rf create_acl_for_luci.warn
         
         #sed -i 's?"http://" + window.location.hostname?window.location.protocol + "//" + window.location.hostname?g' `find luci-app*/luasrc/view/ -maxdepth 2 -name "*.htm"`
         rm -f miniupnpd/patches/106-spam-syslog*
@@ -310,6 +308,7 @@ jobs:
         
         sed -i \
           -e 's?include \.\./\.\./\(lang\|devel\)?include $(TOPDIR)/feeds/packages/\1?' \
+          -e "s/\(PKG_HASH\|PKG_MD5SUM\|PKG_MIRROR_HASH\):=.*/\1:=skip/" \
           -e 's?\.\./\.\./luci.mk?$(TOPDIR)/feeds/luci/luci.mk?' \
           -e 's/ca-certificates/ca-bundle/' \
           */Makefile
@@ -318,6 +317,9 @@ jobs:
             echo "wait"
           sleep 1
         done
+		
+        rm -rf create_acl_for_luci.err & rm -rf create_acl_for_luci.ok
+        rm -rf create_acl_for_luci.warn		
 
     - name: Apply
       run: |
@@ -325,7 +327,7 @@ jobs:
         git commit -am "update $(date +%Y-%m-%d" "%H:%M:%S)"
         for pkg in $(git diff-tree --no-commit-id --name-only HEAD); do
           if [ "$(grep "PKG_RELEASE" $pkg/Makefile)" ]; then
-            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count master $pkg)/" $pkg/Makefile || true
+            sed -i "s/PKG_RELEASE:=.*/PKG_RELEASE:=$(git rev-list --count main $pkg)/" $pkg/Makefile || true
           fi
         done
         git reset --soft HEAD^
