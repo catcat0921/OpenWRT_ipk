@@ -4,7 +4,7 @@ include $(INCLUDE_DIR)/kernel.mk
 
 PKG_NAME:=oaf
 PKG_VERSION:=5.0
-PKG_RELEASE:=20
+PKG_RELEASE:=
 
 include $(INCLUDE_DIR)/package.mk
 
