@@ -6,12 +6,12 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=filebrowser
 PKG_VERSION:=2.21.1
-PKG_RELEASE:=
+PKG_RELEASE:=48
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_VERSION:=e5fa96b666eac2e46a02bde832488baca5f2cd6d
 PKG_SOURCE_URL:=https://github.com/filebrowser/filebrowser
-PKG_MIRROR_HASH:=66b9df31f98bec22715a7fe9ca73962c1e5a5c1b3bcfb99fd0ac1703118ee4c8
+PKG_MIRROR_HASH:=skip
 
 PKG_LICENSE:=Apache-2.0
 PKG_LICENSE_FILES:=LICENSE

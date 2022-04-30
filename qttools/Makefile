@@ -10,7 +10,7 @@ PKG_NAME:=qttools
 PKG_BASE:=5.15
 PKG_BUGFIX:=3
 PKG_VERSION:=$(PKG_BASE).$(PKG_BUGFIX)
-PKG_RELEASE:=
+PKG_RELEASE:=23
 
 PKG_SOURCE:=$(PKG_NAME)-everywhere-opensource-src-$(PKG_VERSION).tar.xz
 PKG_SOURCE_URL:= \
@@ -18,7 +18,7 @@ PKG_SOURCE_URL:= \
 		http://master.qt.io/archive/qt/$(PKG_BASE)/$(PKG_VERSION)/submodules \
 		http://mirrors.tuna.tsinghua.edu.cn/qt/archive/qt/$(PKG_BASE)/$(PKG_VERSION)/submodules \
 		http://qt.mirror.constant.com/archive/qt/$(PKG_BASE)/$(PKG_VERSION)/submodules
-PKG_HASH:=463b2fe71a085e7ab4e39333ae360ab0ec857b966d7a08f752c427e5df55f90d
+PKG_HASH:=skip
 
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-everywhere-src-$(PKG_VERSION)
 

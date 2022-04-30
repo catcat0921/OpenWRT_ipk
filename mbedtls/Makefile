@@ -9,12 +9,12 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mbedtls
 PKG_VERSION:=2.16.12
-PKG_RELEASE:=
+PKG_RELEASE:=19
 PKG_USE_MIPS16:=0
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/ARMmbed/mbedtls/tar.gz/v$(PKG_VERSION)?
-PKG_HASH:=294871ab1864a65d0b74325e9219d5bcd6e91c34a3c59270c357bb9ae4d5c393
+PKG_HASH:=skip
 
 PKG_BUILD_PARALLEL:=1
 PKG_LICENSE:=GPL-2.0-or-later
