@@ -14,7 +14,7 @@ PKG_RELEASE:=
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_SOURCE_DATE).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/eembc/coremark/tar.gz/$(PKG_SOURCE_VERSION)?
-PKG_HASH:=skip
+PKG_HASH:=fb0a2ee2113322eb976fa521d0ac033a997e0097185c2c2325d84ca94a7f5a6d
 PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)-$(PKG_SOURCE_VERSION)
 
 PKG_MAINTAINER:=Lim Guo Wei <limguowei@gmail.com>
