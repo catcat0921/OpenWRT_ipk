@@ -81,13 +81,15 @@ test $version -lt 1 && {
 	wifi_setup_radio(){
 	local radio=$1
 	htmode="$(uci get wireless.${radio}.htmode)"
+	local widx=0
+	while uci rename wireless.@wifi-iface[$widx]=default_radio$widx >/dev/null 2>&1; do widx=$((widx+1)); done
 	uci -q get wireless.${radio} >/dev/null 2>&1 && {
 			uci -q del wireless.${radio}.disabled
 			uci -q set wireless.${radio}.country='AU'
 			uci -q set wireless.${radio}.channel='auto'
 		
 		if [ "$(uci -q get wireless.${radio}.band)" = "5g" ]; then
-			uci -q set wireless.wifinet${radio#*o}.ssid="${SSID}_5G"
+			uci -q set wireless.default_${radio}.ssid="${SSID}_5G"
 			if test -z "${htmode##HE*}"; then
 				uci -q set wireless.${radio}.htmode="HE160"
 			else
@@ -95,14 +97,14 @@ test $version -lt 1 && {
 			fi
 		else
 			uci -q set wireless.${radio}.htmode="HT40"
-			uci -q set wireless.wifinet${radio#*o}.ssid="${SSID}_2.4G"
+			uci -q set wireless.default_${radio}.ssid="${SSID}_2.4G"
 		fi
-			uci -q set wireless.wifinet${radio#*o}.ieee80211r='1'
+			uci -q set wireless.default_${radio}.device="${radio}"
 			if [ "${SSID_PASSWD}" ]; then
-				uci -q set wireless.wifinet${radio#*o}.encryption='psk2'
-				uci -q set wireless.wifinet${radio#*o}.key="${SSID_PASSWD}"
+				uci -q set wireless.default_${radio}.encryption='psk2'
+				uci -q set wireless.default_${radio}.key="${SSID_PASSWD}"
 			else
-				uci -q set wireless.wifinet${radio#*o}.encryption='none'
+				uci -q set wireless.default_${radio}.encryption='none'
 			fi
 		}
 	}
