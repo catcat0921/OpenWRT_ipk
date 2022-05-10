@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=lua-ipops
 PKG_VERSION:=0.0.1
-PKG_RELEASE:=8
+PKG_RELEASE:=
 
 PKG_SOURCE_VERSION:=$(PKG_VERSION)-$(PKG_RELEASE)
 PKG_MAINTAINER:=Chen Minqiang <ptpt52@gmail.com>
