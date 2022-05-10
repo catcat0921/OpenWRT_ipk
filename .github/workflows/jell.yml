@@ -275,6 +275,9 @@ jobs:
         bash diy/create_acl_for_luci.sh -a >/dev/null 2>&1 || true
         bash diy/convert_translation.sh -a >/dev/null 2>&1 || true
         
+        rm -rf create_acl_for_luci.err & rm -rf create_acl_for_luci.ok
+        rm -rf create_acl_for_luci.warn
+        
         #sed -i 's?"http://" + window.location.hostname?window.location.protocol + "//" + window.location.hostname?g' `find luci-app*/luasrc/view/ -maxdepth 2 -name "*.htm"`
         rm -f miniupnpd/patches/106-spam-syslog*
         sed -i "/minisign:minisign/d" luci-app-dnscrypt-proxy2/Makefile
