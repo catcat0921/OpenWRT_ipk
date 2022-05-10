@@ -245,8 +245,7 @@ jobs:
               if [ "$ver" ]; then
                 function version_lt() { test "$(echo "$@" | tr " " "\n" | sort -rV | head -n 1)" != "$1"; }
                 if version_lt "$over" "$ver"; then
-                  latest="$(echo $latest | jq -r '.data.repository.latestRelease.tagCommit.oid' || echo $latest | jq -r '.data.repository.refs.edges[-1].node.target.oid')"
-                  sed -i -e "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=$latest/" \
+                  sed -i -e "s/PKG_SOURCE_VERSION:=.*/PKG_SOURCE_VERSION:=$(echo $latest | jq -r '.data.repository.refs.edges[-1].node.target.commitUrl' | cut -f 7 -d /)/" \
                          -e "s/PKG_VERSION:=.*/PKG_VERSION:=$ver/" $pkg || true
                 fi || true
               fi
