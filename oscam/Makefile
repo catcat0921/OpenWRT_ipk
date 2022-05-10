@@ -7,7 +7,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=oscam
-PKG_RELEASE:=34
+PKG_RELEASE:=35
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/nx111/oscam.git

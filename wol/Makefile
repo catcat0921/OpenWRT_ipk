@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=wol
 PKG_VERSION:=0.7.1
-PKG_RELEASE:=29
+PKG_RELEASE:=30
 
 PKG_SOURCE_URL:=@SF/ahh
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz

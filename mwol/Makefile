@@ -12,7 +12,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=mwol
-PKG_RELEASE:=31
+PKG_RELEASE:=32
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/Mleaf/mwol.git

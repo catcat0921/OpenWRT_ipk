@@ -10,7 +10,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=redsocks2
 PKG_VERSION:=0.67
-PKG_RELEASE:=27
+PKG_RELEASE:=28
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/semigodking/redsocks.git

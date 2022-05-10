@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=autosamba
 PKG_VERSION:=1
-PKG_RELEASE:=25
+PKG_RELEASE:=26
 PKG_ARCH:=all
 
 include $(INCLUDE_DIR)/package.mk

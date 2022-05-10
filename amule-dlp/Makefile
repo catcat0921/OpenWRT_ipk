@@ -9,7 +9,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=aMule-DLP
 PKG_VERSION:=2.3.3
-PKG_RELEASE:=22
+PKG_RELEASE:=23
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/persmule/amule-dlp.git
